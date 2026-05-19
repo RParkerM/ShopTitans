@@ -29,6 +29,12 @@ export function BlueprintRow({ blueprint, data, onUpdate }: BlueprintRowProps) {
   const { name, type, tier, craftingMilestones, starforgedMilestones } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount } = data;
 
+  // SF milestones don't accumulate progress until all crafting milestones are complete
+  const lastCraftingThreshold = craftingMilestones.length > 0
+    ? craftingMilestones[craftingMilestones.length - 1].craftsNeeded
+    : 0;
+  const sfCraftCount = Math.max(0, craftCount - lastCraftingThreshold);
+
   const hasMilestones = craftingMilestones.length > 0 || (starforged && starforgedMilestones.length > 0);
 
   return (
@@ -94,7 +100,7 @@ export function BlueprintRow({ blueprint, data, onUpdate }: BlueprintRowProps) {
             <MilestoneProgress
               label="Starforged"
               milestones={starforgedMilestones}
-              craftCount={craftCount}
+              craftCount={sfCraftCount}
               accent="purple"
             />
           )}
