@@ -1,5 +1,5 @@
 import type { Blueprint, UserBlueprintData } from '../types';
-import { BlueprintRow } from './BlueprintRow';
+import { BlueprintCard } from './BlueprintCard';
 
 interface BlueprintTableProps {
   blueprints: Blueprint[];
@@ -17,9 +17,9 @@ export function BlueprintTable({ blueprints, getUserData, onUpdate }: BlueprintT
   }
 
   return (
-    <div>
+    <div className="p-4 grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))' }}>
       {blueprints.map(bp => (
-        <BlueprintRow
+        <BlueprintCard
           key={bp.name}
           blueprint={bp}
           data={getUserData(bp.name)}
