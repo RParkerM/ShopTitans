@@ -19,13 +19,24 @@ export function FilterBar({
 }: FilterBarProps) {
   return (
     <div className="sticky top-[57px] z-10 bg-gray-850 border-b border-gray-700 px-4 py-3 flex flex-wrap gap-3 items-center bg-gray-900">
-      <input
-        type="text"
-        placeholder="Search blueprints…"
-        value={search}
-        onChange={e => onSearchChange(e.target.value)}
-        className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 w-48"
-      />
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          placeholder="Search blueprints…"
+          value={search}
+          onChange={e => onSearchChange(e.target.value)}
+          className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 w-48"
+        />
+        <label className="flex items-center gap-1.5 text-sm text-gray-400 cursor-pointer select-none whitespace-nowrap">
+          <input
+            type="checkbox"
+            checked={showOwnedOnly}
+            onChange={e => onShowOwnedOnlyChange(e.target.checked)}
+            className="accent-amber-500"
+          />
+          Owned only
+        </label>
+      </div>
 
       <div className="flex flex-wrap gap-1.5">
         <button
@@ -49,15 +60,6 @@ export function FilterBar({
         ))}
       </div>
 
-      <label className="flex items-center gap-1.5 text-sm text-gray-400 cursor-pointer ml-auto select-none">
-        <input
-          type="checkbox"
-          checked={showOwnedOnly}
-          onChange={e => onShowOwnedOnlyChange(e.target.checked)}
-          className="accent-amber-500"
-        />
-        Owned only
-      </label>
     </div>
   );
 }

@@ -16,8 +16,8 @@ function AscensionStars({ level, onChange }: { level: number; onChange: (v: numb
         <button
           key={star}
           onClick={() => onChange(level === star ? star - 1 : star)}
-          className={`text-xs leading-none transition-colors ${
-            star <= level ? 'text-amber-400 hover:text-amber-300' : 'text-gray-700 hover:text-gray-500'
+          className={`text-sm leading-none transition-colors ${
+            star <= level ? 'text-amber-400 hover:text-amber-300' : 'text-gray-600 hover:text-gray-400'
           }`}
         >
           ★
@@ -56,18 +56,20 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
   const hasMilestones = craftingMilestones.length > 0 || (starforged && starforgedMilestones.length > 0);
 
   return (
-    <div className={`flex flex-col bg-gray-800 rounded-xl overflow-hidden border border-gray-700/50 transition-opacity ${!owned ? 'opacity-50' : ''}`}>
-      {/* Image area */}
-      <div className="relative flex items-center justify-center bg-gray-900 py-4">
-        {/* Circle background */}
-        <div className="relative w-24 h-24 flex items-center justify-center">
+    // No overflow-hidden so the circle can pop above the card top
+    <div className={`relative flex flex-col bg-gray-800 rounded-xl border border-gray-700/50 transition-opacity mt-6 ${!owned ? 'opacity-50' : ''}`}>
+
+      {/* Image area — rounded top corners clipped here, not on the outer card */}
+      <div className="relative bg-gray-900 rounded-t-xl pt-20 pb-4">
+
+        {/* Circle — centered, pops ~25% of its height above the card */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 w-24 h-24 z-10 flex items-center justify-center">
           <img
             src={circleBackground}
             alt=""
             className="absolute inset-0 w-full h-full object-contain"
             draggable={false}
           />
-          {/* Item image */}
           {imgSrc ? (
             <img
               src={imgSrc}
@@ -87,47 +89,50 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
               {type[0] ?? '?'}
             </span>
           )}
+
+          {/* Ascension stars overlaid at the bottom of the circle */}
+          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20">
+            <AscensionStars level={ascensionLevel} onChange={v => onUpdate({ ascensionLevel: v })} />
+          </div>
         </div>
-        {/* Tier badge — top right */}
-        <div className="absolute top-2 right-2">
+
+        {/* Tier badge — top left */}
+        <div className="absolute top-2 left-2 z-10">
           <TierBadge tier={tier} />
+        </div>
+
+        {/* Owned + SF — top right, stacked */}
+        <div className="absolute top-2 right-2 z-10 flex flex-col items-end gap-1">
+          <label className="flex items-center gap-1 cursor-pointer select-none" title="Owned">
+            <span className="text-xs text-gray-400">Own</span>
+            <input
+              type="checkbox"
+              checked={owned}
+              onChange={e => onUpdate({ owned: e.target.checked })}
+              className="accent-amber-500 w-3.5 h-3.5 cursor-pointer"
+            />
+          </label>
+          <label className="flex items-center gap-1 cursor-pointer select-none" title="Starforged">
+            <span className={`text-xs ${starforged ? 'text-purple-400' : 'text-gray-500'}`}>SF</span>
+            <input
+              type="checkbox"
+              checked={starforged}
+              onChange={e => onUpdate({ starforged: e.target.checked })}
+              className="accent-purple-500 w-3.5 h-3.5 cursor-pointer"
+            />
+          </label>
         </div>
       </div>
 
       {/* Name + type */}
-      <div className="px-3 pt-2 pb-1">
+      <div className="px-3 pt-3 pb-1">
         <p className="text-white text-sm font-semibold leading-tight truncate" title={name}>{name}</p>
         <p className="text-gray-500 text-xs mt-0.5">{type}</p>
       </div>
 
-      {/* Controls */}
+      {/* Craft count */}
       <div className="px-3 py-2 flex items-center gap-2 border-t border-gray-700/50 mt-auto">
-        {/* Owned */}
-        <label className="flex items-center gap-1 cursor-pointer select-none" title="Owned">
-          <input
-            type="checkbox"
-            checked={owned}
-            onChange={e => onUpdate({ owned: e.target.checked })}
-            className="accent-amber-500 w-3.5 h-3.5 cursor-pointer"
-          />
-          <span className="text-xs text-gray-400">Own</span>
-        </label>
-
-        {/* Starforged */}
-        <label className="flex items-center gap-1 cursor-pointer select-none" title="Starforged">
-          <input
-            type="checkbox"
-            checked={starforged}
-            onChange={e => onUpdate({ starforged: e.target.checked })}
-            className="accent-purple-500 w-3.5 h-3.5 cursor-pointer"
-          />
-          <span className={`text-xs ${starforged ? 'text-purple-400' : 'text-gray-500'}`}>SF</span>
-        </label>
-
-        {/* Ascension */}
-        <AscensionStars level={ascensionLevel} onChange={v => onUpdate({ ascensionLevel: v })} />
-
-        {/* Craft count */}
+        <span className="text-xs text-gray-500">Crafts</span>
         <input
           type="number"
           min={0}
@@ -144,7 +149,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
         <div className="px-3 pb-2.5 flex flex-col gap-1 border-t border-gray-700/50 pt-2">
           {craftingMilestones.length > 0 && (
             <MilestoneProgress
-              label="Crafting"
+              label="Craft"
               milestones={craftingMilestones}
               craftCount={craftCount}
               accent="amber"

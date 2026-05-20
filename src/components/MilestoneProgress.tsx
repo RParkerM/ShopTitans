@@ -16,7 +16,7 @@ export function MilestoneProgress({ label, milestones, craftCount, accent = 'amb
 
   return (
     <div className="flex items-center gap-2 text-xs min-w-0">
-      <span className="text-gray-500 w-20 shrink-0">{label}:</span>
+      <span className="text-gray-500 shrink-0">{label}:</span>
       <div className="flex gap-0.5 shrink-0">
         {milestones.map((m, i) => (
           <div
