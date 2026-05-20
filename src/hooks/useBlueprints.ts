@@ -45,6 +45,11 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
     const tier = parseInt(row[tierIdx]?.trim()) || 0;
     const source = (sourceIdx !== -1 ? row[sourceIdx]?.trim() : '') || '---';
 
+    // Spreadsheet lumps Elements and Spirits together as "Enchantment" — split them
+    const resolvedType = type !== 'Enchantment' ? type
+      : name.endsWith(' Spirit') ? 'Spirit'
+      : 'Element';
+
     const craftingMilestones = craftingUpgradeIdxs
       .map(idx => {
         if (idx === -1) return null;
@@ -65,7 +70,7 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       })
       .filter((m): m is NonNullable<typeof m> => m !== null);
 
-    blueprints.push({ name, type, tier, source, craftingMilestones, starforgedMilestones });
+    blueprints.push({ name, type: resolvedType, tier, source, craftingMilestones, starforgedMilestones });
   }
 
   return blueprints;

@@ -15,8 +15,8 @@ const TYPE_TO_FOLDER = {
   'Light Footwear': 'Light Footwear', 'Heavy Footwear': 'Heavy Footwear',
   Shield: 'Shields', Ring: 'Rings', Amulet: 'Amulets', Cloak: 'Cloaks', Quiver: 'Quivers',
   Potion: 'Potions', Meal: 'Meals', Dessert: 'Desserts',
-  'Herbal Medicine': 'Herbal Medicine', Familiar: 'Familiars', Spirit: 'Spirits',
-  Moonstone: 'Moonstones', Runestone: 'Runestones', Idol: 'Idols', Element: 'Elements',
+  'Herbal Medicine': 'Herbal Medicine', Element: 'Elements', Spirit: 'Spirits',
+  Familiar: 'Familiars', Moonstone: 'Moonstones', Runestone: 'Runestones', Idol: 'Idols',
 };
 
 function normalizeImageName(name) {
@@ -24,12 +24,10 @@ function normalizeImageName(name) {
 }
 
 function resolveFolder(type, name) {
-  if (type === 'Enchantment') {
-    if (name.endsWith(' Element')) return 'Elements';
-    if (name.endsWith(' Spirit')) return 'Spirits';
-    return null;
-  }
-  return TYPE_TO_FOLDER[type] ?? null;
+  const resolvedType = type !== 'Enchantment' ? type
+    : name.endsWith(' Spirit') ? 'Spirit'
+    : 'Element';
+  return TYPE_TO_FOLDER[resolvedType] ?? null;
 }
 
 function fetchCSV(url) {

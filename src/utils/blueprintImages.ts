@@ -39,12 +39,12 @@ const TYPE_TO_FOLDER: Record<string, string> = {
   Dessert: 'Desserts',
   'Herbal Medicine': 'Herbal Medicine',
   // Special
-  Familiar: 'Familiars',
+  Element: 'Elements',
   Spirit: 'Spirits',
+  Familiar: 'Familiars',
   Moonstone: 'Moonstones',
   Runestone: 'Runestones',
   Idol: 'Idols',
-  Element: 'Elements',
 };
 
 const CIRCLE_BASE = '/fan-kit/Blueprint%20Types/Backgrounds';
@@ -73,17 +73,12 @@ function normalizeImageName(name: string): string {
   return name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '') + '.png';
 }
 
-function resolveFolder(type: string, name: string): string | undefined {
-  if (type === 'Enchantment') {
-    if (name.endsWith(' Element')) return 'Elements';
-    if (name.endsWith(' Spirit')) return 'Spirits';
-    return undefined;
-  }
+function resolveFolder(type: string): string | undefined {
   return TYPE_TO_FOLDER[type];
 }
 
 export function getBlueprintImages(name: string, type: string, source: string) {
-  const folder = resolveFolder(type, name);
+  const folder = resolveFolder(type);
   const itemImage = folder
     ? `/fan-kit/Items/${encodeURIComponent(folder)}/${normalizeImageName(name)}`
     : null;
