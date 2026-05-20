@@ -10,7 +10,7 @@ const TYPE_TO_FOLDER: Record<string, string> = {
   Wand: 'Wands',
   Bow: 'Bows',
   Crossbow: 'Crossbows',
-  Pistol: 'Guns',
+  Gun: 'Guns',
   Instrument: 'Instruments',
   'Dual Wield': 'Dual Wields',
   Aurasong: 'Aurasongs',
@@ -27,6 +27,7 @@ const TYPE_TO_FOLDER: Record<string, string> = {
   Gloves: 'Gloves',
   'Light Footwear': 'Light Footwear',
   'Heavy Footwear': 'Heavy Footwear',
+  Shield: 'Shields',
   // Accessories
   Ring: 'Rings',
   Amulet: 'Amulets',
@@ -72,8 +73,17 @@ function normalizeImageName(name: string): string {
   return name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '') + '.png';
 }
 
+function resolveFolder(type: string, name: string): string | undefined {
+  if (type === 'Enchantment') {
+    if (name.endsWith(' Element')) return 'Elements';
+    if (name.endsWith(' Spirit')) return 'Spirits';
+    return undefined;
+  }
+  return TYPE_TO_FOLDER[type];
+}
+
 export function getBlueprintImages(name: string, type: string, source: string) {
-  const folder = TYPE_TO_FOLDER[type];
+  const folder = resolveFolder(type, name);
   const itemImage = folder
     ? `/fan-kit/Items/${encodeURIComponent(folder)}/${normalizeImageName(name)}`
     : null;
