@@ -1,0 +1,6312 @@
+﻿{
+  "weapons": {
+    "catalyst": [
+      {
+        "image": "t16catalyst.png",
+        "name": "Universe XVI"
+      },
+      {
+        "image": "retrocatalyst.png",
+        "name": "Monster Catcher"
+      },
+      {
+        "image": "platinumcatalyst.png",
+        "name": "Platinum Orb"
+      },
+      {
+        "image": "gothiccatalyst.png",
+        "name": "Darkensmog"
+      },
+      {
+        "image": "t15catalyst.png",
+        "name": "Orb of Everhunger"
+      },
+      {
+        "image": "t14catalyst.png",
+        "name": "Divine Coalescence"
+      },
+      {
+        "image": "t13catalyst.png",
+        "name": "Caged Nothingness"
+      },
+      {
+        "image": "t12catalyst.png",
+        "name": "Sealed Eruption"
+      },
+      {
+        "image": "t11catalyst.png",
+        "name": "Beakstorm Ball"
+      },
+      {
+        "image": "newyearcatalyst.png",
+        "name": "Confetti Harmonizer"
+      },
+      {
+        "image": "t10catalyst.png",
+        "name": "Saltwater Spray"
+      },
+      {
+        "image": "t9catalyst.png",
+        "name": "Orb of Dark Might"
+      },
+      {
+        "image": "t8catalyst.png",
+        "name": "Chronomantic Stasis"
+      },
+      {
+        "image": "t7catalyst.png",
+        "name": "Gaze of Horus"
+      },
+      {
+        "image": "t6catalyst.png",
+        "name": "Sandstorm Catalyst"
+      },
+      {
+        "image": "t5catalyst.png",
+        "name": "Natural Toxifier"
+      }
+    ],
+    "bow": [
+      {
+        "image": "t16bow.png",
+        "name": "Anachron Resolute"
+      },
+      {
+        "image": "newyearbow2.png",
+        "name": "Shooting Star"
+      },
+      {
+        "image": "icecreambow.png",
+        "name": "Banana Royale"
+      },
+      {
+        "image": "t15bow.png",
+        "name": "Sacrilege"
+      },
+      {
+        "image": "christmasbow2.png",
+        "name": "Santa's Little Sniper"
+      },
+      {
+        "image": "werewolfbow.png",
+        "name": "Bloodmoon Nemesis"
+      },
+      {
+        "image": "shoprbow.png",
+        "name": "Titan Shotkeeper"
+      },
+      {
+        "image": "t14bow.png",
+        "name": "Frostlancer"
+      },
+      {
+        "image": "wonderlandbow.png",
+        "name": "Queen of Hearts"
+      },
+      {
+        "image": "platinumbow.png",
+        "name": "Platinum Sniper"
+      },
+      {
+        "image": "blossombow.png",
+        "name": "Jindai Zakura"
+      },
+      {
+        "image": "riftbow.png",
+        "name": "Earthstrung Wings"
+      },
+      {
+        "image": "t13bow.png",
+        "name": "Grand Monarque"
+      },
+      {
+        "image": "thanksgivingbow.png",
+        "name": "Elite Pathfinder"
+      },
+      {
+        "image": "arcadebow.png",
+        "name": "Power Flipper"
+      },
+      {
+        "image": "t12bow.png",
+        "name": "Olympus"
+      },
+      {
+        "image": "frogbow.png",
+        "name": "Boughwrought Bow"
+      },
+      {
+        "image": "newyearbow.png",
+        "name": "Rising Star"
+      },
+      {
+        "image": "cincobow.png",
+        "name": "Pinata Hunter"
+      },
+      {
+        "image": "goldbow.png",
+        "name": "Opulent Longbow"
+      },
+      {
+        "image": "stormrend.png",
+        "name": "Stormrend"
+      },
+      {
+        "image": "dragonbow.png",
+        "name": "Dragonwood Bow"
+      },
+      {
+        "image": "christmasbow.png",
+        "name": "Jolly Ranger"
+      },
+      {
+        "image": "twinstrand.png",
+        "name": "Gemini Strike"
+      },
+      {
+        "image": "lightdarkbow.png",
+        "name": "Horn of Light Lost"
+      },
+      {
+        "image": "fallbow.png",
+        "name": "Maplewood Gale"
+      },
+      {
+        "image": "bramblebane.png",
+        "name": "Bramblebane"
+      },
+      {
+        "image": "valentinebow.png",
+        "name": "Cupid Bow"
+      },
+      {
+        "image": "yumi.png",
+        "name": "Yumi"
+      },
+      {
+        "image": "superbow.png",
+        "name": "Darkeye's Bow"
+      },
+      {
+        "image": "westernbow.png",
+        "name": "Hotshot Bowgun"
+      },
+      {
+        "image": "compositebow.png",
+        "name": "L'Arabesque"
+      },
+      {
+        "image": "lunarbow.png",
+        "name": "Dragon Spine"
+      },
+      {
+        "image": "bjornbow.png",
+        "name": "Bjorn's Bow"
+      },
+      {
+        "image": "desertbow.png",
+        "name": "Quetzal Wing"
+      },
+      {
+        "image": "wingedbow.png",
+        "name": "Raptoria"
+      },
+      {
+        "image": "zephyrbow.png",
+        "name": "Thunderbranch"
+      },
+      {
+        "image": "halloweenbow.png",
+        "name": "Hallowed Willow"
+      },
+      {
+        "image": "spikedbow.png",
+        "name": "Deadeye"
+      },
+      {
+        "image": "mundrabow.png",
+        "name": "Mundra's Hornbow"
+      },
+      {
+        "image": "strikerbow.png",
+        "name": "Compound Bow"
+      },
+      {
+        "image": "siabow.png",
+        "name": "Grand Harp"
+      },
+      {
+        "image": "hunterbow.png",
+        "name": "Reflex Bow"
+      },
+      {
+        "image": "longbow.png",
+        "name": "Elmwood Bow"
+      },
+      {
+        "image": "forestbow.png",
+        "name": "Tailwind"
+      },
+      {
+        "image": "shortbow.png",
+        "name": "Training Bow"
+      }
+    ],
+    "instrument": [
+      {
+        "image": "t16instrument.png",
+        "name": "Nihil Lyre"
+      },
+      {
+        "image": "lunarinstrument.png",
+        "name": "Equine Liuqin"
+      },
+      {
+        "image": "froginstrument.png",
+        "name": "Frogsong Gong"
+      },
+      {
+        "image": "t15instrument.png",
+        "name": "Wendigo Drone"
+      },
+      {
+        "image": "metalinstrument.png",
+        "name": "Rockin' Doubleneck"
+      },
+      {
+        "image": "platinuminstrument.png",
+        "name": "Platinum Bell"
+      },
+      {
+        "image": "skyinstrument.png",
+        "name": "Elysium Skylophone"
+      },
+      {
+        "image": "t14instrument.png",
+        "name": "Cosmic Trumpet"
+      },
+      {
+        "image": "keytar.png",
+        "name": "Electro-Keytar"
+      },
+      {
+        "image": "t13instrument.png",
+        "name": "Otherwordly Chime"
+      },
+      {
+        "image": "t12instrument.png",
+        "name": "Molten Rockstar"
+      },
+      {
+        "image": "t11instrument.png",
+        "name": "Lyre of Desire"
+      },
+      {
+        "image": "t10instrument.png",
+        "name": "Percussive Clam"
+      },
+      {
+        "image": "t9instrument.png",
+        "name": "Portable Gong"
+      },
+      {
+        "image": "t8instrument.png",
+        "name": "Snake Charmer"
+      },
+      {
+        "image": "retroinstrument.png",
+        "name": "Ocarina of Rime"
+      },
+      {
+        "image": "t7instrument.png",
+        "name": "Party Drums"
+      },
+      {
+        "image": "pumpkininstrument.png",
+        "name": "Jack-o'-Bongo"
+      },
+      {
+        "image": "t6instrument.png",
+        "name": "Melancholyr"
+      },
+      {
+        "image": "t5instrument.png",
+        "name": "Woodland Lute"
+      },
+      {
+        "image": "t4instrument.png",
+        "name": "Hunting Horn"
+      },
+      {
+        "image": "airguitar.png",
+        "name": "Air Guitar"
+      },
+      {
+        "image": "t3instrument.png",
+        "name": "Triangle"
+      }
+    ],
+    "axe": [
+      {
+        "image": "t16axe.png",
+        "name": "Synthetic Armament"
+      },
+      {
+        "image": "spellbladeaxe.png",
+        "name": "Sundera Cataclys"
+      },
+      {
+        "image": "dieselpunkaxe.png",
+        "name": "Scrap Chak-a-Chop"
+      },
+      {
+        "image": "frogaxe.png",
+        "name": "Bogbound Terror"
+      },
+      {
+        "image": "t15axe.png",
+        "name": "Tenoch Tyrant"
+      },
+      {
+        "image": "vaultaxe.png",
+        "name": "Judgment Forgotten"
+      },
+      {
+        "image": "demigodaxe.png",
+        "name": "Judgment"
+      },
+      {
+        "image": "elysiumaxe.png",
+        "name": "Axe of Wroth"
+      },
+      {
+        "image": "t14axe.png",
+        "name": "Axe of Froth"
+      },
+      {
+        "image": "egyptaxe.png",
+        "name": "Nilean Dawn"
+      },
+      {
+        "image": "platinumaxe.png",
+        "name": "Platinum War Axe"
+      },
+      {
+        "image": "firecrabaxe.png",
+        "name": "Moltin' Crabcracker"
+      },
+      {
+        "image": "t13axe.png",
+        "name": "Edge Eternal"
+      },
+      {
+        "image": "dinoaxe.png",
+        "name": "Apex Goraxe"
+      },
+      {
+        "image": "valentineaxe.png",
+        "name": "Lover's Quarrel"
+      },
+      {
+        "image": "chessaxe.png",
+        "name": "Onyx King Axe"
+      },
+      {
+        "image": "t12axe.png",
+        "name": "Crescent of Conquest"
+      },
+      {
+        "image": "aegiraxe.png",
+        "name": "Jötunnbane"
+      },
+      {
+        "image": "fallaxe.png",
+        "name": "Shroom Doom"
+      },
+      {
+        "image": "beeaxe.png",
+        "name": "Beeswaxe"
+      },
+      {
+        "image": "manticoreaxe.png",
+        "name": "Manticore Slayer"
+      },
+      {
+        "image": "coupleaxe.png",
+        "name": "Kodiak Kleaver"
+      },
+      {
+        "image": "goldaxe.png",
+        "name": "Opulent Grandaxe"
+      },
+      {
+        "image": "templeaxe.png",
+        "name": "Terra Tyrannis"
+      },
+      {
+        "image": "crescentaxe.png",
+        "name": "Eclipsis"
+      },
+      {
+        "image": "lunaraxe2.png",
+        "name": "Copper Bite"
+      },
+      {
+        "image": "cincoaxe2020.png",
+        "name": "Axe of The Fifth"
+      },
+      {
+        "image": "castleaxe.png",
+        "name": "Purgatory"
+      },
+      {
+        "image": "executioner.png",
+        "name": "Executioner"
+      },
+      {
+        "image": "artifactaxe.png",
+        "name": "Pickaxe of Greed"
+      },
+      {
+        "image": "lunaraxe.png",
+        "name": "Qian Chopper"
+      },
+      {
+        "image": "raideraxe.png",
+        "name": "Raider Axe"
+      },
+      {
+        "image": "krampusaxe.png",
+        "name": "Krooked Handaxe"
+      },
+      {
+        "image": "pyramidaxe.png",
+        "name": "Stonesplitter"
+      },
+      {
+        "image": "steelaxe.png",
+        "name": "Dwarven Greataxe"
+      },
+      {
+        "image": "gothicaxe.png",
+        "name": "Mesmerite Chopper"
+      },
+      {
+        "image": "birdaxe.png",
+        "name": "Raptor Reaper"
+      },
+      {
+        "image": "battleaxe.png",
+        "name": "Battleaxe"
+      },
+      {
+        "image": "snowaxe.png",
+        "name": "Cold Iron Axe"
+      },
+      {
+        "image": "starteraxe.png",
+        "name": "Companion Axe"
+      },
+      {
+        "image": "tomahawk.png",
+        "name": "Tomahawk"
+      },
+      {
+        "image": "epicaxe.png",
+        "name": "Dismantler's Pickaxe"
+      },
+      {
+        "image": "grottoaxe.png",
+        "name": "Molten Voulge"
+      },
+      {
+        "image": "halberd.png",
+        "name": "Bardiche"
+      },
+      {
+        "image": "exploreraxe.png",
+        "name": "Explorer's Axe"
+      },
+      {
+        "image": "doublebitted.png",
+        "name": "Iron Chopper"
+      },
+      {
+        "image": "hatchet.png",
+        "name": "Hatchet"
+      },
+      {
+        "image": "boysaxe.png",
+        "name": "Wood Axe"
+      }
+    ],
+    "dual_wield": [
+      {
+        "image": "t16dualwield.png",
+        "name": "Dying Stars"
+      },
+      {
+        "image": "phoenixdualwield.png",
+        "name": "Twin Terroreyes"
+      },
+      {
+        "image": "firecrabdualwield.png",
+        "name": "Crushtacean Pincers"
+      },
+      {
+        "image": "shoprdualwield.png",
+        "name": "Titan Admiral Arms"
+      },
+      {
+        "image": "t15dualwield.png",
+        "name": "Nook & Cranny"
+      },
+      {
+        "image": "platinumdualwield.png",
+        "name": "Platinum Pair"
+      },
+      {
+        "image": "t14dualwield.png",
+        "name": "Elysium Reavers"
+      },
+      {
+        "image": "t13dualwield.png",
+        "name": "Crystal Destroyers"
+      },
+      {
+        "image": "t12dualwield.png",
+        "name": "Slice & Dice"
+      },
+      {
+        "image": "t11dualwield.png",
+        "name": "Silken Assailants"
+      },
+      {
+        "image": "t10dualwield.png",
+        "name": "Jagged Duo"
+      },
+      {
+        "image": "t9dualwield.png",
+        "name": "Radiant & Midnight"
+      },
+      {
+        "image": "magnetmallets.png",
+        "name": "Magnet Mallets"
+      },
+      {
+        "image": "t8dualwield.png",
+        "name": "Roland's Own"
+      },
+      {
+        "image": "t7dualwield.png",
+        "name": "The Murder Two"
+      },
+      {
+        "image": "t6dualwield.png",
+        "name": "Tonfas"
+      },
+      {
+        "image": "t5dualwield.png",
+        "name": "Twin Khopesh"
+      }
+    ],
+    "sword": [
+      {
+        "image": "fairytalesword.png",
+        "name": "Wolfbane Scissors"
+      },
+      {
+        "image": "t16sword.png",
+        "name": "Plutonium Blade"
+      },
+      {
+        "image": "gothicsword.png",
+        "name": "Twice Cursed"
+      },
+      {
+        "image": "maladysword.png",
+        "name": "Sword of the Sightless"
+      },
+      {
+        "image": "jurassicsword.png",
+        "name": "Succubus Martyr"
+      },
+      {
+        "image": "t15sword.png",
+        "name": "Siren's Song"
+      },
+      {
+        "image": "artifactsword.png",
+        "name": "Kiku-Ichimonji"
+      },
+      {
+        "image": "lunarsword2.png",
+        "name": "Twin Fangs"
+      },
+      {
+        "image": "arcadesword.png",
+        "name": "Materia Blade"
+      },
+      {
+        "image": "platinumsword.png",
+        "name": "Platinum Greatsword"
+      },
+      {
+        "image": "t14sword.png",
+        "name": "Durandal"
+      },
+      {
+        "image": "greeksword.png",
+        "name": "Zeus Thunderblade"
+      },
+      {
+        "image": "dinosword.png",
+        "name": "T-Rex Buster"
+      },
+      {
+        "image": "spacesword.png",
+        "name": "Plasma Saber"
+      },
+      {
+        "image": "t13sword.png",
+        "name": "Djinn Pyre"
+      },
+      {
+        "image": "pumpkinsword.png",
+        "name": "Thorn of Scorn"
+      },
+      {
+        "image": "musketeersword.png",
+        "name": "Épée d'Artagnan"
+      },
+      {
+        "image": "goldsword2.png",
+        "name": "Opulent Brand"
+      },
+      {
+        "image": "shoprsword.png",
+        "name": "Titan Sword"
+      },
+      {
+        "image": "t12sword.png",
+        "name": "Excalibur"
+      },
+      {
+        "image": "moonsword.png",
+        "name": "Tsukuyomi"
+      },
+      {
+        "image": "victoriansword.png",
+        "name": "Elegant Rapier"
+      },
+      {
+        "image": "vorpalsword.png",
+        "name": "Vorpal Sword"
+      },
+      {
+        "image": "lunarsword.png",
+        "name": "Tiger Blade"
+      },
+      {
+        "image": "dragonsword.png",
+        "name": "Dragon Dao"
+      },
+      {
+        "image": "templesword.png",
+        "name": "Caladbolg"
+      },
+      {
+        "image": "cleaver.png",
+        "name": "Oversized Cleaver"
+      },
+      {
+        "image": "canesword.png",
+        "name": "Gentleman Blade"
+      },
+      {
+        "image": "poloniacutlass.png",
+        "name": "Seafarer Blade"
+      },
+      {
+        "image": "falchion.png",
+        "name": "Mythril Edge"
+      },
+      {
+        "image": "newyearsword.png",
+        "name": "Crystalline Rapier"
+      },
+      {
+        "image": "goldsword.png",
+        "name": "Luxurious Macuahuitl"
+      },
+      {
+        "image": "ruinssword.png",
+        "name": "Damocles"
+      },
+      {
+        "image": "celesteelblade.png",
+        "name": "Celesteel Blade"
+      },
+      {
+        "image": "cyberpunksword.png",
+        "name": "Hackrazor Edge"
+      },
+      {
+        "image": "darksword.png",
+        "name": "Bitterblack Blade"
+      },
+      {
+        "image": "cyclopssword.png",
+        "name": "Chronos Runeblade"
+      },
+      {
+        "image": "scimitar.png",
+        "name": "Regal Blade"
+      },
+      {
+        "image": "officesword.png",
+        "name": "Ruler of Rulers"
+      },
+      {
+        "image": "fallsword.png",
+        "name": "Serrated Cinquedea"
+      },
+      {
+        "image": "katana.png",
+        "name": "Katana"
+      },
+      {
+        "image": "candysword.png",
+        "name": "Chocolicious Blade"
+      },
+      {
+        "image": "herosword.png",
+        "name": "Hero's Sword"
+      },
+      {
+        "image": "rapier.png",
+        "name": "Espada"
+      },
+      {
+        "image": "prismasword.png",
+        "name": "Imbued Blade"
+      },
+      {
+        "image": "cutlass.png",
+        "name": "Cutlass"
+      },
+      {
+        "image": "zweihander.png",
+        "name": "Zweihander"
+      },
+      {
+        "image": "grottosword.png",
+        "name": "Arboreal Blade"
+      },
+      {
+        "image": "broadsword.png",
+        "name": "Gladius"
+      },
+      {
+        "image": "longsword.png",
+        "name": "Arming Sword"
+      },
+      {
+        "image": "shortsword.png",
+        "name": "Squire Sword"
+      }
+    ],
+    "staff": [
+      {
+        "image": "spacestaff.png",
+        "name": "Space Staff"
+      },
+      {
+        "image": "t16staff.png",
+        "name": "Fragment of Apocal"
+      },
+      {
+        "image": "magicalgirlstaff.png",
+        "name": "Pure Heart Rod"
+      },
+      {
+        "image": "kingstaff.png",
+        "name": "Royal Authority"
+      },
+      {
+        "image": "paintstaff.png",
+        "name": "The Pain Brush"
+      },
+      {
+        "image": "t15staff.png",
+        "name": "Arcane Vane"
+      },
+      {
+        "image": "faestaff.png",
+        "name": "Herald of Feykind"
+      },
+      {
+        "image": "gatormaidstaff.png",
+        "name": "Mother of Pearls"
+      },
+      {
+        "image": "t14staff.png",
+        "name": "Ebbstone Channeler"
+      },
+      {
+        "image": "platinumstaff.png",
+        "name": "Platinum Scepter"
+      },
+      {
+        "image": "yulestaff.png",
+        "name": "Yule's Herald"
+      },
+      {
+        "image": "collectionstaff.png",
+        "name": "Scepter of Ever-Wisdom"
+      },
+      {
+        "image": "riftstaff.png",
+        "name": "Gravity Controller"
+      },
+      {
+        "image": "t13staff.png",
+        "name": "Cloud Nine"
+      },
+      {
+        "image": "anubisstaff.png",
+        "name": "Pharaoh's Ankh"
+      },
+      {
+        "image": "hemmadonstaff.png",
+        "name": "Soulbinder Staff"
+      },
+      {
+        "image": "goldstaff2.png",
+        "name": "Opulent Staff"
+      },
+      {
+        "image": "t12staff.png",
+        "name": "Scepter of Xolimnul"
+      },
+      {
+        "image": "valentinestaff.png",
+        "name": "Heartcaptor's Staff"
+      },
+      {
+        "image": "yetistaff.png",
+        "name": "Ice Queen's Scepter"
+      },
+      {
+        "image": "penumbra.png",
+        "name": "Penumbra"
+      },
+      {
+        "image": "blackfridaystaff.png",
+        "name": "Ashland Invoker"
+      },
+      {
+        "image": "christmasstaff.png",
+        "name": "Staff of Merriment"
+      },
+      {
+        "image": "conflux.png",
+        "name": "Seraphim"
+      },
+      {
+        "image": "lemonstaff.png",
+        "name": "Zesty Scepter"
+      },
+      {
+        "image": "castlestaff.png",
+        "name": "Tidebringer"
+      },
+      {
+        "image": "transcendance.png",
+        "name": "Transcendence"
+      },
+      {
+        "image": "selfcarestaff.png",
+        "name": "The Backscratcher"
+      },
+      {
+        "image": "musicstaff.png",
+        "name": "Fluted Chime"
+      },
+      {
+        "image": "ruinsstaff.png",
+        "name": "Phoenix Staff"
+      },
+      {
+        "image": "imperialaquila.png",
+        "name": "Imperial Aquila"
+      },
+      {
+        "image": "lunarstaff.png",
+        "name": "Lanternlight Holder"
+      },
+      {
+        "image": "fallstaff.png",
+        "name": "Great Pagoda"
+      },
+      {
+        "image": "mundrastaff.png",
+        "name": "Mundra's Scepter"
+      },
+      {
+        "image": "celestialrod.png",
+        "name": "Celestial Staff"
+      },
+      {
+        "image": "spellbladestaff.png",
+        "name": "Elemental Dilettante"
+      },
+      {
+        "image": "bugstaff.png",
+        "name": "Bug Catcher's Net"
+      },
+      {
+        "image": "leafstaff.png",
+        "name": "Staff of Seasons"
+      },
+      {
+        "image": "wizardstaff.png",
+        "name": "Wizard Staff"
+      },
+      {
+        "image": "pizzastaff.png",
+        "name": "Pizzamancer's Paddle"
+      },
+      {
+        "image": "wiccanstaff.png",
+        "name": "Wiccan Broomstick"
+      },
+      {
+        "image": "swampstaff.png",
+        "name": "Amber Staff"
+      },
+      {
+        "image": "scepter.png",
+        "name": "Jade Scepter"
+      },
+      {
+        "image": "maladystaff.png",
+        "name": "Slithering Scepter"
+      },
+      {
+        "image": "starterstaff.png",
+        "name": "Apprentice Staff"
+      },
+      {
+        "image": "bo.png",
+        "name": "Bo Staff"
+      },
+      {
+        "image": "goldstaff.png",
+        "name": "Luxurious Stick"
+      },
+      {
+        "image": "lilustaff.png",
+        "name": "Owl Perch"
+      },
+      {
+        "image": "oakstaff.png",
+        "name": "Oak Staff"
+      },
+      {
+        "image": "cane.png",
+        "name": "Sturdy Cane"
+      },
+      {
+        "image": "woodbranch.png",
+        "name": "Carved Branch"
+      }
+    ],
+    "gun": [
+      {
+        "image": "t16gun.png",
+        "name": "Photon Phaser"
+      },
+      {
+        "image": "biomechgun.png",
+        "name": "Acidifier-X"
+      },
+      {
+        "image": "kinggun.png",
+        "name": "Royal Handcannon"
+      },
+      {
+        "image": "gb_gun.png",
+        "name": "Particle Thrower"
+      },
+      {
+        "image": "t15gun.png",
+        "name": "Divine Eliminator"
+      },
+      {
+        "image": "artifactgun.png",
+        "name": "Wyrmbane Cannon"
+      },
+      {
+        "image": "arcadegun2.png",
+        "name": "Mini Buster"
+      },
+      {
+        "image": "teslagun.png",
+        "name": "Tesla Prototype"
+      },
+      {
+        "image": "t14gun.png",
+        "name": "Pistil Pistol"
+      },
+      {
+        "image": "platinumgun.png",
+        "name": "Platinum Grenadier"
+      },
+      {
+        "image": "mechagun.png",
+        "name": "Particle Beam Rifle"
+      },
+      {
+        "image": "musicgun.png",
+        "name": "Sonic Trumpeteer"
+      },
+      {
+        "image": "t13gun.png",
+        "name": "Vainglory"
+      },
+      {
+        "image": "christmasgun.png",
+        "name": "Gift Wrap Rifle"
+      },
+      {
+        "image": "westerngun.png",
+        "name": "Hotshot Carbine"
+      },
+      {
+        "image": "t12gun.png",
+        "name": "Blackbeard's Cannon"
+      },
+      {
+        "image": "doggun.png",
+        "name": "Dogbone Blaster"
+      },
+      {
+        "image": "goldgun.png",
+        "name": "Opulent Pistol"
+      },
+      {
+        "image": "disintegratorgun.png",
+        "name": "Omega Disintegrator"
+      },
+      {
+        "image": "lunargun.png",
+        "name": "Oxen Impact"
+      },
+      {
+        "image": "hermes.png",
+        "name": "The Messenger"
+      },
+      {
+        "image": "barrelgun.png",
+        "name": "Handcask '65"
+      },
+      {
+        "image": "dragonator.png",
+        "name": "Dragonator"
+      },
+      {
+        "image": "dieselpunkgun.png",
+        "name": "Rusty Shotty"
+      },
+      {
+        "image": "gatling.png",
+        "name": "Prototype Gatling"
+      },
+      {
+        "image": "gothicgun.png",
+        "name": "Darkenbuss"
+      },
+      {
+        "image": "kenora.png",
+        "name": "Kenora Mk. IV"
+      },
+      {
+        "image": "arcadegun.png",
+        "name": "Pellet Popper"
+      },
+      {
+        "image": "fruitgun.png",
+        "name": "Banana Gun"
+      },
+      {
+        "image": "doublebarrel.png",
+        "name": "Boomstick"
+      },
+      {
+        "image": "blunderbuss.png",
+        "name": "Blunderbuss"
+      },
+      {
+        "image": "wintergun.png",
+        "name": "Snowball Launcher"
+      },
+      {
+        "image": "huntingrifle.png",
+        "name": "Long Rifle"
+      },
+      {
+        "image": "flintlockrifle.png",
+        "name": "Smoothbore"
+      },
+      {
+        "image": "pistol.png",
+        "name": "Handgun"
+      },
+      {
+        "image": "flintlockpistol.png",
+        "name": "Pellet Gun"
+      }
+    ],
+    "crossbow": [
+      {
+        "image": "t16crossbow.png",
+        "name": "Supernova Launcher"
+      },
+      {
+        "image": "platinumcrossbow.png",
+        "name": "Platinum Crossbow"
+      },
+      {
+        "image": "dinocrossbow.png",
+        "name": "Dinosaur Hunter"
+      },
+      {
+        "image": "t15crossbow.png",
+        "name": "Seventh Wonder"
+      },
+      {
+        "image": "thiefcrossbow.png",
+        "name": "Ironclad Grapple"
+      },
+      {
+        "image": "t14crossbow.png",
+        "name": "The Watcher"
+      },
+      {
+        "image": "dreamcrossbow.png",
+        "name": "Somnus Boltcaster"
+      },
+      {
+        "image": "t13crossbow.png",
+        "name": "Primarosa"
+      },
+      {
+        "image": "airshipcrossbow.png",
+        "name": "Baross' Backup"
+      },
+      {
+        "image": "t12crossbow.png",
+        "name": "Godslayer Arbalest"
+      },
+      {
+        "image": "titancrossbow.png",
+        "name": "Titan Crossbow"
+      },
+      {
+        "image": "goldcrossbow.png",
+        "name": "Opulent Crossbow"
+      },
+      {
+        "image": "wyrmthrower.png",
+        "name": "Leviathan"
+      },
+      {
+        "image": "batcrossbow.png",
+        "name": "Nightwing Caster"
+      },
+      {
+        "image": "handballista.png",
+        "name": "Super Repeater"
+      },
+      {
+        "image": "triplecrossbow.png",
+        "name": "Triple Crossbow"
+      },
+      {
+        "image": "dragoncrossbow.png",
+        "name": "Dra-Ko-Nu"
+      },
+      {
+        "image": "chukonu.png",
+        "name": "Chu-Ko-Nu"
+      },
+      {
+        "image": "doublecrossbow.png",
+        "name": "Double Crossbow"
+      },
+      {
+        "image": "troblincrossbow.png",
+        "name": "Primitech Slingshot"
+      },
+      {
+        "image": "scorpion.png",
+        "name": "Scorpio"
+      },
+      {
+        "image": "huntercrossbow.png",
+        "name": "Hunter's Crossbow"
+      },
+      {
+        "image": "thanksgivingcrossbow.png",
+        "name": "Cluckthrower"
+      },
+      {
+        "image": "heavycrossbow.png",
+        "name": "Heavy Crossbow"
+      },
+      {
+        "image": "crossbow.png",
+        "name": "Arbalest"
+      },
+      {
+        "image": "handcrossbow.png",
+        "name": "Hand Crossbow"
+      },
+      {
+        "image": "lightcrossbow.png",
+        "name": "Light Crossbow"
+      }
+    ],
+    "dagger": [
+      {
+        "image": "spacedagger.png",
+        "name": "Cloudcarver"
+      },
+      {
+        "image": "t16dagger.png",
+        "name": "Omnicarver"
+      },
+      {
+        "image": "platinumdagger.png",
+        "name": "Platinum Katar"
+      },
+      {
+        "image": "dinodagger.png",
+        "name": "Drakalos Dagger"
+      },
+      {
+        "image": "airdagger.png",
+        "name": "Windsworn"
+      },
+      {
+        "image": "t15dagger.png",
+        "name": "Ghost Reaver"
+      },
+      {
+        "image": "metaldagger.png",
+        "name": "Electrifying Microphone"
+      },
+      {
+        "image": "pizzadagger.png",
+        "name": "Pizza Cutter"
+      },
+      {
+        "image": "piratedagger.png",
+        "name": "Kraken Shank"
+      },
+      {
+        "image": "t14dagger.png",
+        "name": "Mantis Sickle"
+      },
+      {
+        "image": "voiddagger.png",
+        "name": "Creature's Claw"
+      },
+      {
+        "image": "vampiredagger.png",
+        "name": "The Final Death"
+      },
+      {
+        "image": "harpydagger.png",
+        "name": "Serial Quiller"
+      },
+      {
+        "image": "campingdagger.png",
+        "name": "Ranger's Multitool"
+      },
+      {
+        "image": "t13dagger.png",
+        "name": "Nocturne"
+      },
+      {
+        "image": "lunardagger2.png",
+        "name": "Empress War Fan"
+      },
+      {
+        "image": "mushroomdagger.png",
+        "name": "Celesteel Knuckles"
+      },
+      {
+        "image": "golddagger2.png",
+        "name": "Opulent Tecpatl"
+      },
+      {
+        "image": "t12dagger.png",
+        "name": "Sixth Sin"
+      },
+      {
+        "image": "wiccandagger.png",
+        "name": "Wiccan Dagger"
+      },
+      {
+        "image": "atlab_kyoshifan.png",
+        "name": "Kyoshi Warrior Fan"
+      },
+      {
+        "image": "halloweendagger.png",
+        "name": "Nightwing Bolt"
+      },
+      {
+        "image": "peakdagger.png",
+        "name": "Last Breath"
+      },
+      {
+        "image": "heartseeker.png",
+        "name": "Heartseeker"
+      },
+      {
+        "image": "stpatrickdagger.png",
+        "name": "Lucky Strike"
+      },
+      {
+        "image": "siadagger.png",
+        "name": "Swan's Edge"
+      },
+      {
+        "image": "templedagger.png",
+        "name": "Nightmare Fellblade"
+      },
+      {
+        "image": "katar.png",
+        "name": "Ceremonial Katar"
+      },
+      {
+        "image": "golddagger.png",
+        "name": "Luxurious Poignard"
+      },
+      {
+        "image": "sultandagger.png",
+        "name": "Sultan Dagger"
+      },
+      {
+        "image": "misericordia.png",
+        "name": "Misericordia"
+      },
+      {
+        "image": "christmasdagger.png",
+        "name": "Cookie Katar"
+      },
+      {
+        "image": "ruinsdagger.png",
+        "name": "Levia Fang"
+      },
+      {
+        "image": "trolltooth.png",
+        "name": "Troll Tooth"
+      },
+      {
+        "image": "pendagger.png",
+        "name": "Fountain Pen"
+      },
+      {
+        "image": "junimaydagger.png",
+        "name": "Juniper's Trowel"
+      },
+      {
+        "image": "guttingknife.png",
+        "name": "Fishmonger"
+      },
+      {
+        "image": "jumanji_dagger.png",
+        "name": "Bravestone's Knife"
+      },
+      {
+        "image": "beachdagger.png",
+        "name": "Iced FlavorPop"
+      },
+      {
+        "image": "lunardagger.png",
+        "name": "Cloudwalker Chakram"
+      },
+      {
+        "image": "dirk.png",
+        "name": "Kingsguard"
+      },
+      {
+        "image": "yamidagger.png",
+        "name": "Assassin Tanto"
+      },
+      {
+        "image": "atlab_boomerang.png",
+        "name": "Sokka's Boomerang"
+      },
+      {
+        "image": "kris.png",
+        "name": "Ritual Dagger"
+      },
+      {
+        "image": "schooldagger2020.png",
+        "name": "Erudite Vector"
+      },
+      {
+        "image": "butterflyknife.png",
+        "name": "Balisong"
+      },
+      {
+        "image": "prismadagger.png",
+        "name": "Imbued Dagger"
+      },
+      {
+        "image": "switchblade.png",
+        "name": "Stealth Knife"
+      },
+      {
+        "image": "kunai.png",
+        "name": "Kunai"
+      },
+      {
+        "image": "dagger.png",
+        "name": "Swift Blade"
+      },
+      {
+        "image": "forestdagger.png",
+        "name": "Ice Pick"
+      },
+      {
+        "image": "kitchenknife.png",
+        "name": "Shiv"
+      }
+    ],
+    "mace": [
+      {
+        "image": "t16mace.png",
+        "name": "Megaton Assimilator"
+      },
+      {
+        "image": "lunarmace.png",
+        "name": "Gilded Horsepower"
+      },
+      {
+        "image": "dragonmace.png",
+        "name": "Four Wyrms Mace"
+      },
+      {
+        "image": "jurassicmace.png",
+        "name": "Hot Coconaught"
+      },
+      {
+        "image": "t15mace.png",
+        "name": "The Coconaught"
+      },
+      {
+        "image": "artifactmace.png",
+        "name": "Backfire Hammer"
+      },
+      {
+        "image": "valentinemace.png",
+        "name": "Heart Thumper"
+      },
+      {
+        "image": "kingmace.png",
+        "name": "Lordly Scepter"
+      },
+      {
+        "image": "gothicmace.png",
+        "name": "Forsaken Censer"
+      },
+      {
+        "image": "t14mace.png",
+        "name": "Ogre Lord Club"
+      },
+      {
+        "image": "tamasmace.png",
+        "name": "Leathermaster's Mallet"
+      },
+      {
+        "image": "cybermace.png",
+        "name": "The M.A.U.L."
+      },
+      {
+        "image": "platinummace.png",
+        "name": "Platinum Maul"
+      },
+      {
+        "image": "musicmace.png",
+        "name": "Smash Hit"
+      },
+      {
+        "image": "t13mace.png",
+        "name": "Crag Guardian"
+      },
+      {
+        "image": "christmasmace.png",
+        "name": "Merry Christmace"
+      },
+      {
+        "image": "eastermace.png",
+        "name": "Eggshell Smasher"
+      },
+      {
+        "image": "t12mace.png",
+        "name": "Mjölnir"
+      },
+      {
+        "image": "atlab_mace.png",
+        "name": "Sokka's Club"
+      },
+      {
+        "image": "naturehammer.png",
+        "name": "Gaia Maul"
+      },
+      {
+        "image": "peakhammer.png",
+        "name": "Sunglow Impact"
+      },
+      {
+        "image": "emeraldhammer.png",
+        "name": "Thorium Hammer"
+      },
+      {
+        "image": "retromace.png",
+        "name": "Plumber's Hammer"
+      },
+      {
+        "image": "mundrahammer.png",
+        "name": "Mundra's Masher"
+      },
+      {
+        "image": "goldhammer.png",
+        "name": "Opulent Maul"
+      },
+      {
+        "image": "nautilus.png",
+        "name": "Nautilus"
+      },
+      {
+        "image": "communitymace.png",
+        "name": "Tower of Thorns"
+      },
+      {
+        "image": "freedommace.png",
+        "name": "Striped Star"
+      },
+      {
+        "image": "smithhammer.png",
+        "name": "Wallace Mallet"
+      },
+      {
+        "image": "tenderizer.png",
+        "name": "Tenderizer"
+      },
+      {
+        "image": "jumanji_mace.png",
+        "name": "Mouse's Torch"
+      },
+      {
+        "image": "candyhammer.png",
+        "name": "Peppermint Mallet"
+      },
+      {
+        "image": "pumpkinmace.png",
+        "name": "Whack-O'-Lantern"
+      },
+      {
+        "image": "powderkeg.png",
+        "name": "Powder Keg"
+      },
+      {
+        "image": "arcademace.png",
+        "name": "Button Masher"
+      },
+      {
+        "image": "pyramidmace.png",
+        "name": "Meteor Hammer"
+      },
+      {
+        "image": "midnightstar.png",
+        "name": "Evening Star"
+      },
+      {
+        "image": "shoprmace.png",
+        "name": "Titan Scepter"
+      },
+      {
+        "image": "troblinmace.png",
+        "name": "Troublin Bludgeon"
+      },
+      {
+        "image": "ancienthammer.png",
+        "name": "Skull Crusher"
+      },
+      {
+        "image": "halloweenmace.png",
+        "name": "The Dead Weight"
+      },
+      {
+        "image": "newyearmace.png",
+        "name": "First Morning Star"
+      },
+      {
+        "image": "heavymace.png",
+        "name": "Flanged Mace"
+      },
+      {
+        "image": "summermace.png",
+        "name": "Inflatable Maul"
+      },
+      {
+        "image": "morningstar.png",
+        "name": "Morning Star"
+      },
+      {
+        "image": "libertymace.png",
+        "name": "Liberty Mace"
+      },
+      {
+        "image": "hammer.png",
+        "name": "Warhammer"
+      },
+      {
+        "image": "forestmace.png",
+        "name": "Darkwood Branch"
+      },
+      {
+        "image": "spikedclub.png",
+        "name": "Spiked Cudgel"
+      },
+      {
+        "image": "club.png",
+        "name": "Cudgel"
+      }
+    ],
+    "spear": [
+      {
+        "image": "mundraspear.png",
+        "name": "Mundra's Crystal Spear"
+      },
+      {
+        "image": "t16spear.png",
+        "name": "Paradox Entity"
+      },
+      {
+        "image": "cardboardspear.png",
+        "name": "Papertape Poker"
+      },
+      {
+        "image": "platinumspear.png",
+        "name": "Platinum Lance"
+      },
+      {
+        "image": "lightdarkspear.png",
+        "name": "Twilight Brionac"
+      },
+      {
+        "image": "t15spear.png",
+        "name": "Blossomblade"
+      },
+      {
+        "image": "newyearspear2.png",
+        "name": "Blaze of Glory"
+      },
+      {
+        "image": "lightspear.png",
+        "name": "One-Winged Halberd"
+      },
+      {
+        "image": "t14spear.png",
+        "name": "Neptune's Authority"
+      },
+      {
+        "image": "lunarspear.png",
+        "name": "Tianlong Lance"
+      },
+      {
+        "image": "inuitspear.png",
+        "name": "Dire Kakivak"
+      },
+      {
+        "image": "riftspear.png",
+        "name": "Riptide"
+      },
+      {
+        "image": "t13spear.png",
+        "name": "Blackened Bardiche"
+      },
+      {
+        "image": "goldspear2.png",
+        "name": "Opulent Halberd"
+      },
+      {
+        "image": "beachspear.png",
+        "name": "Pokey Parasol"
+      },
+      {
+        "image": "airshipspear.png",
+        "name": "Propeller-Pike"
+      },
+      {
+        "image": "t12spear.png",
+        "name": "Heaven's Wrath"
+      },
+      {
+        "image": "christmasspear.png",
+        "name": "Holy Night Lance"
+      },
+      {
+        "image": "circusspear.png",
+        "name": "Jester Jouster"
+      },
+      {
+        "image": "feyspear.png",
+        "name": "Titania's Gift"
+      },
+      {
+        "image": "metalspear.png",
+        "name": "Scream Amplifier"
+      },
+      {
+        "image": "thanksgivingspear.png",
+        "name": "Birdbane Halberd"
+      },
+      {
+        "image": "templespear.png",
+        "name": "Longinus"
+      },
+      {
+        "image": "stellarspear.png",
+        "name": "Stellaria"
+      },
+      {
+        "image": "faespear.png",
+        "name": "Glade Lance"
+      },
+      {
+        "image": "communityspear.png",
+        "name": "Blackthorn Razor"
+      },
+      {
+        "image": "goldspear.png",
+        "name": "Luxurious Spear"
+      },
+      {
+        "image": "sylvanspear.png",
+        "name": "Hoartooth Lance"
+      },
+      {
+        "image": "wyvernglaive.png",
+        "name": "Wyvern Glaive"
+      },
+      {
+        "image": "olympicspear.png",
+        "name": "Olympian Javelin"
+      },
+      {
+        "image": "newyearspear.png",
+        "name": "Star Lancer"
+      },
+      {
+        "image": "fallspear.png",
+        "name": "Sunset Yari"
+      },
+      {
+        "image": "championlance.png",
+        "name": "Champion Lance"
+      },
+      {
+        "image": "fairytalespear.png",
+        "name": "Slumberthorn Curse"
+      },
+      {
+        "image": "africanspear.png",
+        "name": "Warrior Assegai"
+      },
+      {
+        "image": "yetispear.png",
+        "name": "Twicicle Javelin"
+      },
+      {
+        "image": "lunarspear2.png",
+        "name": "Fangtian Huaji"
+      },
+      {
+        "image": "partisan.png",
+        "name": "Royal Halberd"
+      },
+      {
+        "image": "celticspear.png",
+        "name": "Cu Chulainn's Lance"
+      },
+      {
+        "image": "desertspear.png",
+        "name": "Triton Lance"
+      },
+      {
+        "image": "pike.png",
+        "name": "Spetum"
+      },
+      {
+        "image": "heavenlyhalberd.png",
+        "name": "Warlord Halberd"
+      },
+      {
+        "image": "easterspear.png",
+        "name": "Bunbun Lance"
+      },
+      {
+        "image": "trident.png",
+        "name": "Trishula"
+      },
+      {
+        "image": "ranseur.png",
+        "name": "Ranseur"
+      },
+      {
+        "image": "pitchfork.png",
+        "name": "Sturdy Pitchfork"
+      },
+      {
+        "image": "bladedspear.png",
+        "name": "Bladed Spear"
+      },
+      {
+        "image": "ironspear.png",
+        "name": "Hunting Spear"
+      },
+      {
+        "image": "woodspear.png",
+        "name": "Javelin"
+      }
+    ],
+    "wand": [
+      {
+        "image": "t16wand.png",
+        "name": "NEO Unknown"
+      },
+      {
+        "image": "porcelainwand.png",
+        "name": "Rod of Porcelain"
+      },
+      {
+        "image": "lightdarkwand.png",
+        "name": "Eclipsed Wand"
+      },
+      {
+        "image": "t15wand.png",
+        "name": "La Rose"
+      },
+      {
+        "image": "liluwand2.png",
+        "name": "Pollux Focus"
+      },
+      {
+        "image": "platinumwand.png",
+        "name": "Platinum Wand"
+      },
+      {
+        "image": "t14wand.png",
+        "name": "Widowmaker's Invoker"
+      },
+      {
+        "image": "greekwand.png",
+        "name": "Caduceus"
+      },
+      {
+        "image": "gothitawand.png",
+        "name": "Lampcaster"
+      },
+      {
+        "image": "t13wand.png",
+        "name": "Pyroquartz Rod"
+      },
+      {
+        "image": "maplewand.png",
+        "name": "Fork of Roasting"
+      },
+      {
+        "image": "chesswand.png",
+        "name": "Ivory Queen Rod"
+      },
+      {
+        "image": "t12wand.png",
+        "name": "Herald of the End"
+      },
+      {
+        "image": "sailorwand.png",
+        "name": "Moonlight Wand"
+      },
+      {
+        "image": "lcogwand.png",
+        "name": "Opulent Wand"
+      },
+      {
+        "image": "dragoneye.png",
+        "name": "Draconic Eyestalk"
+      },
+      {
+        "image": "wizardwand.png",
+        "name": "Grimar's Grand Wand"
+      },
+      {
+        "image": "moonwand.png",
+        "name": "Astral Conductor"
+      },
+      {
+        "image": "fallwand.png",
+        "name": "Equinox Rod"
+      },
+      {
+        "image": "flowerwand.png",
+        "name": "Evergreen Wand"
+      },
+      {
+        "image": "magicwand2.png",
+        "name": "The Original"
+      },
+      {
+        "image": "goldwand.png",
+        "name": "Wand of Midas"
+      },
+      {
+        "image": "liluwand.png",
+        "name": "Owl Wing Wand"
+      },
+      {
+        "image": "rubyrod.png",
+        "name": "Ruby Wand"
+      },
+      {
+        "image": "fallwand2.png",
+        "name": "Chōchin Gohei"
+      },
+      {
+        "image": "sylvan.png",
+        "name": "Sylvanel"
+      },
+      {
+        "image": "christmaswand.png",
+        "name": "Peppermint Cane"
+      },
+      {
+        "image": "starrod.png",
+        "name": "Star Rod"
+      },
+      {
+        "image": "steelrod.png",
+        "name": "Steel Rod"
+      },
+      {
+        "image": "backscratcher.png",
+        "name": "Hexer's Wand"
+      },
+      {
+        "image": "twirled.png",
+        "name": "Elvenwood Wand"
+      },
+      {
+        "image": "baton.png",
+        "name": "Baton"
+      }
+    ]
+  },
+  "stones": {
+    "moonstone": [
+      {
+        "image": "suprememoon.png",
+        "name": "Supreme Moonstone"
+      },
+      {
+        "image": "perfectmoon.png",
+        "name": "Perfect Moonstone"
+      },
+      {
+        "image": "greatermoon.png",
+        "name": "Greater Moonstone"
+      },
+      {
+        "image": "flawedmoon.png",
+        "name": "Superior Moonstone"
+      },
+      {
+        "image": "lessermoon.png",
+        "name": "Lesser Moonstone"
+      }
+    ],
+    "runestone": [
+      {
+        "image": "icon_global_item_rune.png",
+        "name": "Supreme Runestone"
+      },
+      {
+        "image": "icon_global_item_rune.png",
+        "name": "Perfect Runestone"
+      },
+      {
+        "image": "icon_global_item_rune.png",
+        "name": "Chiseled Runestone"
+      },
+      {
+        "image": "icon_global_item_rune.png",
+        "name": "Flawed Runestone"
+      },
+      {
+        "image": "icon_global_item_rune.png",
+        "name": "Chipped Runestone"
+      },
+      {
+        "image": "icon_global_resource_herbs.png",
+        "name": "Herbs"
+      },
+      {
+        "image": "icon_global_resource_oils.png",
+        "name": "Oil"
+      },
+      {
+        "image": "icon_global_resource_mana.png",
+        "name": "Ether"
+      },
+      {
+        "image": "demigodpinion.png",
+        "name": "Demigod Pinion"
+      },
+      {
+        "image": "obsidian.png",
+        "name": "Raw Obsidian"
+      },
+      {
+        "image": "chipped.png",
+        "name": "Chipped Runestone"
+      },
+      {
+        "image": "ectoplasm.png",
+        "name": "Spooky Ectoplasm"
+      },
+      {
+        "image": "starmetal.png",
+        "name": "Star Metal"
+      },
+      {
+        "image": "webbedwings.png",
+        "name": "Webbed Wing"
+      }
+    ]
+  },
+  "armor": {
+    "gloves": [
+      {
+        "image": "spacegloves.png",
+        "name": "Hands of Purpose"
+      },
+      {
+        "image": "t16gloves.png",
+        "name": "Voyager Dexteroses"
+      },
+      {
+        "image": "pumpkingloves.png",
+        "name": "Hallowitch Gloves"
+      },
+      {
+        "image": "shoprgloves.png",
+        "name": "Titan Admiral Gloves"
+      },
+      {
+        "image": "t15gloves.png",
+        "name": "Chrysalid Gloves"
+      },
+      {
+        "image": "lunargloves2.png",
+        "name": "Betrayer's Hands"
+      },
+      {
+        "image": "fireicegloves.png",
+        "name": "Frostfire Weavers"
+      },
+      {
+        "image": "platinumgloves.png",
+        "name": "Platinum Gloves"
+      },
+      {
+        "image": "varsitygloves.png",
+        "name": "Lacrosse Gloves"
+      },
+      {
+        "image": "t14gloves.png",
+        "name": "Soothsayer's Hands"
+      },
+      {
+        "image": "magicalgirlgloves.png",
+        "name": "Pure Heart Gloves"
+      },
+      {
+        "image": "campinggloves.png",
+        "name": "Camper's Compass"
+      },
+      {
+        "image": "t13gloves.png",
+        "name": "Wildhunt Gloves"
+      },
+      {
+        "image": "musketeergloves.png",
+        "name": "Gants d'Artagnan"
+      },
+      {
+        "image": "cincogloves.png",
+        "name": "Gloves of Rhythm"
+      },
+      {
+        "image": "volcanogloves.png",
+        "name": "Swindler's Fingers"
+      },
+      {
+        "image": "t12gloves.png",
+        "name": "Dawn Thief's Touch"
+      },
+      {
+        "image": "halloweengloves.png",
+        "name": "Nightwing Vambraces"
+      },
+      {
+        "image": "birdgloves.png",
+        "name": "Raptor Wings"
+      },
+      {
+        "image": "jackalopegloves.png",
+        "name": "Everdusk Gloves"
+      },
+      {
+        "image": "goldgloves.png",
+        "name": "Opulent Grasp"
+      },
+      {
+        "image": "yamigloves.png",
+        "name": "Yami's Gloves"
+      },
+      {
+        "image": "vipgloves.png",
+        "name": "Fortunate Gloves"
+      },
+      {
+        "image": "captaingloves.png",
+        "name": "Corsair Gloves"
+      },
+      {
+        "image": "werewolfgloves.png",
+        "name": "Werewolf Claws"
+      },
+      {
+        "image": "pirategloves.png",
+        "name": "Boatswain's Glove"
+      },
+      {
+        "image": "oktobergloves.png",
+        "name": "Mountain Man Mitts"
+      },
+      {
+        "image": "dragongloves.png",
+        "name": "Drakeskin Gloves"
+      },
+      {
+        "image": "magicgloves.png",
+        "name": "Hands of Sleight"
+      },
+      {
+        "image": "blossomgloves.png",
+        "name": "Sakura Cuffs"
+      },
+      {
+        "image": "windrunnergloves.png",
+        "name": "Windrunner Gloves"
+      },
+      {
+        "image": "gothitagloves.png",
+        "name": "Gothita Glovelettes"
+      },
+      {
+        "image": "catgloves.png",
+        "name": "Cat Burglar Claws"
+      },
+      {
+        "image": "ninjagloves.png",
+        "name": "Ninja Gloves"
+      },
+      {
+        "image": "desertgloves.png",
+        "name": "Black Wyrm Claws"
+      },
+      {
+        "image": "newyeargloves.png",
+        "name": "Starlight Fingers"
+      },
+      {
+        "image": "savagegloves.png",
+        "name": "Savage Claws"
+      },
+      {
+        "image": "siagloves.png",
+        "name": "Sia's Gloves"
+      },
+      {
+        "image": "eastergloves2020.png",
+        "name": "Ostara Gloves"
+      },
+      {
+        "image": "vambraces.png",
+        "name": "Elven Vambraces"
+      },
+      {
+        "image": "lunargloves.png",
+        "name": "Regal Bangles"
+      },
+      {
+        "image": "studdedleathergloves.png",
+        "name": "Studded Gloves"
+      },
+      {
+        "image": "patchworkgloves.png",
+        "name": "Patchleather Bracers"
+      },
+      {
+        "image": "grottogloves.png",
+        "name": "Swift Mitts"
+      },
+      {
+        "image": "thiefgloves.png",
+        "name": "Thief's Gloves"
+      },
+      {
+        "image": "bracers.png",
+        "name": "Bracers"
+      },
+      {
+        "image": "leathergloves.png",
+        "name": "Leather Gloves"
+      }
+    ],
+    "light_armor": [
+      {
+        "image": "t16mediumarmor.png",
+        "name": "Voyager Biosuit"
+      },
+      {
+        "image": "gb_robe.png",
+        "name": "Ghostbusters Suit"
+      },
+      {
+        "image": "porcelainmediumarmor.png",
+        "name": "Kintsugi Armor"
+      },
+      {
+        "image": "platinummediumarmor.png",
+        "name": "Platinum Gambeson"
+      },
+      {
+        "image": "arabianmediumarmor.png",
+        "name": "Princely Attire"
+      },
+      {
+        "image": "siamediumarmor.png",
+        "name": "Sia's Fancy Outfit"
+      },
+      {
+        "image": "t15mediumarmor.png",
+        "name": "Chrysalid Silks"
+      },
+      {
+        "image": "lunarmediumarmor.png",
+        "name": "Serpent Vestment"
+      },
+      {
+        "image": "varsitymediumarmor.png",
+        "name": "Lacrosse Set"
+      },
+      {
+        "image": "shoprmediumarmor.png",
+        "name": "Titan Admiral Coat"
+      },
+      {
+        "image": "t14mediumarmor.png",
+        "name": "Soothsayer's Garbs"
+      },
+      {
+        "image": "tamasmediumarmor.png",
+        "name": "Leathermaster's Apron"
+      },
+      {
+        "image": "boarmediumarmor.png",
+        "name": "Wayfinder's Outfit"
+      },
+      {
+        "image": "dreammediumarmor.png",
+        "name": "Garbs of Morpheus"
+      },
+      {
+        "image": "t13mediumarmor.png",
+        "name": "Wildhunt Leathers"
+      },
+      {
+        "image": "westernarmor.png",
+        "name": "Desperado Outfit"
+      },
+      {
+        "image": "cincomedarmor.png",
+        "name": "Stylish Poncho"
+      },
+      {
+        "image": "volcanomedarmor.png",
+        "name": "Shroud of the Lost"
+      },
+      {
+        "image": "t12mediumarmor.png",
+        "name": "Dawn Thief Uniform"
+      },
+      {
+        "image": "catarmor.png",
+        "name": "Cat Burglar Outfit"
+      },
+      {
+        "image": "troblinarmor.png",
+        "name": "Barkback's Armor"
+      },
+      {
+        "image": "goldroguearmor.png",
+        "name": "Opulent Armor"
+      },
+      {
+        "image": "jackalopearmor.png",
+        "name": "Everdusk Lord Attire"
+      },
+      {
+        "image": "lunarmedarmor.png",
+        "name": "Cloudwalker Armor"
+      },
+      {
+        "image": "siaarmor.png",
+        "name": "Swan's Garment"
+      },
+      {
+        "image": "captainarmor.png",
+        "name": "Corsair Mantle"
+      },
+      {
+        "image": "kingmediumarmor.png",
+        "name": "Royal Attire"
+      },
+      {
+        "image": "smithapron.png",
+        "name": "Smith Attire"
+      },
+      {
+        "image": "dragonarmor.png",
+        "name": "Drakeskin Armor"
+      },
+      {
+        "image": "jestermediumarmor.png",
+        "name": "Jester Outfit"
+      },
+      {
+        "image": "atlab_armor.png",
+        "name": "Sokka's Outfit"
+      },
+      {
+        "image": "windrunnerarmor.png",
+        "name": "Windrunner Armor"
+      },
+      {
+        "image": "greekmediumarmor.png",
+        "name": "Golden Fleece"
+      },
+      {
+        "image": "batarmor.png",
+        "name": "Nightwing Mantle"
+      },
+      {
+        "image": "ninjagarb.png",
+        "name": "Ninja Garb"
+      },
+      {
+        "image": "pumpkinarmor.png",
+        "name": "Pumpkin Armor"
+      },
+      {
+        "image": "desertmediumarmor.png",
+        "name": "Glade Guard Armor"
+      },
+      {
+        "image": "savagearmor.png",
+        "name": "Savage Garb"
+      },
+      {
+        "image": "airshiparmor.png",
+        "name": "Sky Pirate Outfit"
+      },
+      {
+        "image": "mundraarmor.png",
+        "name": "Mundra's Tabard"
+      },
+      {
+        "image": "hide.png",
+        "name": "Hide Armor"
+      },
+      {
+        "image": "winterarmor.png",
+        "name": "Blizzard Armor"
+      },
+      {
+        "image": "studded.png",
+        "name": "Studded Armor"
+      },
+      {
+        "image": "doublet.png",
+        "name": "Doublet"
+      },
+      {
+        "image": "padded.png",
+        "name": "Gambeson"
+      },
+      {
+        "image": "leatherarmor.png",
+        "name": "Leather Armor"
+      }
+    ],
+    "gauntlets": [
+      {
+        "image": "t16gauntlets.png",
+        "name": "Darkmatter Shells"
+      },
+      {
+        "image": "jumanji_gauntlets.png",
+        "name": "Stone Jaguar Gauntlets"
+      },
+      {
+        "image": "biomechgauntlets.png",
+        "name": "Xenotype Forelimbs"
+      },
+      {
+        "image": "darkgauntlets.png",
+        "name": "Cursed King's Might"
+      },
+      {
+        "image": "dieselpunkgauntlets.png",
+        "name": "Pneumatic Gauntlets"
+      },
+      {
+        "image": "t15gauntlets.png",
+        "name": "Behemoth Claws"
+      },
+      {
+        "image": "shoprgauntlets.png",
+        "name": "Titan Gauntlets"
+      },
+      {
+        "image": "christmasgauntlets2.png",
+        "name": "Mighty Mint Mitts"
+      },
+      {
+        "image": "buggauntlets.png",
+        "name": "Chitinous Claws"
+      },
+      {
+        "image": "supergauntlets.png",
+        "name": "Eternity Gauntlets"
+      },
+      {
+        "image": "t14gauntlets.png",
+        "name": "Cobalt Gauntlets"
+      },
+      {
+        "image": "lunargauntlets.png",
+        "name": "Dragonfang Fists"
+      },
+      {
+        "image": "platinumgauntlets.png",
+        "name": "Platinum Gauntlets"
+      },
+      {
+        "image": "arcadegauntlets.png",
+        "name": "Power Gauntlet"
+      },
+      {
+        "image": "t13gauntlets.png",
+        "name": "Balefire Gauntlets"
+      },
+      {
+        "image": "darkknightgauntlets.png",
+        "name": "Tyrant Fists"
+      },
+      {
+        "image": "goldgauntlets2.png",
+        "name": "Opulent Dracofists"
+      },
+      {
+        "image": "mushroomgauntlets.png",
+        "name": "Goon's Facesmackers"
+      },
+      {
+        "image": "t12gauntlets.png",
+        "name": "Vermilion Guard Might"
+      },
+      {
+        "image": "aegirgauntlets.png",
+        "name": "Huscarl Gauntlets"
+      },
+      {
+        "image": "fallgauntlets.png",
+        "name": "Vanguard Gauntlets"
+      },
+      {
+        "image": "naturegauntlets.png",
+        "name": "Gaia's Hold"
+      },
+      {
+        "image": "celestialgauntlets.png",
+        "name": "Celesteel Gauntlets"
+      },
+      {
+        "image": "wintergauntlets.png",
+        "name": "Winter's Touch"
+      },
+      {
+        "image": "juggernautgauntlets.png",
+        "name": "Juggernaut Grip"
+      },
+      {
+        "image": "cyclopsgauntlets.png",
+        "name": "Lost Warrior's Gauntlets"
+      },
+      {
+        "image": "goldgauntlets.png",
+        "name": "Luxurious Gauntlets"
+      },
+      {
+        "image": "berserkergauntlets.png",
+        "name": "Berserker Gauntlets"
+      },
+      {
+        "image": "demigodgauntlets.png",
+        "name": "Hands of the Avatar"
+      },
+      {
+        "image": "generalgauntlets.png",
+        "name": "General Gauntlets"
+      },
+      {
+        "image": "fruitgauntlets.png",
+        "name": "Fruity Gauntlets"
+      },
+      {
+        "image": "indiadaygauntlets.png",
+        "name": "Republic Gauntlets"
+      },
+      {
+        "image": "kote.png",
+        "name": "Samurai Kote"
+      },
+      {
+        "image": "oktoberfestgauntlets.png",
+        "name": "Landsknecht Gauntlets"
+      },
+      {
+        "image": "desertgauntlets.png",
+        "name": "Sungrasp Gauntlets"
+      },
+      {
+        "image": "paladingauntlets.png",
+        "name": "Paladin Gauntlets"
+      },
+      {
+        "image": "cincogauntlets.png",
+        "name": "Hands of the Fifth"
+      },
+      {
+        "image": "plushiegauntlets.png",
+        "name": "Teddy Bear Paws"
+      },
+      {
+        "image": "christmasgauntlets.png",
+        "name": "Santa's Guard Gauntlets"
+      },
+      {
+        "image": "knightgauntlets.png",
+        "name": "Knight Gauntlets"
+      },
+      {
+        "image": "mechagauntlets.png",
+        "name": "CM-73 Manipulators"
+      },
+      {
+        "image": "pumpkingauntlets.png",
+        "name": "Pumpkin Gauntlets"
+      },
+      {
+        "image": "demigauntlets.png",
+        "name": "Demi Gauntlets"
+      },
+      {
+        "image": "gauntlets.png",
+        "name": "Warrior Gauntlets"
+      },
+      {
+        "image": "lightgauntlets.png",
+        "name": "Plated Gauntlets"
+      },
+      {
+        "image": "ironbracers.png",
+        "name": "Iron Armguards"
+      }
+    ],
+    "helmet": [
+      {
+        "image": "spacehelm.png",
+        "name": "Atlantean Deepdiver"
+      },
+      {
+        "image": "t16helm.png",
+        "name": "Darkmatter Cortex"
+      },
+      {
+        "image": "jumanji_helmet.png",
+        "name": "Stone Jaguar Head"
+      },
+      {
+        "image": "cyberpunkhelm.png",
+        "name": "BIT.Runner Visor"
+      },
+      {
+        "image": "darkhelm.png",
+        "name": "Cursed King's Helm"
+      },
+      {
+        "image": "plushiehelm.png",
+        "name": "Teddy Bear Head"
+      },
+      {
+        "image": "t15helm.png",
+        "name": "Behemoth Skull"
+      },
+      {
+        "image": "paladinhelm2.png",
+        "name": "Argon's Helm"
+      },
+      {
+        "image": "bughelm.png",
+        "name": "Hercules Horn"
+      },
+      {
+        "image": "mundrahelm.png",
+        "name": "Mundra's Skull"
+      },
+      {
+        "image": "elysiumhelm.png",
+        "name": "Heaume of Apotheosis"
+      },
+      {
+        "image": "t14helm.png",
+        "name": "Cobalt Commander"
+      },
+      {
+        "image": "voidhelm.png",
+        "name": "Creature's Chitin"
+      },
+      {
+        "image": "platinumhelm.png",
+        "name": "Platinum Helm"
+      },
+      {
+        "image": "mechahelm.png",
+        "name": "CM-73 Visor"
+      },
+      {
+        "image": "blossomhelm.png",
+        "name": "Taishōgun Kabuto"
+      },
+      {
+        "image": "t13helm.png",
+        "name": "Balefire Gaze"
+      },
+      {
+        "image": "pumpkinhelm.png",
+        "name": "Thorn Baron Helm"
+      },
+      {
+        "image": "chesshelm.png",
+        "name": "Onyx King Helm"
+      },
+      {
+        "image": "t12helm.png",
+        "name": "Vermilion Guard Helm"
+      },
+      {
+        "image": "biomechhelm.png",
+        "name": "Xenotype Visage"
+      },
+      {
+        "image": "valentinehelm.png",
+        "name": "Cupid's Heaume"
+      },
+      {
+        "image": "doghelm.png",
+        "name": "Canid Helmet"
+      },
+      {
+        "image": "celestialhelm.png",
+        "name": "Celesteel Heaume"
+      },
+      {
+        "image": "goldhelmet.png",
+        "name": "Opulent Heaume"
+      },
+      {
+        "image": "thanksgivinghelmet.png",
+        "name": "Gobble Lord Helm"
+      },
+      {
+        "image": "juggernauthelm.png",
+        "name": "Juggernaut Furnace"
+      },
+      {
+        "image": "centurionhelmet.png",
+        "name": "Centurion Helmet"
+      },
+      {
+        "image": "winterhelm.png",
+        "name": "Fimbulwinter Dome"
+      },
+      {
+        "image": "berserkerhelm.png",
+        "name": "Berserker Helmet"
+      },
+      {
+        "image": "lunarhelm2.png",
+        "name": "Dragon Skull"
+      },
+      {
+        "image": "lunarhelmet.png",
+        "name": "Warlord Helmet"
+      },
+      {
+        "image": "ruinshelm.png",
+        "name": "Crusader Helmet"
+      },
+      {
+        "image": "generalheaume.png",
+        "name": "General Heaume"
+      },
+      {
+        "image": "shoprhelm.png",
+        "name": "Titan Helm"
+      },
+      {
+        "image": "beachhelm.png",
+        "name": "Sandcastle Protector"
+      },
+      {
+        "image": "gladiatorhelm.png",
+        "name": "Gladiator Helm"
+      },
+      {
+        "image": "kabuto.png",
+        "name": "Samurai Kabuto"
+      },
+      {
+        "image": "darkknighthelm.png",
+        "name": "Crown of Tyranny"
+      },
+      {
+        "image": "atlab_firehelm.png",
+        "name": "Fire Nation Helm"
+      },
+      {
+        "image": "couplehelmet.png",
+        "name": "Kodiak Helmet"
+      },
+      {
+        "image": "paladinhelm.png",
+        "name": "Paladin Helm"
+      },
+      {
+        "image": "dinohelm.png",
+        "name": "Rex Chomper"
+      },
+      {
+        "image": "eaglecowl.png",
+        "name": "Eagle Helm"
+      },
+      {
+        "image": "swamphelm.png",
+        "name": "Brinewater Helm"
+      },
+      {
+        "image": "knighthelm.png",
+        "name": "Knight Heaume"
+      },
+      {
+        "image": "vikinghelm.png",
+        "name": "Raider Helm"
+      },
+      {
+        "image": "horned.png",
+        "name": "Horned Helm"
+      },
+      {
+        "image": "helmet.png",
+        "name": "Warrior Helmet"
+      },
+      {
+        "image": "ironcap.png",
+        "name": "Sturdy Cap"
+      }
+    ],
+    "clothes": [
+      {
+        "image": "t16robe.png",
+        "name": "Worldshaper Robe"
+      },
+      {
+        "image": "phoenixmagearmor.png",
+        "name": "Phoenix Feathers"
+      },
+      {
+        "image": "firemagerobe.png",
+        "name": "Pyromancer's Robe"
+      },
+      {
+        "image": "platinumrobe.png",
+        "name": "Platinum Robe"
+      },
+      {
+        "image": "maladyrobe.png",
+        "name": "Malady's Robe"
+      },
+      {
+        "image": "jurassicrobe.png",
+        "name": "Earthen Membrane"
+      },
+      {
+        "image": "t15robe.png",
+        "name": "Deepsea Mageskin"
+      },
+      {
+        "image": "faerobe.png",
+        "name": "Fey Haute Couture"
+      },
+      {
+        "image": "monkrobe.png",
+        "name": "Wave Abbot Gi"
+      },
+      {
+        "image": "chronorobe.png",
+        "name": "Chronomancer's Robes"
+      },
+      {
+        "image": "t14robe.png",
+        "name": "Archdruid Tunic"
+      },
+      {
+        "image": "newyearrobe.png",
+        "name": "Starlight Raiments"
+      },
+      {
+        "image": "gothitarobe.png",
+        "name": "Gothita Frock Coat"
+      },
+      {
+        "image": "officerobe.png",
+        "name": "Business Suit"
+      },
+      {
+        "image": "t13robe.png",
+        "name": "Voidminster Habit"
+      },
+      {
+        "image": "unicornrobe.png",
+        "name": "Ice Queen's Silks"
+      },
+      {
+        "image": "volcanorobe.png",
+        "name": "Garb of the Primordial"
+      },
+      {
+        "image": "goldrobe2.png",
+        "name": "Opulent Vestment"
+      },
+      {
+        "image": "hemmadonrobe.png",
+        "name": "Soulbinder Regalia"
+      },
+      {
+        "image": "t12robe.png",
+        "name": "Exarch Robes"
+      },
+      {
+        "image": "lunarrobe.png",
+        "name": "Tiger Emperor's Robe"
+      },
+      {
+        "image": "moonrobes.png",
+        "name": "Moonlight Kimono"
+      },
+      {
+        "image": "djinnrobes.png",
+        "name": "Djinn Robes"
+      },
+      {
+        "image": "spellbladerobe.png",
+        "name": "Elemental Supremacy"
+      },
+      {
+        "image": "indiadayarmor.png",
+        "name": "Republic Garments"
+      },
+      {
+        "image": "majesticraiments.png",
+        "name": "Archmage Raiments"
+      },
+      {
+        "image": "wonderlandrobe.png",
+        "name": "Valet Uniform"
+      },
+      {
+        "image": "arabiantunic.png",
+        "name": "Desert Threads"
+      },
+      {
+        "image": "easterarmor2020.png",
+        "name": "Ostara Vest"
+      },
+      {
+        "image": "astravestimenta.png",
+        "name": "Astravestimenta"
+      },
+      {
+        "image": "vampirerobe.png",
+        "name": "Blood Monarch Outfit"
+      },
+      {
+        "image": "goldvestments.png",
+        "name": "Luxurious Attire"
+      },
+      {
+        "image": "valentinerobe.png",
+        "name": "Cupid Robes"
+      },
+      {
+        "image": "shamanvestment.png",
+        "name": "Shaman Vestment"
+      },
+      {
+        "image": "voidrobe.png",
+        "name": "Void Enrobed"
+      },
+      {
+        "image": "atlab_robe.png",
+        "name": "Aang's Robe"
+      },
+      {
+        "image": "midnightapparel.png",
+        "name": "Midnight Apparel"
+      },
+      {
+        "image": "frogrobe.png",
+        "name": "Waterproof Lilyrobe"
+      },
+      {
+        "image": "wizardrobe.png",
+        "name": "Wizard Attire"
+      },
+      {
+        "image": "desertlightarmor.png",
+        "name": "Vestal Raiments"
+      },
+      {
+        "image": "witchrobe.png",
+        "name": "Witch's Outfit"
+      },
+      {
+        "image": "tailorarmor.png",
+        "name": "Tailor Mantle"
+      },
+      {
+        "image": "exploreroutfit.png",
+        "name": "Explorer's Outfit"
+      },
+      {
+        "image": "scholartunic.png",
+        "name": "Scholar's Tunic"
+      },
+      {
+        "image": "disciplerobe.png",
+        "name": "Disciple's Robe"
+      },
+      {
+        "image": "druidic.png",
+        "name": "Druid's Robe"
+      },
+      {
+        "image": "robe.png",
+        "name": "Black Robe"
+      },
+      {
+        "image": "tunic.png",
+        "name": "Shirt"
+      }
+    ],
+    "light_footwear": [
+      {
+        "image": "t16shoes.png",
+        "name": "Voyager Stabilizers"
+      },
+      {
+        "image": "phoenixshoes.png",
+        "name": "Phoenix Talons"
+      },
+      {
+        "image": "icecreamshoes.png",
+        "name": "Slathered Slippers"
+      },
+      {
+        "image": "shoprshoes.png",
+        "name": "Titan Admiral Boots"
+      },
+      {
+        "image": "siashoes.png",
+        "name": "Sia's Sandals"
+      },
+      {
+        "image": "jurassicshoes.png",
+        "name": "Fleetfoot Travelers"
+      },
+      {
+        "image": "t15shoes.png",
+        "name": "Chrysalid Boots"
+      },
+      {
+        "image": "metalshoes.png",
+        "name": "Steel-Studded Boots"
+      },
+      {
+        "image": "werewolfshoes.png",
+        "name": "Werewolf Feet"
+      },
+      {
+        "image": "summerbodshoes.png",
+        "name": "Hi-Cardio Shoes"
+      },
+      {
+        "image": "t14shoes.png",
+        "name": "Soothsayer's Boots"
+      },
+      {
+        "image": "voidshoes.png",
+        "name": "Voidwalkers"
+      },
+      {
+        "image": "greekshoes.png",
+        "name": "Hermes Sandals"
+      },
+      {
+        "image": "selfcareshoes.png",
+        "name": "Deluxe Flip-Flops"
+      },
+      {
+        "image": "platinumshoes.png",
+        "name": "Platinum Shoes"
+      },
+      {
+        "image": "t13shoes.png",
+        "name": "Wildhunt Sandals"
+      },
+      {
+        "image": "junimayshoes.png",
+        "name": "Fairy Sandals"
+      },
+      {
+        "image": "thanksgivingshoes.png",
+        "name": "Hunter Moccasins"
+      },
+      {
+        "image": "westernshoes.png",
+        "name": "Desperado Spurs"
+      },
+      {
+        "image": "t12shoes.png",
+        "name": "Dawn Thief's Path"
+      },
+      {
+        "image": "goldshoes.png",
+        "name": "Opulent Footwraps"
+      },
+      {
+        "image": "birdshoes.png",
+        "name": "Raptor Talons"
+      },
+      {
+        "image": "jackalopeshoes.png",
+        "name": "Everdusk Boots"
+      },
+      {
+        "image": "fairytaleshoes.png",
+        "name": "Giant's Boots"
+      },
+      {
+        "image": "lunarboots.png",
+        "name": "Cloudwalker Steps"
+      },
+      {
+        "image": "captainshoes.png",
+        "name": "Corsair Boots"
+      },
+      {
+        "image": "cincoshoes2020.png",
+        "name": "Shoes of Style"
+      },
+      {
+        "image": "castleshoe.png",
+        "name": "Plaguewalkers"
+      },
+      {
+        "image": "dragonshoes.png",
+        "name": "Drakeskin Boots"
+      },
+      {
+        "image": "varsityshoes.png",
+        "name": "Lacrosse Cleats"
+      },
+      {
+        "image": "harpyshoes.png",
+        "name": "Birdrunners"
+      },
+      {
+        "image": "ruinsshoes.png",
+        "name": "Alpine Stride"
+      },
+      {
+        "image": "windrunnerboots.png",
+        "name": "Windrunner Boots"
+      },
+      {
+        "image": "cardboardshoes.png",
+        "name": "Cardboard Clogs"
+      },
+      {
+        "image": "pumpkinshoes.png",
+        "name": "Hallowitch Shoes"
+      },
+      {
+        "image": "batshoes.png",
+        "name": "Nightwing Shoes"
+      },
+      {
+        "image": "ninjatabi.png",
+        "name": "Ninja Tabi"
+      },
+      {
+        "image": "inuitshoes.png",
+        "name": "Compact Snowshoes"
+      },
+      {
+        "image": "arabianshoes.png",
+        "name": "Sultan Steps"
+      },
+      {
+        "image": "blossomshoes.png",
+        "name": "Sakura Tabi"
+      },
+      {
+        "image": "savageshoes.png",
+        "name": "Savage Stride"
+      },
+      {
+        "image": "lilushoes.png",
+        "name": "Lilu's Shoes"
+      },
+      {
+        "image": "moonshoes.png",
+        "name": "Moonlight Zōri"
+      },
+      {
+        "image": "elvenshoes.png",
+        "name": "Elven Shoes"
+      },
+      {
+        "image": "flowersandals.png",
+        "name": "Perennial Sandals"
+      },
+      {
+        "image": "thiefshoes.png",
+        "name": "Thief's Shoes"
+      },
+      {
+        "image": "romansandals.png",
+        "name": "Legionnaire Sandals"
+      },
+      {
+        "image": "softshoes.png",
+        "name": "Soft Shoes"
+      },
+      {
+        "image": "sandals.png",
+        "name": "Flip-Flops"
+      },
+      {
+        "image": "forestshoes.png",
+        "name": "Trailblazers"
+      },
+      {
+        "image": "leatherboots.png",
+        "name": "Leather Boots"
+      }
+    ],
+    "magician_hat": [
+      {
+        "image": "t16magehat.png",
+        "name": "Thinkin' Cap"
+      },
+      {
+        "image": "t16magehat.png",
+        "name": "Worldshaper Hood"
+      },
+      {
+        "image": "retromagehat.png",
+        "name": "Dark Wizard Hat"
+      },
+      {
+        "image": "phoenixmagehat.png",
+        "name": "Phoenix Cowl"
+      },
+      {
+        "image": "pumpkinmagehat.png",
+        "name": "Hallowitch Hat"
+      },
+      {
+        "image": "firecrown.png",
+        "name": "Pyroclastic Crown"
+      },
+      {
+        "image": "t15magehat.png",
+        "name": "Deepsea Kasa"
+      },
+      {
+        "image": "lilumagehat.png",
+        "name": "Lilu's Secret Hat"
+      },
+      {
+        "image": "fireicemagehat.png",
+        "name": "Frostfire Catalyst"
+      },
+      {
+        "image": "gatormaidmagehat.png",
+        "name": "Angler's Veil"
+      },
+      {
+        "image": "platinummagehat.png",
+        "name": "Platinum Winter Hat"
+      },
+      {
+        "image": "t14magehat.png",
+        "name": "Archdruid's Authority"
+      },
+      {
+        "image": "magicmagehat.png",
+        "name": "Magician's Hat"
+      },
+      {
+        "image": "gothitamagehat.png",
+        "name": "Teeny Top Hat"
+      },
+      {
+        "image": "beachmagehat.png",
+        "name": "Tiara of Tides"
+      },
+      {
+        "image": "riftmagehat.png",
+        "name": "Elysium Halo"
+      },
+      {
+        "image": "t13magehat.png",
+        "name": "Voidminster Hat"
+      },
+      {
+        "image": "lunarmagehat.png",
+        "name": "Empress Hairpins"
+      },
+      {
+        "image": "volcanomagehat.png",
+        "name": "Phoenix Crest"
+      },
+      {
+        "image": "goldhat2.png",
+        "name": "Opulent Headdress"
+      },
+      {
+        "image": "blossommagehat.png",
+        "name": "Sakura Eboshi"
+      },
+      {
+        "image": "t12magehat.png",
+        "name": "Exarch Mitre"
+      },
+      {
+        "image": "snowmagehat.png",
+        "name": "Ice Queen's Summer Hat"
+      },
+      {
+        "image": "victorianmagehat.png",
+        "name": "Elegant Top Hat"
+      },
+      {
+        "image": "djinnhat.png",
+        "name": "Djinn Veil"
+      },
+      {
+        "image": "lunarmagehat2.png",
+        "name": "Snake Counselor"
+      },
+      {
+        "image": "bathat.png",
+        "name": "Night Crown"
+      },
+      {
+        "image": "tiara.png",
+        "name": "Opal Diadem"
+      },
+      {
+        "image": "schoolhat2020.png",
+        "name": "Spellward Hat"
+      },
+      {
+        "image": "plaguemask.png",
+        "name": "Raven Mask"
+      },
+      {
+        "image": "astralhat.png",
+        "name": "Astral Hat"
+      },
+      {
+        "image": "summerbodmagehat.png",
+        "name": "Hi-Cardio Bandana"
+      },
+      {
+        "image": "goldhat.png",
+        "name": "Luxurious Headdress"
+      },
+      {
+        "image": "shamanhat.png",
+        "name": "Shaman Hat"
+      },
+      {
+        "image": "chessmagehat.png",
+        "name": "Ivory Queen Crown"
+      },
+      {
+        "image": "summonerhat.png",
+        "name": "Summoner Hat"
+      },
+      {
+        "image": "midnighthat.png",
+        "name": "Tactician Hat"
+      },
+      {
+        "image": "liluhat.png",
+        "name": "Owl Cowl"
+      },
+      {
+        "image": "frogmagehat.png",
+        "name": "Waterproof Lilycap"
+      },
+      {
+        "image": "witchhat.png",
+        "name": "Witch Hat"
+      },
+      {
+        "image": "bunnyhat.png",
+        "name": "Ostara Hat"
+      },
+      {
+        "image": "swamphat.png",
+        "name": "Hat of the Four Winds"
+      },
+      {
+        "image": "wizardcone.png",
+        "name": "Wizard Hat"
+      },
+      {
+        "image": "circlet.png",
+        "name": "Bronze Circlet"
+      },
+      {
+        "image": "startertiara.png",
+        "name": "Apprentice Tiara"
+      },
+      {
+        "image": "laurels.png",
+        "name": "Druid Laurels"
+      },
+      {
+        "image": "blackcowl.png",
+        "name": "Black Cowl"
+      },
+      {
+        "image": "leathercone.png",
+        "name": "Stitched Cone"
+      }
+    ],
+    "heavy_footwear": [
+      {
+        "image": "t16boots.png",
+        "name": "Darkmatter Gliders"
+      },
+      {
+        "image": "jumanji_boots.png",
+        "name": "Stone Jaguar Greaves"
+      },
+      {
+        "image": "platinumboots.png",
+        "name": "Platinum Greaves"
+      },
+      {
+        "image": "krampusboots.png",
+        "name": "Krampus Hooves"
+      },
+      {
+        "image": "plushieboots.png",
+        "name": "Teddy Bear Feet"
+      },
+      {
+        "image": "t15boots.png",
+        "name": "Behemoth Feet"
+      },
+      {
+        "image": "artifactboots.png",
+        "name": "Rock Stompers"
+      },
+      {
+        "image": "winterboots.png",
+        "name": "Fimbulwinter Boots"
+      },
+      {
+        "image": "blackfridayboots.png",
+        "name": "Magmacore Greaves"
+      },
+      {
+        "image": "darkknightboots.png",
+        "name": "Tyrant's Wake"
+      },
+      {
+        "image": "t14boots.png",
+        "name": "Cobalt Greaves"
+      },
+      {
+        "image": "newyearboots.png",
+        "name": "Crystal Sollerets"
+      },
+      {
+        "image": "shoprboots.png",
+        "name": "Titan Boots"
+      },
+      {
+        "image": "t13boots.png",
+        "name": "Balefire Greaves"
+      },
+      {
+        "image": "dinoboots.png",
+        "name": "Rex Stompers"
+      },
+      {
+        "image": "goldboots2.png",
+        "name": "Opulent Greaves"
+      },
+      {
+        "image": "fruitboots.png",
+        "name": "Fruity Booties"
+      },
+      {
+        "image": "volcanoboots.png",
+        "name": "Boots of Zeal"
+      },
+      {
+        "image": "t12boots.png",
+        "name": "Vermilion Guard Greaves"
+      },
+      {
+        "image": "christmasboots.png",
+        "name": "Santa's Guard Boots"
+      },
+      {
+        "image": "freedomboots.png",
+        "name": "Star-Spangled Greaves"
+      },
+      {
+        "image": "celestialboots.png",
+        "name": "Celesteel Boots"
+      },
+      {
+        "image": "cincoboots.png",
+        "name": "Greaves of the Fifth"
+      },
+      {
+        "image": "bunnyboots.png",
+        "name": "Bunbun Booties"
+      },
+      {
+        "image": "juggernautboots.png",
+        "name": "Juggernaut Greaves"
+      },
+      {
+        "image": "cyclopsboots.png",
+        "name": "Lost Warrior's Greaves"
+      },
+      {
+        "image": "fallboots.png",
+        "name": "Vanguard Greaves"
+      },
+      {
+        "image": "goldboots.png",
+        "name": "Luxurious Boots"
+      },
+      {
+        "image": "berserkerboots.png",
+        "name": "Berserker Stompers"
+      },
+      {
+        "image": "mechaboots.png",
+        "name": "CM-73 Jetboots"
+      },
+      {
+        "image": "generalgreaves.png",
+        "name": "General Greaves"
+      },
+      {
+        "image": "biomechboots.png",
+        "name": "Xenotype Walkers"
+      },
+      {
+        "image": "bfheavyboots.png",
+        "name": "Topaz Greaves"
+      },
+      {
+        "image": "haidate.png",
+        "name": "Samurai Haidate"
+      },
+      {
+        "image": "firecrabboots.png",
+        "name": "Ashkickers"
+      },
+      {
+        "image": "dogboots.png",
+        "name": "Canid Paws"
+      },
+      {
+        "image": "paladinboots.png",
+        "name": "Paladin Boots"
+      },
+      {
+        "image": "lunargreaves.png",
+        "name": "Warlord Boots"
+      },
+      {
+        "image": "swampboots.png",
+        "name": "Cindersole"
+      },
+      {
+        "image": "knightboots.png",
+        "name": "Knight Sollerets"
+      },
+      {
+        "image": "circusboots.png",
+        "name": "Plated Squeakers"
+      },
+      {
+        "image": "heavyboots.png",
+        "name": "Reinforced Greaves"
+      },
+      {
+        "image": "heroboots.png",
+        "name": "Hero's Boots"
+      },
+      {
+        "image": "grieveboots.png",
+        "name": "Iron Greaves"
+      },
+      {
+        "image": "longboots.png",
+        "name": "Long Boots"
+      },
+      {
+        "image": "shinguards.png",
+        "name": "Shin Guards"
+      }
+    ],
+    "rogue_hat": [
+      {
+        "image": "t16roguehat.png",
+        "name": "Voyager Neovisor"
+      },
+      {
+        "image": "lunarroguehat.png",
+        "name": "Facechanger's Mask"
+      },
+      {
+        "image": "gb_goggles.png",
+        "name": "Ecto-Goggles"
+      },
+      {
+        "image": "arabianroguehat.png",
+        "name": "Princely Turban"
+      },
+      {
+        "image": "dieselpunkroguehat.png",
+        "name": "Scavenger's Goggles"
+      },
+      {
+        "image": "jurassicroguehat.png",
+        "name": "Cherubim Visage"
+      },
+      {
+        "image": "t15roguehat.png",
+        "name": "Chrysalid Mask"
+      },
+      {
+        "image": "halloweenroguehat.png",
+        "name": "Ghastly Cowl"
+      },
+      {
+        "image": "varsityroguehat.png",
+        "name": "Lacrosse Helm"
+      },
+      {
+        "image": "elysiumroguehat.png",
+        "name": "Wrapped Whispers"
+      },
+      {
+        "image": "t14roguehat.png",
+        "name": "Soothsayer's Sight"
+      },
+      {
+        "image": "cyberroguehat.png",
+        "name": "Hazmat Mask"
+      },
+      {
+        "image": "platinumroguehat.png",
+        "name": "Platinum Beret"
+      },
+      {
+        "image": "boarroguehat.png",
+        "name": "Wereboar's Hood"
+      },
+      {
+        "image": "inuitroguehat.png",
+        "name": "Hooded Iggaak"
+      },
+      {
+        "image": "t13roguehat.png",
+        "name": "Wildhunt Skull"
+      },
+      {
+        "image": "fallroguehat.png",
+        "name": "Kitsune Spirit Mask"
+      },
+      {
+        "image": "airshiproguehat.png",
+        "name": "Dragonseeker Goggles"
+      },
+      {
+        "image": "easterroguehat.png",
+        "name": "Bunbun Masquerade"
+      },
+      {
+        "image": "t12roguehat.png",
+        "name": "Dawn Thief Cowl"
+      },
+      {
+        "image": "goldroguehat.png",
+        "name": "Opulent Sallet"
+      },
+      {
+        "image": "catroguehat.png",
+        "name": "Cat Burglar Hood"
+      },
+      {
+        "image": "cincoroguehat.png",
+        "name": "Rogue Sombrero"
+      },
+      {
+        "image": "peakroguehat.png",
+        "name": "Abyssal Hood"
+      },
+      {
+        "image": "jackalopehat.png",
+        "name": "Everdusk Cowl"
+      },
+      {
+        "image": "cardboardroguehat.png",
+        "name": "Cardboard Kabuto"
+      },
+      {
+        "image": "indiadayhat.png",
+        "name": "Republic Coiffe"
+      },
+      {
+        "image": "captainhat.png",
+        "name": "Corsair Tricorn"
+      },
+      {
+        "image": "artifactroguehat.png",
+        "name": "Lone Wolf Cowl"
+      },
+      {
+        "image": "oktoberhat.png",
+        "name": "Grand Tyrolean"
+      },
+      {
+        "image": "castleroguehat.png",
+        "name": "Storm Dragon Mask"
+      },
+      {
+        "image": "dragonhat.png",
+        "name": "Drakeskin Mask"
+      },
+      {
+        "image": "shoprroguehat.png",
+        "name": "Titan Admiral Hat"
+      },
+      {
+        "image": "musketeerroguehat.png",
+        "name": "Musketeer Hat"
+      },
+      {
+        "image": "atlab_spiritmask.png",
+        "name": "Blue Spirit Mask"
+      },
+      {
+        "image": "windrunnerhat.png",
+        "name": "Windrunner Hat"
+      },
+      {
+        "image": "jesterroguehat.png",
+        "name": "Jester's Hat"
+      },
+      {
+        "image": "farmerhood.png",
+        "name": "Harvester's Hood"
+      },
+      {
+        "image": "pyramidroguehat.png",
+        "name": "Nomad Veil"
+      },
+      {
+        "image": "nightcowl.png",
+        "name": "Night Cowl"
+      },
+      {
+        "image": "porcelainmask.png",
+        "name": "Kintsugi Beak"
+      },
+      {
+        "image": "valentinehat.png",
+        "name": "Lovely Hat"
+      },
+      {
+        "image": "piratehat.png",
+        "name": "Pirate Hat"
+      },
+      {
+        "image": "anubisroguehat.png",
+        "name": "Pharaoh's Nemes"
+      },
+      {
+        "image": "christmasroguehat.png",
+        "name": "Santa's Elf Hat"
+      },
+      {
+        "image": "hood.png",
+        "name": "Silk Hood"
+      },
+      {
+        "image": "tricorn.png",
+        "name": "Tricorn"
+      },
+      {
+        "image": "featheredhat.png",
+        "name": "Feathered Hat"
+      },
+      {
+        "image": "hat.png",
+        "name": "Brimmed Hat"
+      },
+      {
+        "image": "forestroguehat.png",
+        "name": "Canopy Cap"
+      },
+      {
+        "image": "leathercap.png",
+        "name": "Leather Cap"
+      }
+    ],
+    "heavy_armor": [
+      {
+        "image": "t16heavyarmor.png",
+        "name": "Darkmatter Frame"
+      },
+      {
+        "image": "jumanji_heavyarmor.png",
+        "name": "Stone Jaguar Armor"
+      },
+      {
+        "image": "biomecharmor.png",
+        "name": "Xenotype Exoskel"
+      },
+      {
+        "image": "cyberpunkheavyarmor.png",
+        "name": "BIT.Runner Armor"
+      },
+      {
+        "image": "dinoheavyarmor.png",
+        "name": "Drakalos Armor"
+      },
+      {
+        "image": "plushieheavyarmor.png",
+        "name": "Teddy Bear Body"
+      },
+      {
+        "image": "t15heavyarmor.png",
+        "name": "Behemoth Armor"
+      },
+      {
+        "image": "artifactheavyarmor.png",
+        "name": "Armor of Invincibility"
+      },
+      {
+        "image": "winterplate.png",
+        "name": "Fimbulwinter Plate"
+      },
+      {
+        "image": "platinumheavyarmor.png",
+        "name": "Platinum Full Plate"
+      },
+      {
+        "image": "darkheavyarmor.png",
+        "name": "Cursed King's Plate"
+      },
+      {
+        "image": "t14heavyarmor.png",
+        "name": "Cobalt Plate Armor"
+      },
+      {
+        "image": "mechaheavyarmor.png",
+        "name": "CM-73 Armor Frame"
+      },
+      {
+        "image": "shoprheavyarmor.png",
+        "name": "Titan Plate Armor"
+      },
+      {
+        "image": "riftheavyarmor.png",
+        "name": "Magmacore Plate"
+      },
+      {
+        "image": "t13heavyarmor.png",
+        "name": "Balefire Armor"
+      },
+      {
+        "image": "cyclopsheavyarmor.png",
+        "name": "Lost Warrior's Plate"
+      },
+      {
+        "image": "darkknightheavyarmor.png",
+        "name": "Tyrant Plate Armor"
+      },
+      {
+        "image": "fallheavyarmor.png",
+        "name": "Oni Rōnin Armor"
+      },
+      {
+        "image": "t12heavyarmor.png",
+        "name": "Vermilion Guard Plate"
+      },
+      {
+        "image": "atlab_fireplate.png",
+        "name": "Fire Nation Armor"
+      },
+      {
+        "image": "dogheavyarmor.png",
+        "name": "Canid Plate"
+      },
+      {
+        "image": "celestialplate.png",
+        "name": "Celesteel Plate"
+      },
+      {
+        "image": "celticheavyarmor.png",
+        "name": "Milesian Mail"
+      },
+      {
+        "image": "goldplate.png",
+        "name": "Opulent Breastplate"
+      },
+      {
+        "image": "templearmor.png",
+        "name": "Amber Citadel"
+      },
+      {
+        "image": "juggernaut.png",
+        "name": "Juggernaut Fortress"
+      },
+      {
+        "image": "paladinheavyarmor.png",
+        "name": "Argon's Armor"
+      },
+      {
+        "image": "freedomplate.png",
+        "name": "Star-Spangled Plate"
+      },
+      {
+        "image": "castleheavyarmor.png",
+        "name": "Gaia Enforcer"
+      },
+      {
+        "image": "berserkerarmor.png",
+        "name": "Berserker Armor"
+      },
+      {
+        "image": "christmasheavyarmor.png",
+        "name": "Santa's Guard Plate"
+      },
+      {
+        "image": "oktoberfestplate.png",
+        "name": "Landsknecht Plate"
+      },
+      {
+        "image": "generalplate.png",
+        "name": "General Plate"
+      },
+      {
+        "image": "lunararmor.png",
+        "name": "Warlord Plate"
+      },
+      {
+        "image": "atlab_heavyarmor.png",
+        "name": "Kyoshi Warrior Armor"
+      },
+      {
+        "image": "pyramidheavyarmor.png",
+        "name": "Brinewater Do"
+      },
+      {
+        "image": "ronindo.png",
+        "name": "Samurai Do"
+      },
+      {
+        "image": "beeheavyarmor.png",
+        "name": "Hive Guard Plate"
+      },
+      {
+        "image": "pumpkinheavyarmor.png",
+        "name": "Thorn Baron Armor"
+      },
+      {
+        "image": "halfplate.png",
+        "name": "Paladin Plate"
+      },
+      {
+        "image": "centurionarmor.png",
+        "name": "Centurion Armor"
+      },
+      {
+        "image": "swampheavyarmor.png",
+        "name": "Ceremonial Breastplate"
+      },
+      {
+        "image": "breastplate.png",
+        "name": "Knight Breastplate"
+      },
+      {
+        "image": "chainmail.png",
+        "name": "Hauberk"
+      },
+      {
+        "image": "scalemail.png",
+        "name": "Scale Armor"
+      },
+      {
+        "image": "ringmail.png",
+        "name": "Iron Mail"
+      },
+      {
+        "image": "cuirass.png",
+        "name": "Breastplate"
+      }
+    ]
+  },
+  "enchantments": {
+    "light": [
+      {
+        "image": "t14light.png",
+        "name": "Apotheosis Element"
+      },
+      {
+        "image": "divine.png",
+        "name": "Divine Element"
+      },
+      {
+        "image": "sacred.png",
+        "name": "Sacred Element"
+      },
+      {
+        "image": "holy.png",
+        "name": "Holy Element"
+      },
+      {
+        "image": "light.png",
+        "name": "Light Element"
+      }
+    ],
+    "earth": [
+      {
+        "image": "t14earth.png",
+        "name": "Gaia Element"
+      },
+      {
+        "image": "primeval.png",
+        "name": "Primeval Element"
+      },
+      {
+        "image": "primal.png",
+        "name": "Primal Element"
+      },
+      {
+        "image": "wild.png",
+        "name": "Wild Element"
+      },
+      {
+        "image": "natural.png",
+        "name": "Nature Element"
+      }
+    ],
+    "water": [
+      {
+        "image": "t14water.png",
+        "name": "Maelstrom Element"
+      },
+      {
+        "image": "torrent.png",
+        "name": "Torrent Element"
+      },
+      {
+        "image": "flood.png",
+        "name": "Flood Element"
+      },
+      {
+        "image": "tidal.png",
+        "name": "Tide Element"
+      },
+      {
+        "image": "bubble.png",
+        "name": "Bubble Element"
+      }
+    ],
+    "fire": [
+      {
+        "image": "t14fire.png",
+        "name": "Blistering Element"
+      },
+      {
+        "image": "inferno.png",
+        "name": "Inferno Element"
+      },
+      {
+        "image": "blaze.png",
+        "name": "Blaze Element"
+      },
+      {
+        "image": "flaming.png",
+        "name": "Flame Element"
+      },
+      {
+        "image": "ember.png",
+        "name": "Ember Element"
+      }
+    ],
+    "spirit": [
+      {
+        "image": "platinumspirit.png",
+        "name": "Ancestor Spirit"
+      },
+      {
+        "image": "platinumspirit.png",
+        "name": "Platinum Spirit"
+      },
+      {
+        "image": "titan.png",
+        "name": "Titan Spirit"
+      },
+      {
+        "image": "griffin.png",
+        "name": "Griffin Spirit"
+      },
+      {
+        "image": "leviathan.png",
+        "name": "Leviathan Spirit"
+      },
+      {
+        "image": "bahamut.png",
+        "name": "Bahamut Spirit"
+      },
+      {
+        "image": "ouroboros.png",
+        "name": "Ouroboros Spirit"
+      },
+      {
+        "image": "behemoth.png",
+        "name": "Behemoth Spirit"
+      },
+      {
+        "image": "kirinspirit.png",
+        "name": "Kirin Spirit"
+      },
+      {
+        "image": "krampus.png",
+        "name": "Krampus Spirit"
+      },
+      {
+        "image": "santa.png",
+        "name": "Christmas Spirit"
+      },
+      {
+        "image": "kraken.png",
+        "name": "Kraken Spirit"
+      },
+      {
+        "image": "chimera.png",
+        "name": "Chimera Spirit"
+      },
+      {
+        "image": "carbuncle.png",
+        "name": "Carbuncle Spirit"
+      },
+      {
+        "image": "tarrasque.png",
+        "name": "Tarrasque Spirit"
+      },
+      {
+        "image": "hydra.png",
+        "name": "Hydra Spirit"
+      },
+      {
+        "image": "phoenix.png",
+        "name": "Phoenix Spirit"
+      },
+      {
+        "image": "opulentspirit.png",
+        "name": "Quetzalcoatl Spirit"
+      },
+      {
+        "image": "tiger.png",
+        "name": "Tiger Spirit"
+      },
+      {
+        "image": "dinosaur.png",
+        "name": "Dinosaur Spirit"
+      },
+      {
+        "image": "mammoth.png",
+        "name": "Mammoth Spirit"
+      },
+      {
+        "image": "bear.png",
+        "name": "Bear Spirit"
+      },
+      {
+        "image": "lion.png",
+        "name": "Lion Spirit"
+      },
+      {
+        "image": "walrus.png",
+        "name": "Walrus Spirit"
+      },
+      {
+        "image": "shark.png",
+        "name": "Shark Spirit"
+      },
+      {
+        "image": "squirrel.png",
+        "name": "Squirrel Spirit"
+      },
+      {
+        "image": "hippo.png",
+        "name": "Hippo Spirit"
+      },
+      {
+        "image": "crab.png",
+        "name": "Horse Spirit"
+      },
+      {
+        "image": "lizard.png",
+        "name": "Lizard Spirit"
+      },
+      {
+        "image": "armadillo.png",
+        "name": "Armadillo Spirit"
+      },
+      {
+        "image": "owl.png",
+        "name": "Owl Spirit"
+      },
+      {
+        "image": "rhino.png",
+        "name": "Rhino Spirit"
+      },
+      {
+        "image": "luxuriousspirit.png",
+        "name": "Xolotl Spirit"
+      },
+      {
+        "image": "goose.png",
+        "name": "Goose Spirit"
+      },
+      {
+        "image": "rabbitspirit.png",
+        "name": "Bunny Spirit"
+      },
+      {
+        "image": "cat.png",
+        "name": "Cat Spirit"
+      },
+      {
+        "image": "viper.png",
+        "name": "Viper Spirit"
+      },
+      {
+        "image": "eagle.png",
+        "name": "Eagle Spirit"
+      },
+      {
+        "image": "ox.png",
+        "name": "Ox Spirit"
+      },
+      {
+        "image": "wolf.png",
+        "name": "Wolf Spirit"
+      },
+      {
+        "image": "turtle.png",
+        "name": "Ram Spirit"
+      }
+    ],
+    "gold": [
+      {
+        "image": "platinumelement.png",
+        "name": "Platinum Element"
+      },
+      {
+        "image": "chest_goldcity3.png",
+        "name": "Platinum Chest"
+      },
+      {
+        "image": "supreme.png",
+        "name": "Supreme Runestone"
+      },
+      {
+        "image": "platinumjewel.png",
+        "name": "Platinum Bangles"
+      },
+      {
+        "image": "opulentelement.png",
+        "name": "Opulent Element"
+      },
+      {
+        "image": "chest_goldcity2.png",
+        "name": "Opulent Chest"
+      },
+      {
+        "image": "chiseled.png",
+        "name": "Chiseled Runestone"
+      },
+      {
+        "image": "tabletjewel.png",
+        "name": "Opulent Jewel"
+      },
+      {
+        "image": "luxuriouselement.png",
+        "name": "Luxurious Element"
+      },
+      {
+        "image": "chest_goldcity.png",
+        "name": "Luxurious Chest"
+      },
+      {
+        "image": "chipped.png",
+        "name": "Chipped Runestone"
+      },
+      {
+        "image": "tabletfragment.png",
+        "name": "Golden Chunk"
+      },
+      {
+        "image": "icon_global_resource_herbs.png",
+        "name": "Herbs"
+      },
+      {
+        "image": "icon_global_resource_oils.png",
+        "name": "Oil"
+      },
+      {
+        "image": "icon_global_resource_mana.png",
+        "name": "Ether"
+      }
+    ],
+    "air": [
+      {
+        "image": "t14air.png",
+        "name": "Tornado Element"
+      },
+      {
+        "image": "hurricane.png",
+        "name": "Hurricane Element"
+      },
+      {
+        "image": "tempest.png",
+        "name": "Tempest Element"
+      },
+      {
+        "image": "gale.png",
+        "name": "Gale Element"
+      },
+      {
+        "image": "breeze.png",
+        "name": "Breeze Element"
+      }
+    ],
+    "dark": [
+      {
+        "image": "t14dark.png",
+        "name": "Oblivion Element"
+      },
+      {
+        "image": "abyssal.png",
+        "name": "Abyssal Element"
+      },
+      {
+        "image": "nightmare.png",
+        "name": "Nightmare Element"
+      },
+      {
+        "image": "unholy.png",
+        "name": "Unholy Element"
+      },
+      {
+        "image": "corrupted.png",
+        "name": "Corrupted Element"
+      }
+    ]
+  },
+  "accessories": {
+    "meal": [
+      {
+        "image": "spacemeal2.png",
+        "name": "Vegan Glorb"
+      },
+      {
+        "image": "t16meal.png",
+        "name": "Glorb en Sauce"
+      },
+      {
+        "image": "platinummeal.png",
+        "name": "Platinum Steak Dinner"
+      },
+      {
+        "image": "kingmeal.png",
+        "name": "Royal Feast"
+      },
+      {
+        "image": "darkmeal.png",
+        "name": "Ruler's Feast"
+      },
+      {
+        "image": "t15meal.png",
+        "name": "Dino Nuggies"
+      },
+      {
+        "image": "cozymeal.png",
+        "name": "Family Stew"
+      },
+      {
+        "image": "bento.png",
+        "name": "Troublin Bento"
+      },
+      {
+        "image": "cookingmeal.png",
+        "name": "Jambon du Donjon"
+      },
+      {
+        "image": "t14meal.png",
+        "name": "Mirza Ghasemi"
+      },
+      {
+        "image": "wonderlandmeal.png",
+        "name": "Teatime Snack"
+      },
+      {
+        "image": "fallmeal.png",
+        "name": "Crispy Roast Duck"
+      },
+      {
+        "image": "firecrabmeal.png",
+        "name": "Very Hot Pot"
+      },
+      {
+        "image": "t13meal.png",
+        "name": "Pot of Paella"
+      },
+      {
+        "image": "goldmeal.png",
+        "name": "Opulent Tamales"
+      },
+      {
+        "image": "t12meal.png",
+        "name": "Huli-Huli Chicken"
+      },
+      {
+        "image": "lunarmeal.png",
+        "name": "Steamed Sea Bass"
+      },
+      {
+        "image": "ramen.png",
+        "name": "Deluxe Ramen"
+      },
+      {
+        "image": "halloweenmeal.png",
+        "name": "Horrorbowl"
+      },
+      {
+        "image": "kebabs.png",
+        "name": "Veggie Kebabs"
+      },
+      {
+        "image": "cybermeal.png",
+        "name": "Packed Takeout"
+      },
+      {
+        "image": "coconutcurry.png",
+        "name": "Super Spicy Curry"
+      },
+      {
+        "image": "fireicemeal.png",
+        "name": "Rime & Dine"
+      },
+      {
+        "image": "yulemeal.png",
+        "name": "Holiday Ham"
+      },
+      {
+        "image": "sushi.png",
+        "name": "Sushi"
+      },
+      {
+        "image": "valentinemeal.png",
+        "name": "Tournedos Rossini"
+      },
+      {
+        "image": "newyearmeal.png",
+        "name": "Creamy Scallops"
+      },
+      {
+        "image": "ahipoke.png",
+        "name": "Ahi Poke Bowl"
+      },
+      {
+        "image": "firecrabmeal2.png",
+        "name": "King Crab Appetizer"
+      },
+      {
+        "image": "arcademeal.png",
+        "name": "Power-Up Pie"
+      },
+      {
+        "image": "pizza.png",
+        "name": "Margherita Pizza"
+      },
+      {
+        "image": "burger.png",
+        "name": "Cheeseburger"
+      },
+      {
+        "image": "arabianmeal.png",
+        "name": "Pepper Dolma"
+      },
+      {
+        "image": "dragonmeal.png",
+        "name": "Zongzi Snack"
+      },
+      {
+        "image": "patechinois.png",
+        "name": "Shepherd's Pie"
+      },
+      {
+        "image": "maplemeal.png",
+        "name": "Sugar Shack Special"
+      },
+      {
+        "image": "poutine.png",
+        "name": "Poutine"
+      },
+      {
+        "image": "spacemeal.png",
+        "name": "CosmOs Cereals"
+      },
+      {
+        "image": "baobun.png",
+        "name": "Gua Bao"
+      },
+      {
+        "image": "baconeggs.png",
+        "name": "Bacon and Eggs"
+      }
+    ],
+    "amulet": [
+      {
+        "image": "t16amulet.png",
+        "name": "Universal Translator"
+      },
+      {
+        "image": "retroamulet.png",
+        "name": "The Quadforce"
+      },
+      {
+        "image": "jumanji_amulet.png",
+        "name": "Elephant Amulet"
+      },
+      {
+        "image": "magicalgirlamulet.png",
+        "name": "Pure Heart Barrette"
+      },
+      {
+        "image": "zephyramulet.png",
+        "name": "Zephyr's Dampener"
+      },
+      {
+        "image": "maladyamulet.png",
+        "name": "Malady's Memento"
+      },
+      {
+        "image": "t15amulet.png",
+        "name": "Trophy of Fangs"
+      },
+      {
+        "image": "artifactamulet.png",
+        "name": "Torc of Peace"
+      },
+      {
+        "image": "newyearamulet.png",
+        "name": "Star of the Show"
+      },
+      {
+        "image": "olympicamulet.png",
+        "name": "Gold Medal"
+      },
+      {
+        "image": "elysiumamulet.png",
+        "name": "Might of the Earth"
+      },
+      {
+        "image": "t14amulet.png",
+        "name": "Titania's Heart"
+      },
+      {
+        "image": "magicamulet.png",
+        "name": "Charlatan's Amulet"
+      },
+      {
+        "image": "platinumamulet.png",
+        "name": "Platinum Insignia"
+      },
+      {
+        "image": "harpyamulet.png",
+        "name": "Bleakspire Charm"
+      },
+      {
+        "image": "t13amulet.png",
+        "name": "Titania's Timepiece"
+      },
+      {
+        "image": "junimayamulet.png",
+        "name": "Fairy Wreath"
+      },
+      {
+        "image": "cyclopsamulet.png",
+        "name": "Eternal Hourglass"
+      },
+      {
+        "image": "arcadeamulet.png",
+        "name": "Gamepad Mini"
+      },
+      {
+        "image": "goldamulet2.png",
+        "name": "Opulent Carcanet"
+      },
+      {
+        "image": "t12amulet.png",
+        "name": "Titania's Keepsake"
+      },
+      {
+        "image": "wiccanamulet.png",
+        "name": "Fellgrove Talisman"
+      },
+      {
+        "image": "atlab_amulet.png",
+        "name": "Gyatso's Amulet"
+      },
+      {
+        "image": "troblinamulet.png",
+        "name": "Forlorn Acorn"
+      },
+      {
+        "image": "peakamulet.png",
+        "name": "Monsoon Heart"
+      },
+      {
+        "image": "brisingamen.png",
+        "name": "Brísingamen"
+      },
+      {
+        "image": "artifactmidasamulet.png",
+        "name": "Amulet of Midas"
+      },
+      {
+        "image": "vipamulet.png",
+        "name": "VIP Talisman"
+      },
+      {
+        "image": "priestamulet.png",
+        "name": "Freyja's Talisman"
+      },
+      {
+        "image": "alimyriad.png",
+        "name": "Alimyriad"
+      },
+      {
+        "image": "spaceamulet.png",
+        "name": "P.E.T. Portable"
+      },
+      {
+        "image": "rudoamulet.png",
+        "name": "Ursa Totem"
+      },
+      {
+        "image": "phylactery.png",
+        "name": "Stygian Phylactery"
+      },
+      {
+        "image": "chronoamulet.png",
+        "name": "Chronomancer's Timekeeper"
+      },
+      {
+        "image": "archivistglasses.png",
+        "name": "Archivist Glasses"
+      },
+      {
+        "image": "dragonamulet.png",
+        "name": "Dragonsoul Pendant"
+      },
+      {
+        "image": "magatama.png",
+        "name": "Magatama Necklace"
+      },
+      {
+        "image": "monkamulet.png",
+        "name": "Prayer Beads"
+      },
+      {
+        "image": "dreamamulet.png",
+        "name": "The Dreamcatcher"
+      },
+      {
+        "image": "timelocket.png",
+        "name": "Magical Timepiece"
+      },
+      {
+        "image": "titaniumtorc.png",
+        "name": "Titanium Torc"
+      },
+      {
+        "image": "cincoamulet.png",
+        "name": "Trinket of the Fifth"
+      },
+      {
+        "image": "oktoberamulet.png",
+        "name": "Convenient Pendant"
+      },
+      {
+        "image": "holysymbol.png",
+        "name": "Holy Symbol"
+      },
+      {
+        "image": "gb_meter.png",
+        "name": "P.K.E. Meter"
+      },
+      {
+        "image": "goldamulet.png",
+        "name": "Luxurious Charm"
+      },
+      {
+        "image": "stpatrickmedallion.png",
+        "name": "Lucky Medallion"
+      },
+      {
+        "image": "noblechain.png",
+        "name": "Noble Chain"
+      },
+      {
+        "image": "medal.png",
+        "name": "Medal of Honor"
+      },
+      {
+        "image": "grottoamulet.png",
+        "name": "Eclipse Amulet"
+      },
+      {
+        "image": "sunpendant.png",
+        "name": "Sun Pendant"
+      },
+      {
+        "image": "mundraamulet.png",
+        "name": "Mundra's Amulet"
+      },
+      {
+        "image": "chain.png",
+        "name": "Iron Bond"
+      },
+      {
+        "image": "pendant.png",
+        "name": "Jade Pendant"
+      },
+      {
+        "image": "ironamulet.png",
+        "name": "Memento"
+      }
+    ],
+    "dessert": [
+      {
+        "image": "t16dessert.png",
+        "name": "Glörkberry Parfait"
+      },
+      {
+        "image": "krampusdessert.png",
+        "name": "Krampus Cookies"
+      },
+      {
+        "image": "firecrabdessert.png",
+        "name": "Obsidian Lava Cake"
+      },
+      {
+        "image": "t15dessert.png",
+        "name": "Chocodragon Summit"
+      },
+      {
+        "image": "cookingdessert.png",
+        "name": "Starberry Pie"
+      },
+      {
+        "image": "platinumdessert.png",
+        "name": "Platinum Strudel"
+      },
+      {
+        "image": "t14dessert.png",
+        "name": "Princely Baklava"
+      },
+      {
+        "image": "cornucopiadessert.png",
+        "name": "Eversweet Cornucopia"
+      },
+      {
+        "image": "campingdessert.png",
+        "name": "Summer S'mores"
+      },
+      {
+        "image": "t13dessert.png",
+        "name": "Ultimate Fruit Salad"
+      },
+      {
+        "image": "newyeardessert.png",
+        "name": "Glazed Mirror Cake"
+      },
+      {
+        "image": "golddessert.png",
+        "name": "Opulent Churros"
+      },
+      {
+        "image": "coconutcake.png",
+        "name": "Coconut Cream Cake"
+      },
+      {
+        "image": "t12dessert.png",
+        "name": "Halo-Halo"
+      },
+      {
+        "image": "tuxedocake.png",
+        "name": "Tuxedo Cake"
+      },
+      {
+        "image": "pineapplecake.png",
+        "name": "Pineapple Cake"
+      },
+      {
+        "image": "spiralcake.png",
+        "name": "Matcha Swiss Roll"
+      },
+      {
+        "image": "daifuku.png",
+        "name": "Strawberry Mochi"
+      },
+      {
+        "image": "icecreamdessert.png",
+        "name": "Prickly Ice Cream"
+      },
+      {
+        "image": "macaron.png",
+        "name": "Macaron Set"
+      },
+      {
+        "image": "valentinedessert.png",
+        "name": "Chocolate Box"
+      },
+      {
+        "image": "cheesecake.png",
+        "name": "Cheesecake"
+      },
+      {
+        "image": "taiyaki.png",
+        "name": "Taiyaki"
+      },
+      {
+        "image": "shavedice.png",
+        "name": "Shaved Ice"
+      },
+      {
+        "image": "cookies.png",
+        "name": "Cookie Plate"
+      }
+    ],
+    "herbal_medicine": [
+      {
+        "image": "t16herb.png",
+        "name": "Nebulose Sporecaps"
+      },
+      {
+        "image": "firecrabherb.png",
+        "name": "Magmatic Kelp"
+      },
+      {
+        "image": "lightdarkherb.png",
+        "name": "Blooms Between"
+      },
+      {
+        "image": "t15herb.png",
+        "name": "Twig of Two Fates"
+      },
+      {
+        "image": "cozyherb.png",
+        "name": "Lone Flowerpot"
+      },
+      {
+        "image": "valentineherb2.png",
+        "name": "Sumptuous Roses"
+      },
+      {
+        "image": "platinumherb.png",
+        "name": "Platinum Moss"
+      },
+      {
+        "image": "t14herb.png",
+        "name": "Eternal Bonsai"
+      },
+      {
+        "image": "newyearherb.png",
+        "name": "Crystal Dew"
+      },
+      {
+        "image": "dreamherb.png",
+        "name": "Sandman's Pouch"
+      },
+      {
+        "image": "musicherb.png",
+        "name": "Slide Grease"
+      },
+      {
+        "image": "t13herb.png",
+        "name": "Voidbloom Roots"
+      },
+      {
+        "image": "fruitherb.png",
+        "name": "Premium Brand Jam"
+      },
+      {
+        "image": "goldherb2.png",
+        "name": "Opulent Decoction"
+      },
+      {
+        "image": "blossomherb.png",
+        "name": "Sakura Infusion"
+      },
+      {
+        "image": "t12herb.png",
+        "name": "Philosopher's Stone"
+      },
+      {
+        "image": "candyherb.png",
+        "name": "Super Snack Pack"
+      },
+      {
+        "image": "circusherb.png",
+        "name": "Seltzer Surprise"
+      },
+      {
+        "image": "peakherbs.png",
+        "name": "Bleakspire Roots"
+      },
+      {
+        "image": "eldritchtendrils.png",
+        "name": "Florae Daemonica"
+      },
+      {
+        "image": "lunarherb.png",
+        "name": "Chrysanthemultitude"
+      },
+      {
+        "image": "couplebouquet.png",
+        "name": "Wild Oak Rose"
+      },
+      {
+        "image": "wyrmblood.png",
+        "name": "Wyrmblood Ointment"
+      },
+      {
+        "image": "goldherb.png",
+        "name": "Luxurious Panacea"
+      },
+      {
+        "image": "goldenclover.png",
+        "name": "Luckiest Clover"
+      },
+      {
+        "image": "yggdrasilbranch.png",
+        "name": "Yggdrasil Branch"
+      },
+      {
+        "image": "blackfridayherb.png",
+        "name": "Cinderlake Chompers"
+      },
+      {
+        "image": "cookingherbs.png",
+        "name": "Fines Herbes"
+      },
+      {
+        "image": "ruinsherb.png",
+        "name": "Mistpeak Bloom"
+      },
+      {
+        "image": "wolfsbane.png",
+        "name": "Wolf's Bane"
+      },
+      {
+        "image": "lifeherb.png",
+        "name": "Blooming Wildwood"
+      },
+      {
+        "image": "valentineherb.png",
+        "name": "Unwilting Rose"
+      },
+      {
+        "image": "mandragoraroot.png",
+        "name": "Mandragoroot"
+      },
+      {
+        "image": "mushroomherb.png",
+        "name": "Lil' Cactus"
+      },
+      {
+        "image": "bouquet.png",
+        "name": "Fragrant Bouquet"
+      },
+      {
+        "image": "bloodvine.png",
+        "name": "Bloodvine"
+      },
+      {
+        "image": "thanksgivingherb2.png",
+        "name": "Flint Corn Bundle"
+      },
+      {
+        "image": "harvest.png",
+        "name": "Bountiful Harvest"
+      },
+      {
+        "image": "silverthistle.png",
+        "name": "Silver Thistle"
+      },
+      {
+        "image": "vampireherb.png",
+        "name": "Garlic String"
+      },
+      {
+        "image": "thanksgivingherb.png",
+        "name": "Venerable Oats"
+      },
+      {
+        "image": "healingsalve.png",
+        "name": "Healing Salve"
+      },
+      {
+        "image": "christmasflower.png",
+        "name": "Magical Mistletoe"
+      },
+      {
+        "image": "powder.png",
+        "name": "Moon Powder"
+      },
+      {
+        "image": "grass.png",
+        "name": "Sweet Grass"
+      },
+      {
+        "image": "antidote.png",
+        "name": "Mintyleaf Herb"
+      }
+    ],
+    "familiar": [
+      {
+        "image": "alien.png",
+        "name": "Xzyurnip"
+      },
+      {
+        "image": "dancingdragon.png",
+        "name": "Dancing Lion"
+      },
+      {
+        "image": "trex.png",
+        "name": "Rex"
+      },
+      {
+        "image": "platinumgolem.png",
+        "name": "Platinum Golem"
+      },
+      {
+        "image": "demigod.png",
+        "name": "Avatar"
+      },
+      {
+        "image": "voidling.png",
+        "name": "Voidling"
+      },
+      {
+        "image": "firecrab.png",
+        "name": "Crushtacean"
+      },
+      {
+        "image": "goldgolem.png",
+        "name": "Opulent Golem"
+      },
+      {
+        "image": "harpy.png",
+        "name": "Harpy"
+      },
+      {
+        "image": "mermaid.png",
+        "name": "Mermaid"
+      },
+      {
+        "image": "tyrantking.png",
+        "name": "Tyrant"
+      },
+      {
+        "image": "cyclops.png",
+        "name": "Cyclops"
+      },
+      {
+        "image": "kirin.png",
+        "name": "Kirin"
+      },
+      {
+        "image": "anubis.png",
+        "name": "Anubis"
+      },
+      {
+        "image": "mushgoon.png",
+        "name": "Mushgoon"
+      },
+      {
+        "image": "toadwitch.png",
+        "name": "Toadwitch"
+      },
+      {
+        "image": "yeti.png",
+        "name": "Yeti"
+      },
+      {
+        "image": "troblin.png",
+        "name": "Troublin"
+      }
+    ],
+    "potion": [
+      {
+        "image": "t16potion.png",
+        "name": "Microcosmos Infusion"
+      },
+      {
+        "image": "spellbladepotion.png",
+        "name": "Elemental Conflux"
+      },
+      {
+        "image": "bogpotion.png",
+        "name": "Bubbling Cauldron"
+      },
+      {
+        "image": "jurassicpotion.png",
+        "name": "Ancient Waters"
+      },
+      {
+        "image": "t15potion.png",
+        "name": "Primal Fire"
+      },
+      {
+        "image": "cozypotion.png",
+        "name": "Grandma's Teapot"
+      },
+      {
+        "image": "platinumpotion.png",
+        "name": "Platinum Tankard"
+      },
+      {
+        "image": "demigodpotion.png",
+        "name": "Divine Contained"
+      },
+      {
+        "image": "summerbodpotion.png",
+        "name": "Protein Shake"
+      },
+      {
+        "image": "t14potion.png",
+        "name": "Tincture of Finality"
+      },
+      {
+        "image": "selfcarepotion.png",
+        "name": "Fragrant Moisturizer"
+      },
+      {
+        "image": "officepotion.png",
+        "name": "Billionaire Brew"
+      },
+      {
+        "image": "arcadepotion.png",
+        "name": "Satchel of Essentials"
+      },
+      {
+        "image": "t13potion.png",
+        "name": "Conqueror's Blood"
+      },
+      {
+        "image": "maplepotion.png",
+        "name": "Maple Holy Grail"
+      },
+      {
+        "image": "beachpotion.png",
+        "name": "Supreme Sunscreen"
+      },
+      {
+        "image": "volcanopotion.png",
+        "name": "Quintessence Purity"
+      },
+      {
+        "image": "mundrapotion.png",
+        "name": "Mundra's Remedy"
+      },
+      {
+        "image": "t12potion.png",
+        "name": "Ambrosia"
+      },
+      {
+        "image": "frogpotion.png",
+        "name": "Nectar Pitcher"
+      },
+      {
+        "image": "yetipotion.png",
+        "name": "Aurora Springwater"
+      },
+      {
+        "image": "starextract.png",
+        "name": "Distilled Nebula"
+      },
+      {
+        "image": "ninjapotion.png",
+        "name": "Ninja Smoke Bomb"
+      },
+      {
+        "image": "piratepotion.png",
+        "name": "Sip o' the Sea"
+      },
+      {
+        "image": "goldpotion.png",
+        "name": "Opulent Elixir"
+      },
+      {
+        "image": "batpotion.png",
+        "name": "Midnight Oil"
+      },
+      {
+        "image": "gaiatonic.png",
+        "name": "Gaia Tonic"
+      },
+      {
+        "image": "carpenterpotion.png",
+        "name": "Oak Essence"
+      },
+      {
+        "image": "lemonpotion.png",
+        "name": "Tangy Decoction"
+      },
+      {
+        "image": "soulfireextract.png",
+        "name": "Soulfire Extract"
+      },
+      {
+        "image": "lunarpotion.png",
+        "name": "Elixir of the Wyrm"
+      },
+      {
+        "image": "cincopotion2.png",
+        "name": "Special Sazonado"
+      },
+      {
+        "image": "nayapotion.png",
+        "name": "Naya's Special"
+      },
+      {
+        "image": "pumpkinpotion.png",
+        "name": "Gourd Elixir"
+      },
+      {
+        "image": "purplebomb.png",
+        "name": "Purple Bomb"
+      },
+      {
+        "image": "egyptpotion.png",
+        "name": "Canopic Jar"
+      },
+      {
+        "image": "epicpotion.png",
+        "name": "Fizzy Guzzle Bottle"
+      },
+      {
+        "image": "pyramidpotion.png",
+        "name": "Bottled Mirth"
+      },
+      {
+        "image": "vialofrenewal.png",
+        "name": "Potion of Renewal"
+      },
+      {
+        "image": "newyearpotion.png",
+        "name": "Stardust Sample"
+      },
+      {
+        "image": "cincopotion.png",
+        "name": "Zesty Granita"
+      },
+      {
+        "image": "largehealthpotion.png",
+        "name": "Phoenix Tonic"
+      },
+      {
+        "image": "poloniapotion.png",
+        "name": "Old Salt's Brew"
+      },
+      {
+        "image": "shoprpotion.png",
+        "name": "Titan Potion"
+      },
+      {
+        "image": "magicpotion.png",
+        "name": "XL Magic Potion"
+      },
+      {
+        "image": "gb_potion.png",
+        "name": "Vial of Slime"
+      },
+      {
+        "image": "victorianpotion.png",
+        "name": "Elegant Tea Set"
+      },
+      {
+        "image": "healthpotion.png",
+        "name": "XL Healing Potion"
+      },
+      {
+        "image": "scienceexperiment.png",
+        "name": "Science Project"
+      },
+      {
+        "image": "smallmanapotion.png",
+        "name": "Magic Potion"
+      },
+      {
+        "image": "smallhealthpotion.png",
+        "name": "Healing Potion"
+      },
+      {
+        "image": "tea.png",
+        "name": "Warm Tea"
+      }
+    ],
+    "ring": [
+      {
+        "image": "t16ring.png",
+        "name": "Slipstream Assistant"
+      },
+      {
+        "image": "artifactmidasring.png",
+        "name": "Ring of Midas"
+      },
+      {
+        "image": "porcelainring.png",
+        "name": "Unbroken Signet"
+      },
+      {
+        "image": "paintring.png",
+        "name": "Ring of Many Colors"
+      },
+      {
+        "image": "t15ring.png",
+        "name": "Bloodstone Claw"
+      },
+      {
+        "image": "monkring.png",
+        "name": "Serene Tide"
+      },
+      {
+        "image": "superring.png",
+        "name": "Greenlight Ring"
+      },
+      {
+        "image": "elysiumring.png",
+        "name": "Neptune's Domain"
+      },
+      {
+        "image": "t14ring.png",
+        "name": "Pocket Dimension"
+      },
+      {
+        "image": "egyptring.png",
+        "name": "Sacred Scarab"
+      },
+      {
+        "image": "platinumring.png",
+        "name": "Platinum Rings"
+      },
+      {
+        "image": "fallring.png",
+        "name": "Jade Lotus Loop"
+      },
+      {
+        "image": "t13ring.png",
+        "name": "Mark of Ouroboros"
+      },
+      {
+        "image": "goldring2.png",
+        "name": "Opulent Signet"
+      },
+      {
+        "image": "maplering.png",
+        "name": "Maple Ration Mini"
+      },
+      {
+        "image": "africanring.png",
+        "name": "Ogun's Onyx Ring"
+      },
+      {
+        "image": "unicornring.png",
+        "name": "Crystalice Loop"
+      },
+      {
+        "image": "t12ring.png",
+        "name": "Pearlescent Perfection"
+      },
+      {
+        "image": "newyearring.png",
+        "name": "Ring of New Beginnings"
+      },
+      {
+        "image": "candyring.png",
+        "name": "Crunchy Bracelet"
+      },
+      {
+        "image": "mysteriousring.png",
+        "name": "Rubicon Prison"
+      },
+      {
+        "image": "bunnyring.png",
+        "name": "Bunbun Band"
+      },
+      {
+        "image": "winterring.png",
+        "name": "Blizzard Ring"
+      },
+      {
+        "image": "templering.png",
+        "name": "Northwind Gem"
+      },
+      {
+        "image": "borealis.png",
+        "name": "Borealis"
+      },
+      {
+        "image": "goldring.png",
+        "name": "Luxurious Signet"
+      },
+      {
+        "image": "schoolring2020.png",
+        "name": "Valedictorian Ring"
+      },
+      {
+        "image": "springflower.png",
+        "name": "Dawnflower Ring"
+      },
+      {
+        "image": "feyring.png",
+        "name": "Fairfolk Band"
+      },
+      {
+        "image": "campingring.png",
+        "name": "Survival Strap"
+      },
+      {
+        "image": "batring.png",
+        "name": "Ring of Vampire Kin"
+      },
+      {
+        "image": "sulfuritecoil.png",
+        "name": "Brimstone Coil"
+      },
+      {
+        "image": "maladyring.png",
+        "name": "Twin Coiled Ring"
+      },
+      {
+        "image": "chosenring.png",
+        "name": "Ring of the Chosen"
+      },
+      {
+        "image": "pyramidring.png",
+        "name": "Soulstone Ring"
+      },
+      {
+        "image": "batrachitestone.png",
+        "name": "Batrachite Stone"
+      },
+      {
+        "image": "gatormaidring.png",
+        "name": "Sapphire Ring"
+      },
+      {
+        "image": "lunarring.png",
+        "name": "Qian Loop"
+      },
+      {
+        "image": "freedomring.png",
+        "name": "Ring of Liberty"
+      },
+      {
+        "image": "knightsignet.png",
+        "name": "Knight Signet"
+      },
+      {
+        "image": "hemmadonring.png",
+        "name": "Claud's Will"
+      },
+      {
+        "image": "cincoring2020.png",
+        "name": "Ring of Rhythm"
+      },
+      {
+        "image": "noblering.png",
+        "name": "Noble Ring"
+      },
+      {
+        "image": "valentinering.png",
+        "name": "Ring of Passion"
+      },
+      {
+        "image": "silverband.png",
+        "name": "Silver Band"
+      },
+      {
+        "image": "grottoring.png",
+        "name": "Emerald Ring"
+      },
+      {
+        "image": "fatring.png",
+        "name": "Ruby Ring"
+      },
+      {
+        "image": "doublering.png",
+        "name": "Alloy Loop"
+      },
+      {
+        "image": "ironring.png",
+        "name": "Iron Ring"
+      }
+    ],
+    "shield": [
+      {
+        "image": "t16shield.png",
+        "name": "Ultima Deflector"
+      },
+      {
+        "image": "cardboardshield.png",
+        "name": "Cardboard Guard"
+      },
+      {
+        "image": "cardshield.png",
+        "name": "Collector's Piece"
+      },
+      {
+        "image": "platinumshield.png",
+        "name": "Platinum Ward"
+      },
+      {
+        "image": "t15shield.png",
+        "name": "Seraphim Gaze"
+      },
+      {
+        "image": "paladinshield.png",
+        "name": "Argon's Shield"
+      },
+      {
+        "image": "pizzashield.png",
+        "name": "Pizza Pavise"
+      },
+      {
+        "image": "darkshield.png",
+        "name": "Cursed King's Aegis"
+      },
+      {
+        "image": "elysiumshield.png",
+        "name": "Xolimnul's Fortress"
+      },
+      {
+        "image": "t14shield.png",
+        "name": "Hell's Gate"
+      },
+      {
+        "image": "lunarshield.png",
+        "name": "Dragon Sacred Gem"
+      },
+      {
+        "image": "mechashield.png",
+        "name": "CM-73 Shield"
+      },
+      {
+        "image": "mundrashield.png",
+        "name": "Mundra's Aegis"
+      },
+      {
+        "image": "beachshield.png",
+        "name": "Radical Waverider"
+      },
+      {
+        "image": "t13shield.png",
+        "name": "Chloroshield"
+      },
+      {
+        "image": "africanshield.png",
+        "name": "Elongo Shield"
+      },
+      {
+        "image": "newyearshield.png",
+        "name": "Bastion of Dawn"
+      },
+      {
+        "image": "goldshield2.png",
+        "name": "Opulent Buckler"
+      },
+      {
+        "image": "shoprshield.png",
+        "name": "Titan Shield"
+      },
+      {
+        "image": "t12shield.png",
+        "name": "Abyssal Artifact"
+      },
+      {
+        "image": "snowshield.png",
+        "name": "Crystalice Targe"
+      },
+      {
+        "image": "beeshield.png",
+        "name": "Honeycomb Defender"
+      },
+      {
+        "image": "paragon.png",
+        "name": "Bearded Paragon"
+      },
+      {
+        "image": "dinoshield.png",
+        "name": "Tricera Targe"
+      },
+      {
+        "image": "dragonshield.png",
+        "name": "Emperor Wyrmguard"
+      },
+      {
+        "image": "prideshield.png",
+        "name": "Goldmane Guard"
+      },
+      {
+        "image": "goldshield.png",
+        "name": "Luxurious Aegis"
+      },
+      {
+        "image": "eastershield2020.png",
+        "name": "Bunbun Buckler"
+      },
+      {
+        "image": "stpatrickshield.png",
+        "name": "Milesian Shield"
+      },
+      {
+        "image": "castleshield.png",
+        "name": "Prometheon"
+      },
+      {
+        "image": "zealouspavise.png",
+        "name": "Angelic Pavise"
+      },
+      {
+        "image": "paintshield.png",
+        "name": "Painted Palette"
+      },
+      {
+        "image": "boarshield.png",
+        "name": "Goreboar Targe"
+      },
+      {
+        "image": "ancestortotem.png",
+        "name": "Ancestor Totem"
+      },
+      {
+        "image": "arcadeshield.png",
+        "name": "Neku Shield"
+      },
+      {
+        "image": "fallshield.png",
+        "name": "Vanguard Buckler"
+      },
+      {
+        "image": "towershield.png",
+        "name": "Wyrmguard"
+      },
+      {
+        "image": "natureshield.png",
+        "name": "Gaia Aegis"
+      },
+      {
+        "image": "aegirshield.png",
+        "name": "Raider Buckler"
+      },
+      {
+        "image": "largebuckler.png",
+        "name": "Mythril Aspis"
+      },
+      {
+        "image": "pirateshield.png",
+        "name": "Ol' Grogwood"
+      },
+      {
+        "image": "argonshield.png",
+        "name": "Champion Vigil"
+      },
+      {
+        "image": "imperialscutum.png",
+        "name": "Imperial Scutum"
+      },
+      {
+        "image": "kiteshield.png",
+        "name": "Teardrop Shield"
+      },
+      {
+        "image": "grottoshield.png",
+        "name": "Aurum Ward"
+      },
+      {
+        "image": "ironshield.png",
+        "name": "Iron Shield"
+      },
+      {
+        "image": "oakshield.png",
+        "name": "Oaken Shield"
+      },
+      {
+        "image": "buckler.png",
+        "name": "Heavy Buckler"
+      },
+      {
+        "image": "woodshield.png",
+        "name": "Wooden Shield"
+      }
+    ],
+    "cloak": [
+      {
+        "image": "t16cloak.png",
+        "name": "Mantled Galaxica"
+      },
+      {
+        "image": "cardboardcloak.png",
+        "name": "Budget Cloak"
+      },
+      {
+        "image": "platinumcloak.png",
+        "name": "Platinum Cloak"
+      },
+      {
+        "image": "siacloak.png",
+        "name": "Sia's Royal Mantle"
+      },
+      {
+        "image": "t15cloak.png",
+        "name": "Lord of the Wildwoods"
+      },
+      {
+        "image": "donovancloak.png",
+        "name": "Donovan's Cloak"
+      },
+      {
+        "image": "bugcloak.png",
+        "name": "Giant Moth Wings"
+      },
+      {
+        "image": "t14cloak.png",
+        "name": "Elysium Mantle"
+      },
+      {
+        "image": "egyptcloak.png",
+        "name": "Banner of Nilea"
+      },
+      {
+        "image": "fallcloak.png",
+        "name": "Dragon Emperor's Cloak"
+      },
+      {
+        "image": "beachcloak.png",
+        "name": "Coastal Towel"
+      },
+      {
+        "image": "t13cloak.png",
+        "name": "Cloak Everflowing"
+      },
+      {
+        "image": "junimaycloak.png",
+        "name": "Fairy Wings"
+      },
+      {
+        "image": "blossomcloak.png",
+        "name": "Sakura Cloak"
+      },
+      {
+        "image": "t12cloak.png",
+        "name": "Herald's Mantle"
+      },
+      {
+        "image": "frogcloak.png",
+        "name": "Woven Lilycloak"
+      },
+      {
+        "image": "goldcloak.png",
+        "name": "Opulent Cloak"
+      },
+      {
+        "image": "starcloak.png",
+        "name": "Voidcloth From Beyond"
+      },
+      {
+        "image": "bishopcloak.png",
+        "name": "Archbishop Mantle"
+      },
+      {
+        "image": "darkknightcloak.png",
+        "name": "Tyrant Cloak"
+      },
+      {
+        "image": "scalecloak.png",
+        "name": "Dragonlord Crest"
+      },
+      {
+        "image": "furcloak.png",
+        "name": "Beast King's Cloak"
+      },
+      {
+        "image": "elvencloak.png",
+        "name": "Elven Cloak"
+      },
+      {
+        "image": "batcloak.png",
+        "name": "Vampire Wings"
+      },
+      {
+        "image": "empirecloak.png",
+        "name": "Imperial Cape"
+      },
+      {
+        "image": "druidcloak.png",
+        "name": "Druid Cloak"
+      },
+      {
+        "image": "wanderercloak.png",
+        "name": "Administrator Cloak"
+      },
+      {
+        "image": "squirecloak.png",
+        "name": "Adventurer Cape"
+      }
+    ],
+    "idol": [
+      {
+        "image": "t16idol.png",
+        "name": "Envoy of the Eternitree"
+      },
+      {
+        "image": "spellbladeidol.png",
+        "name": "Avatar of Magic"
+      },
+      {
+        "image": "jumanji_idol.png",
+        "name": "Jaguar Statuette"
+      },
+      {
+        "image": "platinumidol.png",
+        "name": "Platinum Ancestor"
+      },
+      {
+        "image": "t15idol.png",
+        "name": "Ancient Statuette"
+      },
+      {
+        "image": "t14idol.png",
+        "name": "Avatar Core"
+      },
+      {
+        "image": "magicalgirlidol.png",
+        "name": "Pure Heart Receptacle"
+      },
+      {
+        "image": "t13idol.png",
+        "name": "Tower of Void"
+      },
+      {
+        "image": "t12idol.png",
+        "name": "Obsidian Devourer"
+      },
+      {
+        "image": "singleidol.png",
+        "name": "Shattered Totem"
+      },
+      {
+        "image": "t11idol.png",
+        "name": "Harpy Totem"
+      },
+      {
+        "image": "t10idol.png",
+        "name": "Idol from the Deep"
+      },
+      {
+        "image": "t9idol.png",
+        "name": "Ghostly Mockery"
+      },
+      {
+        "image": "t8idol.png",
+        "name": "Timeworn Pillar"
+      },
+      {
+        "image": "t7idol.png",
+        "name": "Guardian Effigy"
+      },
+      {
+        "image": "t6idol.png",
+        "name": "Portable Totem Pole"
+      },
+      {
+        "image": "t5idol.png",
+        "name": "Primitive Idol"
+      }
+    ],
+    "spell": [
+      {
+        "image": "spacescroll.png",
+        "name": "Precursor's Ultimatum"
+      },
+      {
+        "image": "t16scroll.png",
+        "name": "Offworld Plaque"
+      },
+      {
+        "image": "gothicscroll.png",
+        "name": "Chapter Cauchemar"
+      },
+      {
+        "image": "gb_scroll.png",
+        "name": "Ghost Trap"
+      },
+      {
+        "image": "mundrascroll.png",
+        "name": "Mundra's Decree"
+      },
+      {
+        "image": "t15scroll.png",
+        "name": "Tribal Scribbles"
+      },
+      {
+        "image": "liluscroll.png",
+        "name": "Lilu's Starfall"
+      },
+      {
+        "image": "chronoscroll.png",
+        "name": "Chronomancer's Timetable"
+      },
+      {
+        "image": "t14scroll.png",
+        "name": "Seal of Gaia"
+      },
+      {
+        "image": "1000bp.png",
+        "name": "Darkness Millennium"
+      },
+      {
+        "image": "yulescroll.png",
+        "name": "Tales of Yule"
+      },
+      {
+        "image": "platinumscroll.png",
+        "name": "Platinum Secret Map"
+      },
+      {
+        "image": "riftscroll.png",
+        "name": "Sealed Hurricane"
+      },
+      {
+        "image": "t13scroll.png",
+        "name": "Pandora's Box"
+      },
+      {
+        "image": "goldscroll2.png",
+        "name": "Opulent Incantation"
+      },
+      {
+        "image": "valentinescroll.png",
+        "name": "Love Declaration"
+      },
+      {
+        "image": "newyearscroll.png",
+        "name": "Lost Star Chart"
+      },
+      {
+        "image": "anubisscroll.png",
+        "name": "Pharaoh's Pact"
+      },
+      {
+        "image": "t12scroll.png",
+        "name": "The Bound Beast"
+      },
+      {
+        "image": "allknowledge.png",
+        "name": "Tome of All-Knowledge"
+      },
+      {
+        "image": "lunarscroll.png",
+        "name": "Tiger Emperor's Edict"
+      },
+      {
+        "image": "freedomscroll.png",
+        "name": "Sealed Declaration"
+      },
+      {
+        "image": "peakscroll.png",
+        "name": "Phoenix Litany"
+      },
+      {
+        "image": "angelscroll.png",
+        "name": "Celestial Choir"
+      },
+      {
+        "image": "celticscroll.png",
+        "name": "Druidic Grimoire"
+      },
+      {
+        "image": "batscroll.png",
+        "name": "Curse of the Night"
+      },
+      {
+        "image": "priestbook.png",
+        "name": "Prayer Book"
+      },
+      {
+        "image": "celestialscroll.png",
+        "name": "Ancestral Atlas"
+      },
+      {
+        "image": "cardscroll.png",
+        "name": "Binder of Memories"
+      },
+      {
+        "image": "goldscroll.png",
+        "name": "Luxurious Tablet"
+      },
+      {
+        "image": "waxtablet.png",
+        "name": "Imperial Decree"
+      },
+      {
+        "image": "grimoireaeternum.png",
+        "name": "Grimoire Aeternum"
+      },
+      {
+        "image": "artifactscroll.png",
+        "name": "Grimar's Collection"
+      },
+      {
+        "image": "tamasscroll.png",
+        "name": "Rolled Up Leather"
+      },
+      {
+        "image": "vipscroll.png",
+        "name": "Scroll of Fortune"
+      },
+      {
+        "image": "tarot.png",
+        "name": "Tarot Deck"
+      },
+      {
+        "image": "unicornscroll.png",
+        "name": "Tale of the Unicorn"
+      },
+      {
+        "image": "fireworksscroll.png",
+        "name": "Firework Bundle"
+      },
+      {
+        "image": "scrolloflevitation.png",
+        "name": "Bagua Board"
+      },
+      {
+        "image": "darkscroll.png",
+        "name": "Dark Oath"
+      },
+      {
+        "image": "spellbook3.png",
+        "name": "Spells Vol III"
+      },
+      {
+        "image": "christmascroll.png",
+        "name": "Naughty or Nice List"
+      },
+      {
+        "image": "scrollofinvisibility.png",
+        "name": "Tome of Secrets"
+      },
+      {
+        "image": "jumanji_scroll.png",
+        "name": "Jumanji Map"
+      },
+      {
+        "image": "tomeofknowledge.png",
+        "name": "Tome of Knowledge"
+      },
+      {
+        "image": "swampscroll.png",
+        "name": "Tome of the Night"
+      },
+      {
+        "image": "scrollofice.png",
+        "name": "Monster Manual"
+      },
+      {
+        "image": "correspondence.png",
+        "name": "Correspondence"
+      },
+      {
+        "image": "songofvalor.png",
+        "name": "Song of Valor"
+      },
+      {
+        "image": "scrollofprotection.png",
+        "name": "Scroll of Storms"
+      },
+      {
+        "image": "scrollofthunder.png",
+        "name": "Scroll of Armor"
+      },
+      {
+        "image": "forestscroll.png",
+        "name": "Scroll of Cleansing"
+      },
+      {
+        "image": "scrolloffire.png",
+        "name": "Scroll of Sparks"
+      }
+    ],
+    "aurasong": [
+      {
+        "image": "t16aura.png",
+        "name": "Aura Reactor"
+      },
+      {
+        "image": "cyberpunkaura.png",
+        "name": "A.U.R.A. Assistant"
+      },
+      {
+        "image": "platinumaura.png",
+        "name": "Platinum Aura"
+      },
+      {
+        "image": "paintaura.png",
+        "name": "Aura of Inspiration"
+      },
+      {
+        "image": "t15aura.png",
+        "name": "Aura of Transmutation"
+      },
+      {
+        "image": "olympicaura.png",
+        "name": "Aura of Victory"
+      },
+      {
+        "image": "t14aura.png",
+        "name": "Aura of Storms"
+      },
+      {
+        "image": "wonderlandaura.png",
+        "name": "Aura of Wonder"
+      },
+      {
+        "image": "t13aura.png",
+        "name": "Prismatic Aura"
+      },
+      {
+        "image": "t12aura.png",
+        "name": "Aura of Power"
+      },
+      {
+        "image": "jumanji_aura.png",
+        "name": "Fate of Jumanji"
+      },
+      {
+        "image": "t11aura.png",
+        "name": "Aura of Love"
+      },
+      {
+        "image": "t10aura.png",
+        "name": "Aura of Winds"
+      },
+      {
+        "image": "t9aura.png",
+        "name": "Aura of Sparks"
+      },
+      {
+        "image": "t8aura.png",
+        "name": "Aura of Malice"
+      },
+      {
+        "image": "arabianaura.png",
+        "name": "Aura of Sands"
+      },
+      {
+        "image": "t7aura.png",
+        "name": "Aura of Flames"
+      },
+      {
+        "image": "t6aura.png",
+        "name": "Aura of Growth"
+      },
+      {
+        "image": "t5aura.png",
+        "name": "Aura of Quakes"
+      },
+      {
+        "image": "t4aura.png",
+        "name": "Aura of Rains"
+      },
+      {
+        "image": "t3aura.png",
+        "name": "Gleaming Aura"
+      }
+    ],
+    "quiver": [
+      {
+        "image": "t16quiver.png",
+        "name": "Baryon Battlebolts"
+      },
+      {
+        "image": "platinumquiver.png",
+        "name": "Platinum Quiver"
+      },
+      {
+        "image": "maladyquiver.png",
+        "name": "Biting Bolts"
+      },
+      {
+        "image": "t15quiver.png",
+        "name": "Rex Backpack"
+      },
+      {
+        "image": "christmasquiver.png",
+        "name": "Santa's Present Bag"
+      },
+      {
+        "image": "t14quiver.png",
+        "name": "Quiver of the Avatar"
+      },
+      {
+        "image": "t13quiver.png",
+        "name": "Elsewhere Arrows"
+      },
+      {
+        "image": "t12quiver.png",
+        "name": "Volcanic Pocket"
+      },
+      {
+        "image": "t11quiver.png",
+        "name": "Bleakspire Bundle"
+      },
+      {
+        "image": "t10quiver.png",
+        "name": "Quiver of Shoals"
+      },
+      {
+        "image": "t9quiver.png",
+        "name": "Knightly Quiver"
+      },
+      {
+        "image": "t8quiver.png",
+        "name": "Arrows of Ruin"
+      },
+      {
+        "image": "t7quiver.png",
+        "name": "Pharaoh's Arsenal"
+      },
+      {
+        "image": "t6quiver.png",
+        "name": "Wasterlander's Quiver"
+      },
+      {
+        "image": "t5quiver.png",
+        "name": "Swamp Knapsack"
+      }
+    ]
+  }
+}

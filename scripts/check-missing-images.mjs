@@ -1,6 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const FAN_KIT_ITEMS = 'C:/Development/Fan Kit Assets (Shop Titans)/Items';
 
@@ -19,15 +22,51 @@ const TYPE_TO_FOLDER = {
   Familiar: 'Familiars', Moonstone: 'Moonstones', Runestone: 'Runestones', Idol: 'Idols',
 };
 
+const SUBCATEGORY_TO_FOLDER = {
+  catalyst: 'Catalysts', bow: 'Bows', instrument: 'Instruments', axe: 'Axes',
+  dual_wield: 'Dual Wields', sword: 'Swords', staff: 'Staves', gun: 'Guns',
+  crossbow: 'Crossbows', dagger: 'Daggers', mace: 'Maces', spear: 'Spears', wand: 'Wands',
+  moonstone: 'Moonstones', runestone: 'Runestones',
+  gloves: 'Gloves', light_armor: 'Light Armor', gauntlets: 'Gauntlets', helmet: 'Helmets',
+  clothes: 'Clothes', light_footwear: 'Light Footwear', magician_hat: 'Magician Hats',
+  heavy_footwear: 'Heavy Footwear', rogue_hat: 'Rogue Hats', heavy_armor: 'Heavy Armor',
+  light: 'Elements', earth: 'Elements', water: 'Elements', fire: 'Elements',
+  gold: 'Elements', air: 'Elements', dark: 'Elements', spirit: 'Spirits',
+  meal: 'Meals', amulet: 'Amulets', dessert: 'Desserts', herbal_medicine: 'Herbal Medicine',
+  familiar: 'Familiars', potion: 'Potions', ring: 'Rings', shield: 'Shields',
+  cloak: 'Cloaks', idol: 'Idols', spell: 'Spells', aurasong: 'Aurasongs', quiver: 'Quivers',
+};
+
+// Build name → { folder, imageFile } from blueprint-images.json (same logic as the app)
+const IMAGE_LOOKUP = new Map();
+const imageData = require('../src/blueprint-images.json');
+for (const category of Object.values(imageData)) {
+  for (const [subKey, items] of Object.entries(category)) {
+    const folder = SUBCATEGORY_TO_FOLDER[subKey];
+    if (!folder) continue;
+    for (const { name, image } of items) {
+      IMAGE_LOOKUP.set(name, { folder, imageFile: image });
+    }
+  }
+}
+
 function normalizeImageName(name) {
   return name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '') + '.png';
 }
 
-function resolveFolder(type, name) {
+function resolveImages(name, type) {
   const resolvedType = type !== 'Enchantment' ? type
     : name.endsWith(' Spirit') ? 'Spirit'
     : 'Element';
-  return TYPE_TO_FOLDER[resolvedType] ?? null;
+  const folder = TYPE_TO_FOLDER[resolvedType];
+  if (!folder) return null;
+
+  const normalized = { folder, filename: normalizeImageName(name), resolvedType };
+  const override = IMAGE_LOOKUP.get(name);
+  if (override) {
+    return { primary: { folder: override.folder, filename: override.imageFile }, fallback: normalized, resolvedType };
+  }
+  return { primary: normalized, fallback: null, resolvedType };
 }
 
 function fetchCSV(url) {
@@ -85,19 +124,27 @@ for (let r = 1; r < rows.length; r++) {
   const type = row[typeIdx]?.trim();
   if (!name || !type || name === 'Name' || type === 'Type') continue;
 
-  const folder = resolveFolder(type, name);
-  if (!folder) {
+  const resolved = resolveImages(name, type);
+  if (!resolved) {
     unknownType.push({ name, type });
     continue;
   }
 
-  const filename = normalizeImageName(name);
-  const filePath = path.join(FAN_KIT_ITEMS, folder, filename);
+  const { primary, fallback, resolvedType } = resolved;
+  const primaryPath = path.join(FAN_KIT_ITEMS, primary.folder, primary.filename);
 
-  if (!fs.existsSync(filePath)) {
-    if (!missing[type]) missing[type] = [];
-    missing[type].push({ name, expected: path.join(folder, filename) });
+  if (fs.existsSync(primaryPath)) continue;
+
+  // Primary missing — try normalized fallback before reporting
+  if (fallback) {
+    const fallbackPath = path.join(FAN_KIT_ITEMS, fallback.folder, fallback.filename);
+    if (fs.existsSync(fallbackPath)) continue;
   }
+
+  if (!missing[resolvedType]) missing[resolvedType] = [];
+  const tried = [path.join(primary.folder, primary.filename)];
+  if (fallback) tried.push(path.join(fallback.folder, fallback.filename));
+  missing[resolvedType].push({ name, tried });
 }
 
 const sortedTypes = Object.keys(missing).sort();
@@ -105,17 +152,19 @@ const sortedTypes = Object.keys(missing).sort();
 console.log('\n=== MISSING IMAGES (sorted by type) ===\n');
 for (const type of sortedTypes) {
   console.log(`--- ${type} (${missing[type].length}) ---`);
-  for (const { name, expected } of missing[type]) {
-    console.log(`  ${name}  →  ${expected}`);
+  for (const { name, tried } of missing[type]) {
+    console.log(`  ${name}`);
+    for (const p of tried) console.log(`    ✗ ${p}`);
   }
   console.log();
 }
 
 if (unknownType.length > 0) {
-  console.log(`=== UNKNOWN TYPES (no folder mapping) ===`);
+  console.log('=== UNKNOWN TYPES (no folder mapping) ===');
   for (const { name, type } of unknownType) {
     console.log(`  [${type}] ${name}`);
   }
+  console.log();
 }
 
 const totalBlueprints = rows.filter((r, i) => {
@@ -125,4 +174,6 @@ const totalBlueprints = rows.filter((r, i) => {
 }).length;
 
 const totalMissing = Object.values(missing).reduce((s, arr) => s + arr.length, 0);
-console.log(`\nSummary: ${totalMissing} missing out of ${totalBlueprints} blueprints`);
+const bothTried = Object.values(missing).flat().filter(e => e.tried.length > 1).length;
+console.log(`Summary: ${totalMissing} missing out of ${totalBlueprints} blueprints`);
+if (bothTried > 0) console.log(`  ${bothTried} tried both JSON and normalized paths`);

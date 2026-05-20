@@ -44,9 +44,9 @@ function TierBadge({ tier }: { tier: number }) {
 export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps) {
   const { name, type, tier, source, craftingMilestones, starforgedMilestones } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount } = data;
-  const [imgError, setImgError] = useState(false);
 
-  const { circleBackground, itemImage } = getBlueprintImages(name, type, source);
+  const { circleBackground, itemImage, itemImageFallback } = getBlueprintImages(name, type, source);
+  const [imgSrc, setImgSrc] = useState<string | null>(itemImage);
 
   const lastCraftingThreshold = craftingMilestones.length > 0
     ? craftingMilestones[craftingMilestones.length - 1].craftsNeeded
@@ -68,12 +68,18 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
             draggable={false}
           />
           {/* Item image */}
-          {itemImage && !imgError ? (
+          {imgSrc ? (
             <img
-              src={itemImage}
+              src={imgSrc}
               alt={name}
               className="relative z-10 w-14 h-14 object-contain drop-shadow-lg"
-              onError={() => setImgError(true)}
+              onError={() => {
+                if (itemImageFallback && imgSrc !== itemImageFallback) {
+                  setImgSrc(itemImageFallback);
+                } else {
+                  setImgSrc(null);
+                }
+              }}
               draggable={false}
             />
           ) : (
