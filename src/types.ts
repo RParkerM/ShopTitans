@@ -7,6 +7,7 @@ export interface Blueprint {
   name: string;
   type: string;
   tier: number;
+  source: string;
   craftingMilestones: Milestone[];
   starforgedMilestones: Milestone[];
 }

@@ -42,11 +42,11 @@ function TierBadge({ tier }: { tier: number }) {
 }
 
 export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps) {
-  const { name, type, tier, craftingMilestones, starforgedMilestones } = blueprint;
+  const { name, type, tier, source, craftingMilestones, starforgedMilestones } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount } = data;
   const [imgError, setImgError] = useState(false);
 
-  const { circleBackground, itemImage } = getBlueprintImages(name, type, tier);
+  const { circleBackground, itemImage } = getBlueprintImages(name, type, source);
 
   const lastCraftingThreshold = craftingMilestones.length > 0
     ? craftingMilestones[craftingMilestones.length - 1].craftsNeeded

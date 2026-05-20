@@ -19,6 +19,7 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
   const nameIdx = headers.indexOf('Name');
   const typeIdx = headers.indexOf('Type');
   const tierIdx = headers.indexOf('Tier');
+  const sourceIdx = headers.indexOf('Unlock Prerequisite');
 
   if (nameIdx === -1 || typeIdx === -1) return [];
 
@@ -42,6 +43,7 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
     if (!name || !type || name === 'Name' || type === 'Type') continue;
 
     const tier = parseInt(row[tierIdx]?.trim()) || 0;
+    const source = (sourceIdx !== -1 ? row[sourceIdx]?.trim() : '') || '---';
 
     const craftingMilestones = craftingUpgradeIdxs
       .map(idx => {
@@ -63,7 +65,7 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       })
       .filter((m): m is NonNullable<typeof m> => m !== null);
 
-    blueprints.push({ name, type, tier, craftingMilestones, starforgedMilestones });
+    blueprints.push({ name, type, tier, source, craftingMilestones, starforgedMilestones });
   }
 
   return blueprints;

@@ -46,26 +46,40 @@ const TYPE_TO_FOLDER: Record<string, string> = {
   Element: 'Elements',
 };
 
-// Maps tier to the circular card background image from Blueprint Types/Backgrounds
-function getCircleBackground(tier: number): string {
-  if (tier >= 13) return '/fan-kit/Blueprint%20Types/Backgrounds/img_card_circle_blueprint_artifact.png';
-  if (tier >= 7)  return '/fan-kit/Blueprint%20Types/Backgrounds/img_card_circle_blueprint_premium.png';
-  if (tier >= 4)  return '/fan-kit/Blueprint%20Types/Backgrounds/img_card_circle_blueprint_blue.png';
-  return '/fan-kit/Blueprint%20Types/Backgrounds/img_card_circle_blueprint.png';
+const CIRCLE_BASE = '/fan-kit/Blueprint%20Types/Backgrounds';
+
+const LCOG_CHESTS = new Set(['Opulent Chest', 'Luxurious Chest', 'Platinum Chest']);
+
+const STANDARD_SOURCES = new Set([
+  '---', '', 'Intro Tutorial', 'Collection Book',
+  'Blacksmith', 'Carpenter', 'Herbalist', 'Wizard', 'Tailor', 'Jeweler', 'Cook', 'Priestess',
+]);
+
+function getCircleBackground(source: string): string {
+  if (source === 'Major Artifact Chest' || source === 'Minor Artifact Chest')
+    return `${CIRCLE_BASE}/img_card_circle_blueprint_artifact.png`;
+  if (LCOG_CHESTS.has(source))
+    return `${CIRCLE_BASE}/img_card_circle_blueprint_lcog.png`;
+  if (source.endsWith('Chest'))
+    return `${CIRCLE_BASE}/img_card_circle_blueprint_chest.png`;
+  if (source.startsWith('Content Pass') || STANDARD_SOURCES.has(source))
+    return `${CIRCLE_BASE}/img_card_circle_blueprint.png`;
+  // All packs, offers, and anything else unrecognised
+  return `${CIRCLE_BASE}/img_card_circle_blueprint_premium.png`;
 }
 
 function normalizeImageName(name: string): string {
   return name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '') + '.png';
 }
 
-export function getBlueprintImages(name: string, type: string, tier: number) {
+export function getBlueprintImages(name: string, type: string, source: string) {
   const folder = TYPE_TO_FOLDER[type];
   const itemImage = folder
     ? `/fan-kit/Items/${encodeURIComponent(folder)}/${normalizeImageName(name)}`
     : null;
 
   return {
-    circleBackground: getCircleBackground(tier),
+    circleBackground: getCircleBackground(source),
     itemImage,
   };
 }
