@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
 
 interface FilterBarProps {
-  types: string[];
-  selectedType: string;
-  onTypeChange: (type: string) => void;
+  selectedCategory: MainCategory;
+  onCategoryChange: (category: MainCategory) => void;
+  selectedSubType: string;
+  onSubTypeChange: (subType: string) => void;
   search: string;
   onSearchChange: (v: string) => void;
   showOwnedOnly: boolean;
@@ -11,75 +12,77 @@ interface FilterBarProps {
 }
 
 export function FilterBar({
-  types,
-  selectedType,
-  onTypeChange,
+  selectedCategory,
+  onCategoryChange,
+  selectedSubType,
+  onSubTypeChange,
   search,
   onSearchChange,
   showOwnedOnly,
   onShowOwnedOnlyChange,
 }: FilterBarProps) {
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const subcats = selectedCategory !== 'All' ? SUBCATEGORIES[selectedCategory] : [];
 
   return (
     <div className="sticky top-[57px] z-10 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-col gap-2">
 
-      {/* Row 1: search, owned only, mobile toggle */}
+      {/* Row 1: search + owned only */}
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2">
+        <input
+          type="text"
+          placeholder="Search blueprints…"
+          value={search}
+          onChange={e => onSearchChange(e.target.value)}
+          className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 w-48"
+        />
+        <label className="flex items-center gap-1.5 text-sm text-gray-400 cursor-pointer select-none whitespace-nowrap">
           <input
-            type="text"
-            placeholder="Search blueprints…"
-            value={search}
-            onChange={e => onSearchChange(e.target.value)}
-            className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 w-48"
+            type="checkbox"
+            checked={showOwnedOnly}
+            onChange={e => onShowOwnedOnlyChange(e.target.checked)}
+            className="accent-amber-500"
           />
-          <label className="flex items-center gap-1.5 text-sm text-gray-400 cursor-pointer select-none whitespace-nowrap">
-            <input
-              type="checkbox"
-              checked={showOwnedOnly}
-              onChange={e => onShowOwnedOnlyChange(e.target.checked)}
-              className="accent-amber-500"
-            />
-            Owned only
-          </label>
-        </div>
-
-        {/* Mobile toggle — hidden on md+ */}
-        <button
-          onClick={() => setFiltersOpen(v => !v)}
-          className={`md:hidden ml-auto px-2.5 py-1 rounded text-xs font-medium transition-colors ${
-            selectedType
-              ? 'bg-amber-500 text-gray-900'
-              : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-          }`}
-        >
-          {selectedType || 'Type'} {filtersOpen ? '▲' : '▼'}
-        </button>
+          Owned only
+        </label>
       </div>
 
-      {/* Row 2: type buttons — collapsible on mobile, always shown on md+ */}
-      <div className={filtersOpen ? 'flex flex-wrap gap-1.5' : 'hidden md:flex md:flex-wrap md:gap-1.5'}>
-        <button
-          onClick={() => onTypeChange('')}
-          className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
-            selectedType === '' ? 'bg-amber-500 text-gray-900' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-          }`}
-        >
-          All
-        </button>
-        {types.map(type => (
+      {/* Row 2: main category icons */}
+      <div className="flex flex-wrap gap-1.5">
+        {MAIN_CATEGORIES.map(cat => (
           <button
-            key={type}
-            onClick={() => onTypeChange(type === selectedType ? '' : type)}
-            className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
-              selectedType === type ? 'bg-amber-500 text-gray-900' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+            key={cat.id}
+            onClick={() => onCategoryChange(cat.id)}
+            title={cat.label}
+            className={`rounded transition-all ${
+              selectedCategory === cat.id
+                ? 'opacity-100 ring-2 ring-amber-500 ring-offset-1 ring-offset-gray-900'
+                : 'opacity-40 hover:opacity-70'
             }`}
           >
-            {type}
+            <img src={cat.icon} alt={cat.label} className="h-9 w-auto" />
           </button>
         ))}
       </div>
+
+      {/* Row 3: subcategory icon+label buttons — only when a specific category is selected */}
+      {subcats.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {subcats.map(sub => (
+            <button
+              key={sub.value}
+              onClick={() => onSubTypeChange(selectedSubType === sub.value ? '' : sub.value)}
+              className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded text-[10px] font-medium transition-colors leading-tight ${
+                selectedSubType === sub.value
+                  ? 'bg-amber-500 text-gray-900'
+                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+              }`}
+            >
+              <img src={sub.icon} alt="" className="h-6 w-6 object-contain" />
+              {sub.label}
+            </button>
+          ))}
+        </div>
+      )}
 
     </div>
   );

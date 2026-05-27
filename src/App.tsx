@@ -3,30 +3,40 @@ import { useBlueprints } from './hooks/useBlueprints';
 import { useUserData } from './hooks/useUserData';
 import { FilterBar } from './components/FilterBar';
 import { BlueprintTable } from './components/BlueprintTable';
+import { TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
 
 export default function App() {
   const { blueprints, loading, error, refresh } = useBlueprints();
   const { get, update } = useUserData();
 
-  const [selectedType, setSelectedType] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<MainCategory>('All');
+  const [selectedSubType, setSelectedSubType] = useState('');
   const [search, setSearch] = useState('');
   const [showOwnedOnly, setShowOwnedOnly] = useState(false);
 
-  const types = useMemo(() => {
-    const seen = new Set<string>();
-    blueprints.forEach(bp => seen.add(bp.type));
-    return [...seen].sort();
-  }, [blueprints]);
+  function handleCategoryChange(category: MainCategory) {
+    setSelectedCategory(category);
+    setSelectedSubType('');
+  }
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     return blueprints.filter(bp => {
-      if (selectedType && bp.type !== selectedType) return false;
+      if (selectedCategory !== 'All') {
+        if (TYPE_TO_CATEGORY[bp.type] !== selectedCategory) return false;
+        if (selectedSubType) {
+          if (selectedCategory === 'Enchantments') {
+            if (getEnchantmentElement(bp.name, bp.type) !== selectedSubType) return false;
+          } else {
+            if (bp.type !== selectedSubType) return false;
+          }
+        }
+      }
       if (q && !bp.name.toLowerCase().includes(q)) return false;
       if (showOwnedOnly && !get(bp.name).owned) return false;
       return true;
     });
-  }, [blueprints, selectedType, search, showOwnedOnly, get]);
+  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get]);
 
   const ownedCount = useMemo(
     () => blueprints.filter(bp => get(bp.name).owned).length,
@@ -90,9 +100,10 @@ export default function App() {
       {blueprints.length > 0 && (
         <>
           <FilterBar
-            types={types}
-            selectedType={selectedType}
-            onTypeChange={setSelectedType}
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
+            selectedSubType={selectedSubType}
+            onSubTypeChange={setSelectedSubType}
             search={search}
             onSearchChange={setSearch}
             showOwnedOnly={showOwnedOnly}
