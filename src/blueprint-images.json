@@ -2044,48 +2044,24 @@
     ],
     "runestone": [
       {
-        "image": "icon_global_item_rune.png",
-        "name": "Supreme Runestone"
+        "image": "chipped.png",
+        "name": "Chipped Runestone"
       },
       {
-        "image": "icon_global_item_rune.png",
-        "name": "Perfect Runestone"
-      },
-      {
-        "image": "icon_global_item_rune.png",
-        "name": "Chiseled Runestone"
-      },
-      {
-        "image": "icon_global_item_rune.png",
+        "image": "flawed.png",
         "name": "Flawed Runestone"
       },
       {
-        "image": "icon_global_item_rune.png",
-        "name": "Chipped Runestone"
+        "image": "chiseled.png",
+        "name": "Chiseled Runestone"
       },
       {
-        "image": "icon_global_resource_herbs.png",
-        "name": "Herbs"
+        "image": "perfect.png",
+        "name": "Perfect Runestone"
       },
       {
-        "image": "icon_global_resource_oils.png",
-        "name": "Oil"
-      },
-      {
-        "image": "icon_global_resource_mana.png",
-        "name": "Ether"
-      },
-      {
-        "image": "demigodpinion.png",
-        "name": "Demigod Pinion"
-      },
-      {
-        "image": "obsidian.png",
-        "name": "Raw Obsidian"
-      },
-      {
-        "image": "chipped.png",
-        "name": "Chipped Runestone"
+        "image": "supreme.png",
+        "name": "Supreme Runestone"
       },
       {
         "image": "ectoplasm.png",
@@ -4312,10 +4288,6 @@
         "name": "Platinum Chest"
       },
       {
-        "image": "supreme.png",
-        "name": "Supreme Runestone"
-      },
-      {
         "image": "platinumjewel.png",
         "name": "Platinum Bangles"
       },
@@ -4328,10 +4300,6 @@
         "name": "Opulent Chest"
       },
       {
-        "image": "chiseled.png",
-        "name": "Chiseled Runestone"
-      },
-      {
         "image": "tabletjewel.png",
         "name": "Opulent Jewel"
       },
@@ -4342,10 +4310,6 @@
       {
         "image": "chest_goldcity.png",
         "name": "Luxurious Chest"
-      },
-      {
-        "image": "chipped.png",
-        "name": "Chipped Runestone"
       },
       {
         "image": "tabletfragment.png",

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Blueprint, UserBlueprintData } from '../types';
 import { MilestoneProgress } from './MilestoneProgress';
+import { getMilestoneStatus } from '../utils/milestones';
 import { getBlueprintImages } from '../utils/blueprintImages';
 
 interface BlueprintCardProps {
@@ -48,6 +49,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
   const { circleBackground, itemImage, itemImageFallback } = getBlueprintImages(name, type, source);
   const [imgSrc, setImgSrc] = useState<string | null>(itemImage);
 
+  const craftingStatus = getMilestoneStatus(craftCount, craftingMilestones);
   const lastCraftingThreshold = craftingMilestones.length > 0
     ? craftingMilestones[craftingMilestones.length - 1].craftsNeeded
     : 0;
@@ -57,7 +59,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
 
   return (
     // No overflow-hidden so the circle can pop above the card top
-    <div className={`relative flex flex-col bg-gray-800 rounded-xl border border-gray-700/50 transition-opacity mt-6 ${!owned ? 'opacity-50' : ''}`}>
+    <div className={`relative isolate flex flex-col bg-gray-800 rounded-xl border border-gray-700/50 transition-opacity mt-6 ${!owned ? 'opacity-50' : ''}`}>
 
       {/* Image area — rounded top corners clipped here, not on the outer card */}
       <div className="relative bg-gray-900 rounded-t-xl pt-20 pb-4">
@@ -74,7 +76,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
             <img
               src={imgSrc}
               alt={name}
-              className="relative z-10 w-14 h-14 object-contain drop-shadow-lg"
+              className="relative z-10 w-16 h-16 object-contain drop-shadow-lg"
               onError={() => {
                 if (itemImageFallback && imgSrc !== itemImageFallback) {
                   setImgSrc(itemImageFallback);
@@ -157,10 +159,12 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
           )}
           {starforged && starforgedMilestones.length > 0 && (
             <MilestoneProgress
-              label="Starforged"
+              label="SF"
+              tooltip="Starforged progress"
               milestones={starforgedMilestones}
               craftCount={sfCraftCount}
               accent="purple"
+              hideToNext={!craftingStatus.allComplete}
             />
           )}
         </div>

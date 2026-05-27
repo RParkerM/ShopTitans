@@ -6,6 +6,8 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 const FAN_KIT_ITEMS = 'C:/Development/Fan Kit Assets (Shop Titans)/Items';
+const ASSET_BASE = 'https://playshoptitans.com/assets/items';
+const DOWNLOAD = process.argv.includes('--download');
 
 const TYPE_TO_FOLDER = {
   Sword: 'Swords', Axe: 'Axes', Dagger: 'Daggers', Mace: 'Maces',
@@ -104,11 +106,59 @@ function parseCSV(text) {
   return rows;
 }
 
-const SHEET_ID = '1WLa7X8h3O0-aGKxeAlCL7bnN8-FhGd3t7pz2RCzSg8c';
-const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Blueprints`;
+// Downloads a single file from url to destPath.
+// Returns 'ok', 'not-found', or 'error:<message>'.
+function downloadFile(url, destPath) {
+  return new Promise((resolve) => {
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    const tmp = destPath + '.tmp';
+    const file = fs.createWriteStream(tmp);
+
+    const cleanup = (result) => {
+      file.destroy();
+      if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+      resolve(result);
+    };
+
+    https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+      if (res.statusCode === 404) {
+        res.resume();
+        cleanup('not-found');
+        return;
+      }
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        res.resume();
+        file.close();
+        if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+        downloadFile(res.headers.location, destPath).then(resolve);
+        return;
+      }
+      if (res.statusCode !== 200) {
+        res.resume();
+        cleanup(`error:HTTP ${res.statusCode}`);
+        return;
+      }
+      res.pipe(file);
+      file.on('finish', () => {
+        file.close(() => {
+          fs.renameSync(tmp, destPath);
+          resolve('ok');
+        });
+      });
+    }).on('error', (err) => cleanup(`error:${err.message}`));
+
+    file.on('error', (err) => cleanup(`error:${err.message}`));
+  });
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// --- Fetch blueprints ---
 
 console.log('Fetching blueprints...');
-const csv = await fetchCSV(url);
+const csv = await fetchCSV(`https://docs.google.com/spreadsheets/d/1WLa7X8h3O0-aGKxeAlCL7bnN8-FhGd3t7pz2RCzSg8c/gviz/tq?tqx=out:csv&sheet=Blueprints`);
 const rows = parseCSV(csv);
 const headers = rows[0].map(h => h.trim());
 
@@ -135,17 +185,25 @@ for (let r = 1; r < rows.length; r++) {
 
   if (fs.existsSync(primaryPath)) continue;
 
-  // Primary missing — try normalized fallback before reporting
   if (fallback) {
     const fallbackPath = path.join(FAN_KIT_ITEMS, fallback.folder, fallback.filename);
     if (fs.existsSync(fallbackPath)) continue;
   }
 
   if (!missing[resolvedType]) missing[resolvedType] = [];
-  const tried = [path.join(primary.folder, primary.filename)];
-  if (fallback) tried.push(path.join(fallback.folder, fallback.filename));
-  missing[resolvedType].push({ name, tried });
+  missing[resolvedType].push({
+    name,
+    // Primary is always what we attempt to download — it's the filename the site uses
+    destPath: path.join(FAN_KIT_ITEMS, primary.folder, primary.filename),
+    filename: primary.filename,
+    tried: [
+      path.join(primary.folder, primary.filename),
+      ...(fallback ? [path.join(fallback.folder, fallback.filename)] : []),
+    ],
+  });
 }
+
+// --- Report ---
 
 const sortedTypes = Object.keys(missing).sort();
 
@@ -173,7 +231,42 @@ const totalBlueprints = rows.filter((r, i) => {
   return n && t && n !== 'Name' && t !== 'Type';
 }).length;
 
-const totalMissing = Object.values(missing).reduce((s, arr) => s + arr.length, 0);
+const totalMissing = Object.values(missing).flat().length;
 const bothTried = Object.values(missing).flat().filter(e => e.tried.length > 1).length;
 console.log(`Summary: ${totalMissing} missing out of ${totalBlueprints} blueprints`);
 if (bothTried > 0) console.log(`  ${bothTried} tried both JSON and normalized paths`);
+
+if (!DOWNLOAD) {
+  console.log('\nRun with --download to fetch missing images.');
+  process.exit(0);
+}
+
+// --- Download ---
+
+const allMissing = Object.values(missing).flat();
+console.log(`\nDownloading ${allMissing.length} images...\n`);
+
+let downloaded = 0, notFound = 0, failed = 0;
+
+for (const { name, filename, destPath } of allMissing) {
+  const url = `${ASSET_BASE}/${filename}`;
+  process.stdout.write(`  ${name} (${filename})... `);
+
+  const result = await downloadFile(url, destPath);
+
+  if (result === 'ok') {
+    console.log('✓');
+    downloaded++;
+  } else if (result === 'not-found') {
+    console.log('✗ not found on server');
+    notFound++;
+  } else {
+    console.log(`✗ ${result}`);
+    failed++;
+  }
+
+  // Be polite to the server
+  await sleep(150);
+}
+
+console.log(`\nDownload complete: ${downloaded} saved, ${notFound} not found on server, ${failed} errors`);
