@@ -818,6 +818,10 @@
     ],
     "staff": [
       {
+        "image": "t16staff.png",
+        "name": "Dimensional Anchor"
+      },
+      {
         "image": "spacestaff.png",
         "name": "Space Staff"
       },
