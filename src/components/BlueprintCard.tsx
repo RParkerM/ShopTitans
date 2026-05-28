@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import type { Blueprint, UserBlueprintData } from '../types';
 import { MilestoneProgress } from './MilestoneProgress';
 import { getMilestoneStatus } from '../utils/milestones';
@@ -7,7 +7,7 @@ import { getBlueprintImages } from '../utils/blueprintImages';
 interface BlueprintCardProps {
   blueprint: Blueprint;
   data: UserBlueprintData;
-  onUpdate: (patch: Partial<UserBlueprintData>) => void;
+  onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
 }
 
 function AscensionStars({ level, onChange }: { level: number; onChange: (v: number) => void }) {
@@ -42,7 +42,7 @@ function TierBadge({ tier }: { tier: number }) {
   );
 }
 
-export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps) {
+export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps) {
   const { name, type, tier, source, craftingMilestones, starforgedMilestones } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount } = data;
 
@@ -94,7 +94,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
 
           {/* Ascension stars overlaid at the bottom of the circle */}
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20">
-            <AscensionStars level={ascensionLevel} onChange={v => onUpdate({ ascensionLevel: v })} />
+            <AscensionStars level={ascensionLevel} onChange={v => onUpdate(name, { ascensionLevel: v })} />
           </div>
         </div>
 
@@ -110,7 +110,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
             <input
               type="checkbox"
               checked={owned}
-              onChange={e => onUpdate({ owned: e.target.checked })}
+              onChange={e => onUpdate(name, { owned: e.target.checked })}
               className="accent-amber-500 w-3.5 h-3.5 cursor-pointer"
             />
           </label>
@@ -119,7 +119,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
             <input
               type="checkbox"
               checked={starforged}
-              onChange={e => onUpdate({ starforged: e.target.checked })}
+              onChange={e => onUpdate(name, { starforged: e.target.checked })}
               className="accent-purple-500 w-3.5 h-3.5 cursor-pointer"
             />
           </label>
@@ -140,7 +140,7 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
           min={0}
           value={craftCount === 0 ? '' : craftCount}
           placeholder="0"
-          onChange={e => onUpdate({ craftCount: Math.max(0, parseInt(e.target.value) || 0) })}
+          onChange={e => onUpdate(name, { craftCount: Math.max(0, parseInt(e.target.value) || 0) })}
           className="ml-auto w-14 px-1.5 py-0.5 bg-gray-900 border border-gray-700 rounded text-xs text-white text-right focus:outline-none focus:border-amber-500"
           title="Total crafts"
         />
@@ -171,4 +171,4 @@ export function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps)
       )}
     </div>
   );
-}
+});

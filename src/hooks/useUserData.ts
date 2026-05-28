@@ -12,9 +12,7 @@ function loadFromStorage(): UserData {
   }
 }
 
-function defaultData(): UserBlueprintData {
-  return { owned: false, starforged: false, ascensionLevel: 0, craftCount: 0 };
-}
+const DEFAULT_DATA: UserBlueprintData = { owned: false, starforged: false, ascensionLevel: 0, craftCount: 0 };
 
 export function useUserData() {
   const [userData, setUserData] = useState<UserData>(loadFromStorage);
@@ -23,7 +21,7 @@ export function useUserData() {
     setUserData(prev => {
       const next = {
         ...prev,
-        [name]: { ...(prev[name] ?? defaultData()), ...patch },
+        [name]: { ...(prev[name] ?? DEFAULT_DATA), ...patch },
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       return next;
@@ -31,7 +29,7 @@ export function useUserData() {
   }, []);
 
   const get = useCallback((name: string): UserBlueprintData => {
-    return userData[name] ?? defaultData();
+    return userData[name] ?? DEFAULT_DATA;
   }, [userData]);
 
   return { get, update };

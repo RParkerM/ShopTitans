@@ -23,7 +23,7 @@ export function BlueprintTable({ blueprints, getUserData, onUpdate }: BlueprintT
           key={bp.name}
           blueprint={bp}
           data={getUserData(bp.name)}
-          onUpdate={patch => onUpdate(bp.name, patch)}
+          onUpdate={onUpdate}
         />
       ))}
     </div>
