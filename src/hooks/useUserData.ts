@@ -12,7 +12,7 @@ function loadFromStorage(): UserData {
   }
 }
 
-const DEFAULT_DATA: UserBlueprintData = { owned: false, starforged: false, ascensionLevel: 0, craftCount: 0 };
+const DEFAULT_DATA: UserBlueprintData = { owned: false, starforged: false, ascensionLevel: 0, craftCount: 0, ascensionShards: 0 };
 
 export function useUserData() {
   const [userData, setUserData] = useState<UserData>(loadFromStorage);

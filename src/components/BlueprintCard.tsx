@@ -1,6 +1,5 @@
 import { memo, useState } from 'react';
 import type { Blueprint, UserBlueprintData } from '../types';
-import { MilestoneProgress } from './MilestoneProgress';
 import { getMilestoneStatus } from '../utils/milestones';
 import { getBlueprintImages } from '../utils/blueprintImages';
 
@@ -8,6 +7,7 @@ interface BlueprintCardProps {
   blueprint: Blueprint;
   data: UserBlueprintData;
   onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
+  onClick: () => void;
 }
 
 function AscensionStars({ level, onChange }: { level: number; onChange: (v: number) => void }) {
@@ -16,7 +16,7 @@ function AscensionStars({ level, onChange }: { level: number; onChange: (v: numb
       {[1, 2, 3].map(star => (
         <button
           key={star}
-          onClick={() => onChange(level === star ? star - 1 : star)}
+          onClick={e => { e.stopPropagation(); onChange(level === star ? star - 1 : star); }}
           className={`text-sm leading-none transition-colors ${
             star <= level ? 'text-amber-400 hover:text-amber-300' : 'text-gray-600 hover:text-gray-400'
           }`}
@@ -42,29 +42,47 @@ function TierBadge({ tier }: { tier: number }) {
   );
 }
 
-export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUpdate }: BlueprintCardProps) {
-  const { name, type, tier, source, craftingMilestones, starforgedMilestones } = blueprint;
+function CraftProgressBar({ craftCount, milestones }: { craftCount: number; milestones: Blueprint['craftingMilestones'] }) {
+  if (milestones.length === 0) return null;
+  const status = getMilestoneStatus(craftCount, milestones);
+  if (status.allComplete) {
+    return (
+      <div className="px-3 py-2 border-t border-gray-700/50 text-center text-[11px] text-amber-500/70">
+        All milestones done
+      </div>
+    );
+  }
+  const next = milestones[status.completed];
+  const pct = Math.min(100, (craftCount / next.craftsNeeded) * 100);
+  return (
+    <div className="px-3 pt-2 pb-2.5 border-t border-gray-700/50 flex flex-col gap-1">
+      <div className="flex justify-between text-[11px] text-gray-400">
+        <span>{craftCount} / {next.craftsNeeded}</span>
+        <span className="text-gray-600 truncate max-w-[55%] text-right">{next.reward}</span>
+      </div>
+      <div className="h-1 bg-gray-700 rounded-full overflow-hidden">
+        <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
+export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUpdate, onClick }: BlueprintCardProps) {
+  const { name, type, tier, source, craftingMilestones } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount } = data;
 
   const { circleBackground, itemImage, itemImageFallback } = getBlueprintImages(name, type, source);
   const [imgSrc, setImgSrc] = useState<string | null>(itemImage);
 
-  const craftingStatus = getMilestoneStatus(craftCount, craftingMilestones);
-  const lastCraftingThreshold = craftingMilestones.length > 0
-    ? craftingMilestones[craftingMilestones.length - 1].craftsNeeded
-    : 0;
-  const sfCraftCount = Math.max(0, craftCount - lastCraftingThreshold);
-
-  const hasMilestones = craftingMilestones.length > 0 || (starforged && starforgedMilestones.length > 0);
-
   return (
-    // No overflow-hidden so the circle can pop above the card top
-    <div className={`relative isolate flex flex-col bg-gray-800 rounded-xl border border-gray-700/50 transition-opacity mt-6 ${!owned ? 'opacity-50' : ''}`}>
-
-      {/* Image area — rounded top corners clipped here, not on the outer card */}
+    <div
+      onClick={onClick}
+      className={`relative isolate flex flex-col bg-gray-800 rounded-xl border border-gray-700/50 transition-opacity mt-6 cursor-pointer hover:border-gray-500 ${!owned ? 'opacity-50' : ''}`}
+    >
+      {/* Image area */}
       <div className="relative bg-gray-900 rounded-t-xl pt-20 pb-4">
 
-        {/* Circle — centered, pops ~25% of its height above the card */}
+        {/* Circle */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 w-24 h-24 z-10 flex items-center justify-center">
           <img
             src={circleBackground}
@@ -92,20 +110,24 @@ export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUp
             </span>
           )}
 
-          {/* Ascension stars overlaid at the bottom of the circle */}
+          {/* Ascension stars — stopPropagation handled inside AscensionStars */}
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20">
             <AscensionStars level={ascensionLevel} onChange={v => onUpdate(name, { ascensionLevel: v })} />
           </div>
         </div>
 
-        {/* Tier badge — top left */}
+        {/* Tier badge */}
         <div className="absolute top-2 left-2 z-10">
           <TierBadge tier={tier} />
         </div>
 
-        {/* Owned + SF — top right, stacked */}
+        {/* Own + SF */}
         <div className="absolute top-2 right-2 z-10 flex flex-col items-end gap-1">
-          <label className="flex items-center gap-1 cursor-pointer select-none" title="Owned">
+          <label
+            onClick={e => e.stopPropagation()}
+            className="flex items-center gap-1 cursor-pointer select-none"
+            title="Owned"
+          >
             <span className="text-xs text-gray-400">Own</span>
             <input
               type="checkbox"
@@ -114,7 +136,11 @@ export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUp
               className="accent-amber-500 w-3.5 h-3.5 cursor-pointer"
             />
           </label>
-          <label className="flex items-center gap-1 cursor-pointer select-none" title="Starforged">
+          <label
+            onClick={e => e.stopPropagation()}
+            className="flex items-center gap-1 cursor-pointer select-none"
+            title="Starforged"
+          >
             <span className={`text-xs ${starforged ? 'text-purple-400' : 'text-gray-500'}`}>SF</span>
             <input
               type="checkbox"
@@ -127,48 +153,13 @@ export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUp
       </div>
 
       {/* Name + type */}
-      <div className="px-3 pt-3 pb-1">
+      <div className="px-3 pt-3 pb-2 flex-1">
         <p className="text-white text-sm font-semibold leading-tight truncate" title={name}>{name}</p>
         <p className="text-gray-500 text-xs mt-0.5">{type}</p>
       </div>
 
-      {/* Craft count */}
-      <div className="px-3 py-2 flex items-center gap-2 border-t border-gray-700/50 mt-auto">
-        <span className="text-xs text-gray-500">Crafts</span>
-        <input
-          type="number"
-          min={0}
-          value={craftCount === 0 ? '' : craftCount}
-          placeholder="0"
-          onChange={e => onUpdate(name, { craftCount: Math.max(0, parseInt(e.target.value) || 0) })}
-          className="ml-auto w-14 px-1.5 py-0.5 bg-gray-900 border border-gray-700 rounded text-xs text-white text-right focus:outline-none focus:border-amber-500"
-          title="Total crafts"
-        />
-      </div>
-
-      {/* Milestones */}
-      {hasMilestones && (
-        <div className="px-3 pb-2.5 flex flex-col gap-1 border-t border-gray-700/50 pt-2">
-          {craftingMilestones.length > 0 && (
-            <MilestoneProgress
-              label="Craft"
-              milestones={craftingMilestones}
-              craftCount={craftCount}
-              accent="amber"
-            />
-          )}
-          {starforged && starforgedMilestones.length > 0 && (
-            <MilestoneProgress
-              label="SF"
-              tooltip="Starforged progress"
-              milestones={starforgedMilestones}
-              craftCount={sfCraftCount}
-              accent="purple"
-              hideToNext={!craftingStatus.allComplete}
-            />
-          )}
-        </div>
-      )}
+      {/* Craft progress bar */}
+      <CraftProgressBar craftCount={craftCount} milestones={craftingMilestones} />
     </div>
   );
 });

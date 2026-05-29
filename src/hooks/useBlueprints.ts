@@ -16,20 +16,32 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
 
   const headers = rows[0].map(h => h.trim());
 
-  const nameIdx = headers.indexOf('Name');
-  const typeIdx = headers.indexOf('Type');
-  const tierIdx = headers.indexOf('Tier');
-  const sourceIdx = headers.indexOf('Unlock Prerequisite');
+  const nameIdx        = headers.indexOf('Name');
+  const typeIdx        = headers.indexOf('Type');
+  const tierIdx        = headers.indexOf('Tier');
+  const sourceIdx      = headers.indexOf('Unlock Prerequisite');
+  const valueIdx       = headers.indexOf('Value');
+  const atkIdx         = headers.indexOf('ATK');
+  const defIdx         = headers.indexOf('DEF');
+  const hpIdx          = headers.indexOf('HP');
+  const evaIdx         = headers.indexOf('EVA');
+  const critIdx        = headers.indexOf('CRIT');
+  const favorIdx       = headers.indexOf('Favor');
+  const airshipIdx     = headers.indexOf('Airship Power');
 
   if (nameIdx === -1 || typeIdx === -1) return [];
 
   // Locate the 5 crafting upgrade pairs and 5 starforged milestone pairs
   const craftingUpgradeIdxs: number[] = [];
   const starforgedMilestoneIdxs: number[] = [];
+  const ascensionUpgradeIdxs: number[] = [];
 
   for (let i = 1; i <= 5; i++) {
     craftingUpgradeIdxs.push(headers.indexOf(`Crafting Upgrade ${i}`));
     starforgedMilestoneIdxs.push(headers.indexOf(`Starforged Milestone ${i}`));
+  }
+  for (let i = 1; i <= 3; i++) {
+    ascensionUpgradeIdxs.push(headers.indexOf(`Ascension Upgrade ${i}`));
   }
 
   const blueprints: Blueprint[] = [];
@@ -42,13 +54,15 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
     // Skip blank rows, sub-headers, or separator rows
     if (!name || !type || name === 'Name' || type === 'Type') continue;
 
-    const tier = parseInt(row[tierIdx]?.trim()) || 0;
+    const tier   = parseInt(row[tierIdx]?.trim()) || 0;
     const source = (sourceIdx !== -1 ? row[sourceIdx]?.trim() : '') || '---';
 
     // Spreadsheet lumps Elements and Spirits together as "Enchantment" — split them
     const resolvedType = type !== 'Enchantment' ? type
       : name.endsWith(' Spirit') ? 'Spirit'
       : 'Element';
+
+    const num = (idx: number) => idx !== -1 ? (parseFloat(row[idx]?.trim()) || 0) : 0;
 
     const craftingMilestones = craftingUpgradeIdxs
       .map(idx => {
@@ -70,7 +84,22 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       })
       .filter((m): m is NonNullable<typeof m> => m !== null);
 
-    blueprints.push({ name, type: resolvedType, tier, source, craftingMilestones, starforgedMilestones });
+    const ascensionUpgrades = ascensionUpgradeIdxs
+      .map(idx => {
+        if (idx === -1) return null;
+        const description = row[idx]?.trim() ?? '';
+        const shardCost = parseInt(row[idx + 1]?.trim()) || 0;
+        if (!description || description === '---') return null;
+        return { description, shardCost };
+      })
+      .filter((u): u is NonNullable<typeof u> => u !== null);
+
+    blueprints.push({
+      name, type: resolvedType, tier, source,
+      value: num(valueIdx), atk: num(atkIdx), def: num(defIdx), hp: num(hpIdx),
+      eva: num(evaIdx), crit: num(critIdx), favor: num(favorIdx), airshipPower: num(airshipIdx),
+      craftingMilestones, starforgedMilestones, ascensionUpgrades,
+    });
   }
 
   return blueprints;

@@ -3,7 +3,9 @@ import { useBlueprints } from './hooks/useBlueprints';
 import { useUserData } from './hooks/useUserData';
 import { FilterBar } from './components/FilterBar';
 import { BlueprintTable } from './components/BlueprintTable';
+import { BlueprintModal } from './components/BlueprintModal';
 import { TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
+import type { Blueprint } from './types';
 
 export default function App() {
   const { blueprints, loading, error, refresh } = useBlueprints();
@@ -13,6 +15,7 @@ export default function App() {
   const [selectedSubType, setSelectedSubType] = useState('');
   const [search, setSearch] = useState('');
   const [showOwnedOnly, setShowOwnedOnly] = useState(false);
+  const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
 
   function handleCategoryChange(category: MainCategory) {
     setSelectedCategory(category);
@@ -66,14 +69,12 @@ export default function App() {
         </button>
       </header>
 
-      {/* Loading state */}
       {loading && blueprints.length === 0 && (
         <div className="flex flex-col items-center justify-center py-24 text-gray-500 gap-2">
           <div className="text-sm">Fetching blueprints from Google Sheets…</div>
         </div>
       )}
 
-      {/* Error with no cached data */}
       {error && !loading && blueprints.length === 0 && (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
           <p className="text-red-400 text-sm">{error}</p>
@@ -89,14 +90,12 @@ export default function App() {
         </div>
       )}
 
-      {/* Stale data warning */}
       {error && !loading && blueprints.length > 0 && (
         <div className="bg-yellow-900/30 border-b border-yellow-800/50 px-4 py-2 text-xs text-yellow-400">
           Using cached data — live refresh failed: {error}
         </div>
       )}
 
-      {/* Main content */}
       {blueprints.length > 0 && (
         <>
           <FilterBar
@@ -113,8 +112,18 @@ export default function App() {
             blueprints={filtered}
             getUserData={get}
             onUpdate={update}
+            onCardClick={setSelectedBlueprint}
           />
         </>
+      )}
+
+      {selectedBlueprint && (
+        <BlueprintModal
+          blueprint={selectedBlueprint}
+          data={get(selectedBlueprint.name)}
+          onUpdate={update}
+          onClose={() => setSelectedBlueprint(null)}
+        />
       )}
     </div>
   );

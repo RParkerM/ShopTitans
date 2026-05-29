@@ -5,9 +5,10 @@ interface BlueprintTableProps {
   blueprints: Blueprint[];
   getUserData: (name: string) => UserBlueprintData;
   onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
+  onCardClick: (blueprint: Blueprint) => void;
 }
 
-export function BlueprintTable({ blueprints, getUserData, onUpdate }: BlueprintTableProps) {
+export function BlueprintTable({ blueprints, getUserData, onUpdate, onCardClick }: BlueprintTableProps) {
   if (blueprints.length === 0) {
     return (
       <div className="text-center text-gray-600 py-16 text-sm">
@@ -24,6 +25,7 @@ export function BlueprintTable({ blueprints, getUserData, onUpdate }: BlueprintT
           blueprint={bp}
           data={getUserData(bp.name)}
           onUpdate={onUpdate}
+          onClick={() => onCardClick(bp)}
         />
       ))}
     </div>
