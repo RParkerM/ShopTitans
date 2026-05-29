@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { Blueprint, AscensionUpgrade, UserBlueprintData } from '../types';
 import { getBlueprintImages } from '../utils/blueprintImages';
 import { getMilestoneStatus } from '../utils/milestones';
@@ -22,6 +22,41 @@ const ICONS = {
 };
 
 // ── Shared sub-components ──────────────────────────────────────────────────
+
+function HoldButton({ onClick, children, className }: { onClick: () => void; children: React.ReactNode; className: string }) {
+  const cbRef = useRef(onClick);
+  cbRef.current = onClick; // always current — no stale closure on rapid fire
+
+  const timeout  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interval = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const start = () => {
+    cbRef.current();
+    timeout.current = setTimeout(() => {
+      interval.current = setInterval(() => cbRef.current(), 50);
+    }, 400);
+  };
+
+  const stop = () => {
+    if (timeout.current)  clearTimeout(timeout.current);
+    if (interval.current) clearInterval(interval.current);
+  };
+
+  useEffect(() => stop, []); // clear on unmount
+
+  return (
+    <button
+      onMouseDown={start}
+      onMouseUp={stop}
+      onMouseLeave={stop}
+      onTouchStart={e => { e.preventDefault(); start(); }}
+      onTouchEnd={stop}
+      className={className}
+    >
+      {children}
+    </button>
+  );
+}
 
 function TierBadge({ tier }: { tier: number }) {
   const colors =
@@ -102,10 +137,12 @@ function MilestoneList({
   milestones,
   craftCount,
   accent,
+  onSetCount,
 }: {
   milestones: Blueprint['craftingMilestones'];
   craftCount: number;
   accent: 'amber' | 'purple';
+  onSetCount: (v: number) => void;
 }) {
   const done   = accent === 'amber' ? 'bg-amber-500/10 border-amber-700/40' : 'bg-purple-500/10 border-purple-700/40';
   const check  = accent === 'amber' ? 'border-amber-500 bg-amber-500' : 'border-purple-500 bg-purple-500';
@@ -119,10 +156,13 @@ function MilestoneList({
         {milestones.map((m, i) => {
           const complete = craftCount >= m.craftsNeeded;
           return (
-            <div
+            <button
               key={i}
-              className={`flex items-center gap-2.5 text-xs rounded-lg px-3 py-2 border ${
-                complete ? `${done}` : 'bg-gray-800/60 border-transparent'
+              onClick={() => onSetCount(m.craftsNeeded)}
+              className={`flex items-center gap-2.5 text-xs rounded-lg px-3 py-2 border w-full text-left transition-colors ${
+                complete
+                  ? `${done} hover:brightness-125`
+                  : 'bg-gray-800/60 border-transparent hover:bg-gray-700/60'
               }`}
             >
               <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
@@ -136,7 +176,7 @@ function MilestoneList({
               <span className={`shrink-0 tabular-nums ${complete ? 'text-gray-700' : 'text-gray-500'}`}>
                 {m.craftsNeeded}
               </span>
-            </div>
+            </button>
           );
         })}
       </div>
@@ -168,22 +208,32 @@ function MilestonesTab({ blueprint, craftCount, starforged, onCraftCountChange }
             {craftStatus.craftsToNext} to next
           </span>
         )}
-        <input
-          type="number"
-          min={0}
-          value={craftCount === 0 ? '' : craftCount}
-          placeholder="0"
-          onChange={e => onCraftCountChange(Math.max(0, parseInt(e.target.value) || 0))}
-          className="ml-auto w-20 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-sm text-white text-right focus:outline-none focus:border-amber-500"
-        />
+        <div className="ml-auto flex items-center gap-1">
+          <input
+            type="number"
+            min={0}
+            value={craftCount === 0 ? '' : craftCount}
+            placeholder="0"
+            onChange={e => onCraftCountChange(Math.max(0, parseInt(e.target.value) || 0))}
+            className="w-16 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-sm text-white text-right focus:outline-none focus:border-amber-500"
+          />
+          <HoldButton
+            onClick={() => onCraftCountChange(Math.max(0, craftCount - 1))}
+            className="w-6 h-6 flex items-center justify-center rounded bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-bold leading-none select-none"
+          >−</HoldButton>
+          <HoldButton
+            onClick={() => onCraftCountChange(craftCount + 1)}
+            className="w-6 h-6 flex items-center justify-center rounded bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-bold leading-none select-none"
+          >+</HoldButton>
+        </div>
       </div>
 
       {craftingMilestones.length > 0 && (
-        <MilestoneList milestones={craftingMilestones} craftCount={craftCount} accent="amber" />
+        <MilestoneList milestones={craftingMilestones} craftCount={craftCount} accent="amber" onSetCount={onCraftCountChange} />
       )}
 
       {starforged && offsetSfMilestones.length > 0 && (
-        <MilestoneList milestones={offsetSfMilestones} craftCount={craftCount} accent="purple" />
+        <MilestoneList milestones={offsetSfMilestones} craftCount={craftCount} accent="purple" onSetCount={onCraftCountChange} />
       )}
 
       {craftingMilestones.length === 0 && (

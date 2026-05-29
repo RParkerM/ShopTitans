@@ -32,7 +32,7 @@ export interface Blueprint {
 export interface UserBlueprintData {
   owned: boolean;
   starforged: boolean;
-  ascensionLevel: number; // 0–3
+  ascensionLevel: number; // 0-3
   craftCount: number;
   ascensionShards: number;
 }
