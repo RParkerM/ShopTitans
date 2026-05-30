@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import type { Blueprint, AscensionUpgrade, UserBlueprintData } from '../types';
 import { getBlueprintImages } from '../utils/blueprintImages';
 import { getMilestoneStatus } from '../utils/milestones';
+import { TierBadge } from './TierBadge';
 
 const SI      = '/fan-kit/Stat%20Indicators';
 const HEROES  = `${SI}/Heroes`;
@@ -55,18 +56,6 @@ function HoldButton({ onClick, children, className }: { onClick: () => void; chi
     >
       {children}
     </button>
-  );
-}
-
-function TierBadge({ tier }: { tier: number }) {
-  const colors =
-    tier >= 13 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-    tier >= 10 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40' :
-    tier >= 7  ? 'bg-purple-500/20 text-purple-300 border-purple-500/40' :
-    tier >= 4  ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
-                 'bg-gray-500/20 text-gray-400 border-gray-500/40';
-  return (
-    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${colors}`}>T{tier}</span>
   );
 }
 
@@ -331,7 +320,7 @@ interface BlueprintModalProps {
 
 export function BlueprintModal({ blueprint, data, onUpdate, onClose }: BlueprintModalProps) {
   const [tab, setTab] = useState<Tab>('info');
-  const { name, type, tier, source, craftingMilestones, starforgedMilestones, ascensionUpgrades } = blueprint;
+  const { name, type, tier, source, ascensionUpgrades } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount, ascensionShards } = data;
 
   const { circleBackground, itemImage, itemImageFallback } = getBlueprintImages(name, type, source);
@@ -397,20 +386,22 @@ export function BlueprintModal({ blueprint, data, onUpdate, onClose }: Blueprint
               <input
                 type="checkbox"
                 checked={owned}
-                onChange={e => onUpdate(name, { owned: e.target.checked })}
+                onChange={e => onUpdate(name, e.target.checked ? { owned: true } : { owned: false, starforged: false })}
                 className="accent-amber-500 w-3.5 h-3.5 cursor-pointer"
               />
               Owned
             </label>
-            <label className={`flex items-center gap-1.5 text-xs cursor-pointer select-none ${starforged ? 'text-purple-400' : 'text-gray-400'}`}>
-              <input
-                type="checkbox"
-                checked={starforged}
-                onChange={e => onUpdate(name, { starforged: e.target.checked })}
-                className="accent-purple-500 w-3.5 h-3.5 cursor-pointer"
-              />
-              Starforged
-            </label>
+            {owned && (
+              <label className={`flex items-center gap-1.5 text-xs cursor-pointer select-none ${starforged ? 'text-purple-400' : 'text-gray-400'}`}>
+                <input
+                  type="checkbox"
+                  checked={starforged}
+                  onChange={e => onUpdate(name, { starforged: e.target.checked })}
+                  className="accent-purple-500 w-3.5 h-3.5 cursor-pointer"
+                />
+                Starforged
+              </label>
+            )}
           </div>
         </div>
 

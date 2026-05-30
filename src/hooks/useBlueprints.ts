@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Blueprint } from '../types';
 import { parseCSV } from '../utils/csvParser';
 
@@ -31,7 +31,6 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
 
   if (nameIdx === -1 || typeIdx === -1) return [];
 
-  // Locate the 5 crafting upgrade pairs and 5 starforged milestone pairs
   const craftingUpgradeIdxs: number[] = [];
   const starforgedMilestoneIdxs: number[] = [];
   const ascensionUpgradeIdxs: number[] = [];
@@ -51,13 +50,11 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
     const name = row[nameIdx]?.trim();
     const type = row[typeIdx]?.trim();
 
-    // Skip blank rows, sub-headers, or separator rows
     if (!name || !type || name === 'Name' || type === 'Type') continue;
 
     const tier   = parseInt(row[tierIdx]?.trim()) || 0;
     const source = (sourceIdx !== -1 ? row[sourceIdx]?.trim() : '') || '---';
 
-    // Spreadsheet lumps Elements and Spirits together as "Enchantment" — split them
     const resolvedType = type !== 'Enchantment' ? type
       : name.endsWith(' Spirit') ? 'Spirit'
       : 'Element';
@@ -105,31 +102,29 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
   return blueprints;
 }
 
-export function useBlueprints() {
-  const [blueprints, setBlueprints] = useState<Blueprint[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+// Read the cache once synchronously so initial state reflects what's already stored.
+function readCache(): { blueprints: Blueprint[]; isFresh: boolean } {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return { blueprints: [], isFresh: false };
+    const cached: CachedBlueprints = JSON.parse(raw);
+    const isFresh = cached.blueprints.length > 0 && (Date.now() - cached.timestamp) < CACHE_TTL;
+    return { blueprints: cached.blueprints, isFresh };
+  } catch {
+    return { blueprints: [], isFresh: false };
+  }
+}
 
-  const fetchBlueprints = useCallback(async (forceRefresh = false) => {
+export function useBlueprints() {
+  // Initialise synchronously — no loading flash when fresh cache exists.
+  const init = useRef(readCache());
+  const [blueprints, setBlueprints] = useState<Blueprint[]>(init.current.blueprints);
+  const [loading, setLoading]       = useState(!init.current.isFresh);
+  const [error, setError]           = useState<string | null>(null);
+
+  const fetchBlueprints = useCallback(async () => {
     setLoading(true);
     setError(null);
-
-    if (!forceRefresh) {
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        try {
-          const parsed: CachedBlueprints = JSON.parse(cached);
-          if (Date.now() - parsed.timestamp < CACHE_TTL && parsed.blueprints.length > 0) {
-            setBlueprints(parsed.blueprints);
-            setLoading(false);
-            return;
-          }
-        } catch {
-          // ignore corrupt cache
-        }
-      }
-    }
-
     try {
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Blueprints`;
       const res = await fetch(url);
@@ -141,26 +136,17 @@ export function useBlueprints() {
       localStorage.setItem(CACHE_KEY, JSON.stringify({ blueprints: parsed, timestamp: Date.now() } satisfies CachedBlueprints));
       setBlueprints(parsed);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Unknown error';
-      setError(msg);
-      // Fall back to stale cache if available
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        try {
-          const { blueprints: stale }: CachedBlueprints = JSON.parse(cached);
-          if (stale.length > 0) setBlueprints(stale);
-        } catch {
-          // nothing
-        }
-      }
+      setError(err instanceof Error ? err.message : 'Unknown error');
+      // Stale data (if any) is already in state from init — nothing extra needed.
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchBlueprints(false);
+    // Only hit the network if the cache was stale or missing on mount.
+    if (!init.current.isFresh) fetchBlueprints();
   }, [fetchBlueprints]);
 
-  return { blueprints, loading, error, refresh: () => fetchBlueprints(true) };
+  return { blueprints, loading, error, refresh: fetchBlueprints };
 }

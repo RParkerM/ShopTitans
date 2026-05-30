@@ -2,6 +2,7 @@ import { memo, useState } from 'react';
 import type { Blueprint, UserBlueprintData } from '../types';
 import { getMilestoneStatus } from '../utils/milestones';
 import { getBlueprintImages } from '../utils/blueprintImages';
+import { TierBadge } from './TierBadge';
 
 interface BlueprintCardProps {
   blueprint: Blueprint;
@@ -25,20 +26,6 @@ function AscensionStars({ level, onChange }: { level: number; onChange: (v: numb
         </button>
       ))}
     </div>
-  );
-}
-
-function TierBadge({ tier }: { tier: number }) {
-  const colors =
-    tier >= 13 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-    tier >= 10 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40' :
-    tier >= 7  ? 'bg-purple-500/20 text-purple-300 border-purple-500/40' :
-    tier >= 4  ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
-                 'bg-gray-500/20 text-gray-400 border-gray-500/40';
-  return (
-    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${colors}`}>
-      T{tier}
-    </span>
   );
 }
 
@@ -132,23 +119,25 @@ export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUp
             <input
               type="checkbox"
               checked={owned}
-              onChange={e => onUpdate(name, { owned: e.target.checked })}
+              onChange={e => onUpdate(name, e.target.checked ? { owned: true } : { owned: false, starforged: false })}
               className="accent-amber-500 w-3.5 h-3.5 cursor-pointer"
             />
           </label>
-          <label
-            onClick={e => e.stopPropagation()}
-            className="flex items-center gap-1 cursor-pointer select-none"
-            title="Starforged"
-          >
-            <span className={`text-xs ${starforged ? 'text-purple-400' : 'text-gray-500'}`}>SF</span>
-            <input
-              type="checkbox"
-              checked={starforged}
-              onChange={e => onUpdate(name, { starforged: e.target.checked })}
-              className="accent-purple-500 w-3.5 h-3.5 cursor-pointer"
-            />
-          </label>
+          {owned && (
+            <label
+              onClick={e => e.stopPropagation()}
+              className="flex items-center gap-1 cursor-pointer select-none"
+              title="Starforged"
+            >
+              <span className={`text-xs ${starforged ? 'text-purple-400' : 'text-gray-500'}`}>SF</span>
+              <input
+                type="checkbox"
+                checked={starforged}
+                onChange={e => onUpdate(name, { starforged: e.target.checked })}
+                className="accent-purple-500 w-3.5 h-3.5 cursor-pointer"
+              />
+            </label>
+          )}
         </div>
       </div>
 
