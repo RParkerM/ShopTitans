@@ -208,6 +208,12 @@ const QUALITY_SHADOW: Record<string, string> = {
   Legendary: 'drop-shadow(-1px -1px 0 #ffe600) drop-shadow(1px 1px 0 #ffe600) drop-shadow(1px -1px 0 #ffe600) drop-shadow(-1px 1px 0 #ffe600) drop-shadow(0 0 5px rgba(255,230,0,.5)) drop-shadow(0 0 5px rgba(255,230,0,.5))',
 };
 
+const CIRCLE_BASE = 'w-9 h-9 rounded-full flex items-center justify-center shrink-0';
+const CIRCLE_RESOURCE = `${CIRCLE_BASE} bg-[rgba(46,64,107,0.3)]`;
+const CIRCLE_ITEM     = `${CIRCLE_BASE} border-2 border-[rgba(46,64,107,0.3)]`;
+// const CIRCLE_RESOURCE = `${CIRCLE_BASE} bg-[rgba(214,115,164,0.3)]`;
+// const CIRCLE_ITEM     = `${CIRCLE_BASE} border-2 border-[rgba(214,115,164,0.3)]`;
+
 function ComponentIcon({ component }: { component: Blueprint['components'][number] }) {
   const { name, amount, quality } = component;
   const isItem = quality !== '' && quality !== '---';
@@ -220,21 +226,21 @@ function ComponentIcon({ component }: { component: Blueprint['components'][numbe
 
   return (
     <div className="flex flex-col items-center gap-1">
-      {imgSrc ? (
-        <img
-          src={imgSrc}
-          alt={name}
-          title={name}
-          className="h-8 w-8 object-contain"
-          style={shadow ? { filter: shadow } : undefined}
-          onError={() => setImgSrc(null)}
-          draggable={false}
-        />
-      ) : (
-        <div className="h-8 w-8 flex items-center justify-center text-[9px] text-gray-500 leading-tight text-center px-0.5">
-          {name}
-        </div>
-      )}
+      <div className={isItem ? CIRCLE_ITEM : CIRCLE_RESOURCE} title={name}>
+        {imgSrc ? (
+          <img
+            src={imgSrc}
+            alt={name}
+            title={name}
+            className="h-8 w-8 object-contain"
+            style={shadow ? { filter: shadow } : undefined}
+            onError={() => setImgSrc(null)}
+            draggable={false}
+          />
+        ) : (
+          <span className="text-[9px] text-gray-500 leading-tight text-center px-0.5">{name}</span>
+        )}
+      </div>
       <span className="text-xs font-semibold text-white tabular-nums">{amount}</span>
     </div>
   );
@@ -255,9 +261,7 @@ function BlueprintTab({ blueprint }: { blueprint: Blueprint }) {
           {r.icon ? (
             <img src={r.icon} alt={r.label} title={r.label} className="h-8 w-8 object-contain" draggable={false} />
           ) : (
-            <div className="h-8 w-8 flex items-center justify-center text-[9px] text-gray-500 leading-tight text-center">
-              {r.label}
-            </div>
+            <span className="h-8 w-8 flex items-center justify-center text-[9px] text-gray-500 leading-tight text-center">{r.label}</span>
           )}
           <span className="text-xs font-semibold text-white tabular-nums">{resources[r.key]}</span>
         </div>
