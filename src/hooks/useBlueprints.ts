@@ -3,7 +3,7 @@ import type { Blueprint } from '../types';
 import { parseCSV } from '../utils/csvParser';
 
 const SHEET_ID = '1WLa7X8h3O0-aGKxeAlCL7bnN8-FhGd3t7pz2RCzSg8c';
-const CACHE_KEY = 'st_blueprints_cache';
+const CACHE_KEY = 'st_blueprints_cache_v2';
 const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 interface CachedBlueprints {
@@ -28,6 +28,19 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
   const critIdx        = headers.indexOf('CRIT');
   const favorIdx       = headers.indexOf('Favor');
   const airshipIdx     = headers.indexOf('Airship Power');
+
+  const ironIdx      = airshipIdx + 9;
+  const woodIdx      = ironIdx + 1;
+  const leatherIdx   = woodIdx + 1;
+  const herbsIdx     = leatherIdx + 1;
+  const steelIdx     = herbsIdx + 1;
+  const ironwoodIdx  = steelIdx + 1;
+  const fabricIdx    = ironwoodIdx + 1;
+  const oilIdx       = fabricIdx + 1;
+  const etherIdx     = oilIdx + 1;
+  const jewelsIdx    = etherIdx + 1;
+  const essenceIdx   = jewelsIdx + 1;
+  const stardustIdx  = essenceIdx + 1;
 
   if (nameIdx === -1 || typeIdx === -1) return [];
 
@@ -96,6 +109,20 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       value: num(valueIdx), atk: num(atkIdx), def: num(defIdx), hp: num(hpIdx),
       eva: num(evaIdx), crit: num(critIdx), favor: num(favorIdx), airshipPower: num(airshipIdx),
       craftingMilestones, starforgedMilestones, ascensionUpgrades,
+      resources: {
+        iron:     num(ironIdx),
+        wood:     num(woodIdx),
+        leather:  num(leatherIdx),
+        herbs:    num(herbsIdx),
+        steel:    num(steelIdx),
+        ironwood: num(ironwoodIdx),
+        fabric:   num(fabricIdx),
+        oil:      num(oilIdx),
+        ether:    num(etherIdx),
+        jewels:   num(jewelsIdx),
+        essence:  num(essenceIdx),
+        stardust: num(stardustIdx),
+      },
     });
   }
 

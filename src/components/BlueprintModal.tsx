@@ -107,9 +107,46 @@ function InfoTab({ blueprint }: { blueprint: Blueprint }) {
 
 // ── Blueprint tab ─────────────────────────────────────────────────────────
 
-function BlueprintTab() {
+const RES = '/fan-kit/Resources';
+
+const RESOURCE_DEFS: { key: keyof Blueprint['resources']; icon: string | null; label: string }[] = [
+  { key: 'iron',     icon: `${RES}/icon_global_resource_iron.png`,     label: 'Iron' },
+  { key: 'wood',     icon: `${RES}/icon_global_resource_wood.png`,     label: 'Wood' },
+  { key: 'leather',  icon: `${RES}/icon_global_resource_leather.png`,  label: 'Leather' },
+  { key: 'herbs',    icon: `${RES}/icon_global_resource_herbs.png`,    label: 'Herbs' },
+  { key: 'steel',    icon: `${RES}/icon_global_resource_steel.png`,    label: 'Steel' },
+  { key: 'ironwood', icon: `${RES}/icon_global_resource_ironwood.png`, label: 'Ironwood' },
+  { key: 'fabric',   icon: `${RES}/icon_global_resource_fabric.png`,   label: 'Fabric' },
+  { key: 'oil',      icon: `${RES}/icon_global_resource_oils.png`,     label: 'Oil' },
+  { key: 'ether',    icon: `${RES}/icon_global_resource_mana.png`,     label: 'Ether' },
+  { key: 'jewels',   icon: `${RES}/icon_global_resource_gems.png`,     label: 'Jewels' },
+  { key: 'essence',  icon: `${RES}/icon_global_resource_essence.png`,  label: 'Essence' },
+  { key: 'stardust', icon: `${RES}/icon_global_resource_stardust.png`, label: 'Stardust' },
+];
+
+function BlueprintTab({ blueprint }: { blueprint: Blueprint }) {
+  const { resources } = blueprint;
+  const present = RESOURCE_DEFS.filter(r => resources[r.key] > 0);
+
+  if (present.length === 0) {
+    return <div className="text-gray-600 text-sm text-center py-8">No resource data.</div>;
+  }
+
   return (
-    <div className="text-gray-600 text-sm text-center py-8">Coming soon</div>
+    <div className="flex flex-wrap justify-center gap-3">
+      {present.map(r => (
+        <div key={r.key} className="flex flex-col items-center gap-1">
+          {r.icon ? (
+            <img src={r.icon} alt={r.label} className="h-8 w-8 object-contain" />
+          ) : (
+            <div className="h-8 w-8 flex items-center justify-center text-[9px] text-gray-500 leading-tight text-center">
+              {r.label}
+            </div>
+          )}
+          <span className="text-xs font-semibold text-white tabular-nums">{resources[r.key]}</span>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -425,7 +462,7 @@ export function BlueprintModal({ blueprint, data, onUpdate, onClose }: Blueprint
         {/* Tab content — scrollable */}
         <div className="overflow-y-auto flex-1 p-4">
           {tab === 'info' && <InfoTab blueprint={blueprint} />}
-          {tab === 'blueprint' && <BlueprintTab />}
+          {tab === 'blueprint' && <BlueprintTab blueprint={blueprint} />}
           {tab === 'milestones' && (
             <MilestonesTab
               blueprint={blueprint}

@@ -8,6 +8,21 @@ export interface AscensionUpgrade {
   shardCost: number;
 }
 
+export interface Resources {
+  iron: number;
+  wood: number;
+  leather: number;
+  herbs: number;
+  steel: number;
+  ironwood: number;
+  fabric: number;
+  oil: number;
+  ether: number;     // spreadsheet column: "Ether", icon: mana
+  jewels: number;    // spreadsheet column: "Jewels", icon: gems
+  essence: number;
+  stardust: number;  // no icon in fan kit
+}
+
 export interface Blueprint {
   name: string;
   type: string;
@@ -27,6 +42,8 @@ export interface Blueprint {
   starforgedMilestones: Milestone[];
   // Ascension
   ascensionUpgrades: AscensionUpgrade[];
+  // Resources
+  resources: Resources;
 }
 
 export interface UserBlueprintData {
