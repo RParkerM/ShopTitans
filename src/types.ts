@@ -8,6 +8,12 @@ export interface AscensionUpgrade {
   shardCost: number;
 }
 
+export interface BlueprintComponent {
+  name: string;
+  amount: number;
+  quality: string; // '---' or empty = standard component; 'Normal'/'Uncommon'/etc. = crafted item
+}
+
 export interface Resources {
   iron: number;
   wood: number;
@@ -44,6 +50,8 @@ export interface Blueprint {
   ascensionUpgrades: AscensionUpgrade[];
   // Resources
   resources: Resources;
+  // Components
+  components: BlueprintComponent[];
 }
 
 export interface UserBlueprintData {

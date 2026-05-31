@@ -120,8 +120,10 @@ export default function App() {
       {selectedBlueprint && (
         <BlueprintModal
           blueprint={selectedBlueprint}
+          blueprints={filtered}
           data={get(selectedBlueprint.name)}
           onUpdate={update}
+          onNavigate={setSelectedBlueprint}
           onClose={() => setSelectedBlueprint(null)}
         />
       )}

@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { Blueprint } from '../types';
+import type { Blueprint, BlueprintComponent } from '../types';
 import { parseCSV } from '../utils/csvParser';
 
 const SHEET_ID = '1WLa7X8h3O0-aGKxeAlCL7bnN8-FhGd3t7pz2RCzSg8c';
-const CACHE_KEY = 'st_blueprints_cache_v2';
+const CACHE_KEY = 'st_blueprints_cache_v4';
 const CACHE_TTL = 24 * 60 * 60 * 1000;
+const LEGACY_CACHE_KEYS = ['st_blueprints_cache', 'st_blueprints_cache_v2', 'st_blueprints_cache_v3'];
 
 interface CachedBlueprints {
   blueprints: Blueprint[];
@@ -41,6 +42,12 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
   const jewelsIdx    = etherIdx + 1;
   const essenceIdx   = jewelsIdx + 1;
   const stardustIdx  = essenceIdx + 1;
+
+  // Collect all "Component" column indices (each followed by Quality and Amount Needed)
+  const componentIdxs: number[] = [];
+  for (let i = 0; i < headers.length; i++) {
+    if (headers[i] === 'Component') componentIdxs.push(i);
+  }
 
   if (nameIdx === -1 || typeIdx === -1) return [];
 
@@ -104,11 +111,21 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       })
       .filter((u): u is NonNullable<typeof u> => u !== null);
 
+    const components: BlueprintComponent[] = componentIdxs
+      .map(idx => {
+        const compName = row[idx]?.trim() ?? '';
+        const quality  = row[idx + 1]?.trim() ?? '';
+        const amount   = parseInt(row[idx + 2]?.trim()) || 0;
+        if (!compName || compName === '---' || amount === 0) return null;
+        return { name: compName, amount, quality };
+      })
+      .filter((c): c is BlueprintComponent => c !== null);
+
     blueprints.push({
       name, type: resolvedType, tier, source,
       value: num(valueIdx), atk: num(atkIdx), def: num(defIdx), hp: num(hpIdx),
       eva: num(evaIdx), crit: num(critIdx), favor: num(favorIdx), airshipPower: num(airshipIdx),
-      craftingMilestones, starforgedMilestones, ascensionUpgrades,
+      craftingMilestones, starforgedMilestones, ascensionUpgrades, components,
       resources: {
         iron:     num(ironIdx),
         wood:     num(woodIdx),
@@ -160,7 +177,12 @@ export function useBlueprints() {
       const rows = parseCSV(text);
       const parsed = parseBlueprints(rows);
       if (parsed.length === 0) throw new Error('No blueprints found — sheet may be empty or formatted differently.');
-      localStorage.setItem(CACHE_KEY, JSON.stringify({ blueprints: parsed, timestamp: Date.now() } satisfies CachedBlueprints));
+      LEGACY_CACHE_KEYS.forEach(k => localStorage.removeItem(k));
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ blueprints: parsed, timestamp: Date.now() } satisfies CachedBlueprints));
+      } catch {
+        // Quota exceeded — app still works, just won't cache this session.
+      }
       setBlueprints(parsed);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');

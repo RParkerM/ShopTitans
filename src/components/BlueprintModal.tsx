@@ -107,6 +107,83 @@ function InfoTab({ blueprint }: { blueprint: Blueprint }) {
 
 // ── Blueprint tab ─────────────────────────────────────────────────────────
 
+const COMP = '/fan-kit/Components';
+
+const STANDARD_COMPONENT_ICONS: Record<string, string> = {
+  'Elven Wood':         `${COMP}/elvenwood.png`,
+  'Iron Pine Cone':     `${COMP}/redpinecone.png`,
+  'Glow Shroom':        `${COMP}/glowingmushrooms.png`,
+  'Silver Dust':        `${COMP}/arcanedust.png`,
+  'Webbed Wing':        `${COMP}/webbedwings.png`,
+  'Precious Gem':       `${COMP}/preciousgem.png`,
+  'Living Root':        `${COMP}/livingroots.png`,
+  'Rustwyrm Scale':     `${COMP}/darkscale.png`,
+  'Deep Pearl':         `${COMP}/icypearl.png`,
+  'White Sand':         `${COMP}/whitesand.png`,
+  'Bronze Fang':        `${COMP}/sharpfang.png`,
+  'Moon Crystal':       `${COMP}/mooncrystal.png`,
+  'Evil Eye':           `${COMP}/evileye.png`,
+  'Silk Scarab':        `${COMP}/silkscarab.png`,
+  'Star Metal':         `${COMP}/starmetal.png`,
+  'Ancient Marble':     `${COMP}/ancientmarble.png`,
+  'Overgrown Vine':     `${COMP}/overgrownvine.png`,
+  'Chronos Crystal':    `${COMP}/timecrystal.png`,
+  'Spooky Ectoplasm':   `${COMP}/ectoplasm.png`,
+  'Thread of Fate':     `${COMP}/sewingthread.png`,
+  'Ghastly Pennant':    `${COMP}/ghostflag.png`,
+  'Deep Coral':         `${COMP}/deepcoral.png`,
+  'Crystal Lullaby':    `${COMP}/sirenshard.png`,
+  'Precious Shell':     `${COMP}/goldshell.png`,
+  'Grim Talon':         `${COMP}/grimtalon.png`,
+  'Zirconia Eggshell':  `${COMP}/crystalegg.png`,
+  'Boreal Gale':        `${COMP}/icybreeze.png`,
+  'Crush Claw':         `${COMP}/crabclaw.png`,
+  'Raw Obsidian':       `${COMP}/obsidian.png`,
+  'Magma Core':         `${COMP}/magmacore.png`,
+  "Outsider's Claw":    `${COMP}/voidcrystal.png`,
+  'All-Seeing Eye':     `${COMP}/voideye.png`,
+  'Astral Fabric':      `${COMP}/voidcloth.png`,
+  'Demigod Pinion':     `${COMP}/demigodpinion.png`,
+  "Heaven's Crest":     `${COMP}/heavencrest.png`,
+  'Divine Spark':       `${COMP}/divinespark.png`,
+  'Mysterious Fossil':  `${COMP}/oldfossil.png`,
+  'Dinosaur Leather':   `${COMP}/dinoleather.png`,
+  'Ancient Amber':      `${COMP}/amber.png`,
+  'Elder Wood':         `${COMP}/tw_elvenwood.png`,
+  'Man-goroots':        `${COMP}/tw_livingroots.png`,
+  'Full Moon Crystal':  `${COMP}/tw_mooncrystal.png`,
+  'Star Metal Ingot':   `${COMP}/tw_starmetal.png`,
+  'Kingtoplasm':        `${COMP}/tw_ectoplasm.png`,
+  'Marble Pillar':      `${COMP}/tw_ancientmarble.png`,
+  'Xzyur Claw':         `${COMP}/alienclaw.png`,
+  'Xzyur Eye':          `${COMP}/alieneye.png`,
+  'Alien Bulb':         `${COMP}/alienmushroom.png`,
+  'Wing Nexus':         `${COMP}/tw_webbedwings.png`,
+  'Paramount Gem':      `${COMP}/tw_preciousgem.png`,
+  'Hybridized Vine':    `${COMP}/tw_overgrownvine.png`,
+  'Rusted Pickaxe':     `${COMP}/rustyaxe.png`,
+  'Deterioriated Book': `${COMP}/rustyscroll.png`,
+  'Faded Cowl':         `${COMP}/rustyroguehat.png`,
+  'Tattered Binder':    `${COMP}/rustycardscroll.png`,
+  'Broken Torc':        `${COMP}/rustyamulet.png`,
+  'Rusted Katana':      `${COMP}/rustysword.png`,
+  'Rusted Tassets':     `${COMP}/rustyheavyarmor.png`,
+  'Chunk of Boots':     `${COMP}/rustyboots.png`,
+  'Ruined Mace':        `${COMP}/rustymace.png`,
+  'Rusted Cannon':      `${COMP}/rustygun.png`,
+  'Spent Knowledge':    `${COMP}/rustycup.png`,
+  'Golden Chunk':       `${COMP}/tabletfragment.png`,
+  'Opulent Jewel':      `${COMP}/tabletjewel.png`,
+  'Platinum Bangles':   `${COMP}/platinumjewel.png`,
+  'Precious Pearl':     `${COMP}/coraljewel.png`,
+  'Sigil of Grace':     `${COMP}/gracesigil.png`,
+  'Sigil of Spark':     `${COMP}/sparksigil.png`,
+  'Sigil of Might':     `${COMP}/mightsigil.png`,
+  'Sigil of True Grace': `${COMP}/gracesigil2.png`,
+  'Sigil of True Spark': `${COMP}/sparksigil2.png`,
+  'Sigil of True Might': `${COMP}/mightsigil2.png`,
+};
+
 const RES = '/fan-kit/Resources';
 
 const RESOURCE_DEFS: { key: keyof Blueprint['resources']; icon: string | null; label: string }[] = [
@@ -124,20 +201,59 @@ const RESOURCE_DEFS: { key: keyof Blueprint['resources']; icon: string | null; l
   { key: 'stardust', icon: `${RES}/icon_global_resource_stardust.png`, label: 'Stardust' },
 ];
 
-function BlueprintTab({ blueprint }: { blueprint: Blueprint }) {
-  const { resources } = blueprint;
-  const present = RESOURCE_DEFS.filter(r => resources[r.key] > 0);
+const QUALITY_SHADOW: Record<string, string> = {
+  Superior:  'drop-shadow(-1px -1px 0 #2dcd00) drop-shadow(1px 1px 0 #2dcd00) drop-shadow(1px -1px 0 #2dcd00) drop-shadow(-1px 1px 0 #2dcd00) drop-shadow(0 0 5px rgba(45,205,0,.5)) drop-shadow(0 0 5px rgba(45,205,0,.5))',
+  Flawless:  'drop-shadow(-1px -1px 0 #0ef) drop-shadow(1px 1px 0 #0ef) drop-shadow(1px -1px 0 #0ef) drop-shadow(-1px 1px 0 #0ef) drop-shadow(0 0 5px rgba(0,238,255,.5)) drop-shadow(0 0 5px rgba(0,238,255,.5))',
+  Epic:      'drop-shadow(-1px -1px 0 #c300ff) drop-shadow(1px 1px 0 #c300ff) drop-shadow(1px -1px 0 #c300ff) drop-shadow(-1px 1px 0 #c300ff) drop-shadow(0 0 5px rgba(195,0,255,.5)) drop-shadow(0 0 5px rgba(195,0,255,.5))',
+  Legendary: 'drop-shadow(-1px -1px 0 #ffe600) drop-shadow(1px 1px 0 #ffe600) drop-shadow(1px -1px 0 #ffe600) drop-shadow(-1px 1px 0 #ffe600) drop-shadow(0 0 5px rgba(255,230,0,.5)) drop-shadow(0 0 5px rgba(255,230,0,.5))',
+};
 
-  if (present.length === 0) {
+function ComponentIcon({ component }: { component: Blueprint['components'][number] }) {
+  const { name, amount, quality } = component;
+  const isItem = quality !== '' && quality !== '---';
+  const [imgSrc, setImgSrc] = useState<string | null>(() => {
+    if (!isItem) return STANDARD_COMPONENT_ICONS[name] ?? null;
+    return getBlueprintImages(name, '', '---').itemImage;
+  });
+
+  const shadow = QUALITY_SHADOW[quality];
+
+  return (
+    <div className="flex flex-col items-center gap-1">
+      {imgSrc ? (
+        <img
+          src={imgSrc}
+          alt={name}
+          title={name}
+          className="h-8 w-8 object-contain"
+          style={shadow ? { filter: shadow } : undefined}
+          onError={() => setImgSrc(null)}
+          draggable={false}
+        />
+      ) : (
+        <div className="h-8 w-8 flex items-center justify-center text-[9px] text-gray-500 leading-tight text-center px-0.5">
+          {name}
+        </div>
+      )}
+      <span className="text-xs font-semibold text-white tabular-nums">{amount}</span>
+    </div>
+  );
+}
+
+function BlueprintTab({ blueprint }: { blueprint: Blueprint }) {
+  const { resources, components } = blueprint;
+  const presentResources = RESOURCE_DEFS.filter(r => resources[r.key] > 0);
+
+  if (presentResources.length === 0 && components.length === 0) {
     return <div className="text-gray-600 text-sm text-center py-8">No resource data.</div>;
   }
 
   return (
     <div className="flex flex-wrap justify-center gap-3">
-      {present.map(r => (
+      {presentResources.map(r => (
         <div key={r.key} className="flex flex-col items-center gap-1">
           {r.icon ? (
-            <img src={r.icon} alt={r.label} className="h-8 w-8 object-contain" />
+            <img src={r.icon} alt={r.label} title={r.label} className="h-8 w-8 object-contain" draggable={false} />
           ) : (
             <div className="h-8 w-8 flex items-center justify-center text-[9px] text-gray-500 leading-tight text-center">
               {r.label}
@@ -145,6 +261,9 @@ function BlueprintTab({ blueprint }: { blueprint: Blueprint }) {
           )}
           <span className="text-xs font-semibold text-white tabular-nums">{resources[r.key]}</span>
         </div>
+      ))}
+      {components.map(c => (
+        <ComponentIcon key={c.name} component={c} />
       ))}
     </div>
   );
@@ -350,26 +469,54 @@ const TABS: Tab[] = ['info', 'blueprint', 'milestones', 'ascension'];
 
 interface BlueprintModalProps {
   blueprint: Blueprint;
+  blueprints: Blueprint[];
   data: UserBlueprintData;
   onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
+  onNavigate: (bp: Blueprint) => void;
   onClose: () => void;
 }
 
-export function BlueprintModal({ blueprint, data, onUpdate, onClose }: BlueprintModalProps) {
+export function BlueprintModal({ blueprint, blueprints, data, onUpdate, onNavigate, onClose }: BlueprintModalProps) {
   const [tab, setTab] = useState<Tab>('info');
   const { name, type, tier, source, ascensionUpgrades } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount, ascensionShards } = data;
 
-  const { circleBackground, itemImage, itemImageFallback } = getBlueprintImages(name, type, source);
-  const [imgSrc, setImgSrc] = useState<string | null>(itemImage);
+  const [imgSrc, setImgSrc] = useState<string | null>(() => getBlueprintImages(name, type, source).itemImage);
+  const { circleBackground, itemImageFallback } = getBlueprintImages(name, type, source);
+
+  useEffect(() => { setImgSrc(getBlueprintImages(name, type, source).itemImage); }, [name, type, source]);
+
+  const currentIndex = blueprints.findIndex(b => b.name === name);
+  const canNav = blueprints.length > 1;
+  const prev = canNav ? blueprints[(currentIndex - 1 + blueprints.length) % blueprints.length] : null;
+  const next = canNav ? blueprints[(currentIndex + 1) % blueprints.length] : null;
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft'  && prev) onNavigate(prev);
+      if (e.key === 'ArrowRight' && next) onNavigate(next);
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [prev, next, onNavigate, onClose]);
+
+  const navBtn = 'relative z-20 shrink-0 w-11 h-11 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-300 hover:bg-gray-700 hover:text-white transition-colors disabled:opacity-20 disabled:cursor-default';
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center gap-3 p-4"
       onClick={onClose}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
+
+      {/* Left nav */}
+      <button className={navBtn} disabled={!prev}  onClick={e => { e.stopPropagation(); prev && onNavigate(prev); }}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="13 4 7 10 13 16" />
+        </svg>
+      </button>
 
       {/* Modal card */}
       <div
@@ -482,6 +629,13 @@ export function BlueprintModal({ blueprint, data, onUpdate, onClose }: Blueprint
           )}
         </div>
       </div>
+
+      {/* Right nav */}
+      <button className={navBtn} disabled={!next} onClick={e => { e.stopPropagation(); next && onNavigate(next); }}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="7 4 13 10 7 16" />
+        </svg>
+      </button>
     </div>
   );
 }
