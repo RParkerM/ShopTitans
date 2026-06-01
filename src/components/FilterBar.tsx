@@ -1,4 +1,5 @@
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
+import type { SortOrder } from '../App';
 
 interface FilterBarProps {
   selectedCategory: MainCategory;
@@ -9,6 +10,8 @@ interface FilterBarProps {
   onSearchChange: (v: string) => void;
   showOwnedOnly: boolean;
   onShowOwnedOnlyChange: (v: boolean) => void;
+  sort: SortOrder;
+  onSortChange: (v: SortOrder) => void;
 }
 
 export function FilterBar({
@@ -20,13 +23,15 @@ export function FilterBar({
   onSearchChange,
   showOwnedOnly,
   onShowOwnedOnlyChange,
+  sort,
+  onSortChange,
 }: FilterBarProps) {
   const subcats = selectedCategory !== 'All' ? SUBCATEGORIES[selectedCategory] : [];
 
   return (
     <div className="sticky top-[57px] z-10 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-col gap-2">
 
-      {/* Row 1: search + owned only */}
+      {/* Row 1: search + owned only + sort */}
       <div className="flex items-center gap-2">
         <input
           type="text"
@@ -44,6 +49,16 @@ export function FilterBar({
           />
           Owned only
         </label>
+        <select
+          value={sort}
+          onChange={e => onSortChange(e.target.value as SortOrder)}
+          className="ml-auto px-2 py-1.5 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300 focus:outline-none focus:border-amber-500 cursor-pointer"
+        >
+          <option value="new">Newest first</option>
+          <option value="old">Oldest first</option>
+          <option value="tier-desc">Tier ↓</option>
+          <option value="tier-asc">Tier ↑</option>
+        </select>
       </div>
 
       {/* Row 2: main category icons */}

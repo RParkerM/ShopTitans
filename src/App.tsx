@@ -7,6 +7,8 @@ import { BlueprintModal } from './components/BlueprintModal';
 import { TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
 import type { Blueprint } from './types';
 
+export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc';
+
 export default function App() {
   const { blueprints, loading, error, refresh } = useBlueprints();
   const { get, update } = useUserData();
@@ -15,6 +17,14 @@ export default function App() {
   const [selectedSubType, setSelectedSubType] = useState('');
   const [search, setSearch] = useState('');
   const [showOwnedOnly, setShowOwnedOnly] = useState(false);
+  const [sort, setSort] = useState<SortOrder>(
+    () => (localStorage.getItem('st_sort') as SortOrder) ?? 'new',
+  );
+
+  function handleSortChange(v: SortOrder) {
+    setSort(v);
+    localStorage.setItem('st_sort', v);
+  }
   const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
 
   function handleCategoryChange(category: MainCategory) {
@@ -40,6 +50,15 @@ export default function App() {
       return true;
     });
   }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get]);
+
+  const sorted = useMemo(() => {
+    switch (sort) {
+      case 'old':       return [...filtered];
+      case 'new':       return [...filtered].reverse();
+      case 'tier-asc':  return [...filtered].sort((a, b) => a.tier - b.tier);
+      case 'tier-desc': return [...filtered].sort((a, b) => b.tier - a.tier);
+    }
+  }, [filtered, sort]);
 
   const ownedCount = useMemo(
     () => blueprints.filter(bp => get(bp.name).owned).length,
@@ -107,9 +126,11 @@ export default function App() {
             onSearchChange={setSearch}
             showOwnedOnly={showOwnedOnly}
             onShowOwnedOnlyChange={setShowOwnedOnly}
+            sort={sort}
+            onSortChange={handleSortChange}
           />
           <BlueprintTable
-            blueprints={filtered}
+            blueprints={sorted}
             getUserData={get}
             onUpdate={update}
             onCardClick={setSelectedBlueprint}
@@ -120,7 +141,7 @@ export default function App() {
       {selectedBlueprint && (
         <BlueprintModal
           blueprint={selectedBlueprint}
-          blueprints={filtered}
+          blueprints={sorted}
           data={get(selectedBlueprint.name)}
           onUpdate={update}
           onNavigate={setSelectedBlueprint}
