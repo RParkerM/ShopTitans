@@ -1,31 +1,57 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { useBlueprints } from './hooks/useBlueprints';
 import { useUserData } from './hooks/useUserData';
 import { FilterBar } from './components/FilterBar';
 import { BlueprintTable } from './components/BlueprintTable';
 import { BlueprintModal } from './components/BlueprintModal';
-import { TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
+import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
 import type { Blueprint } from './types';
 
 export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc';
+const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc'];
+const VALID_CATEGORIES = MAIN_CATEGORIES.map(c => c.id);
+
+function readURLFilters() {
+  const p = new URLSearchParams(window.location.search);
+  const cat = p.get('category') ?? '';
+  const sort = p.get('sort') ?? '';
+  return {
+    category:  (VALID_CATEGORIES.includes(cat as MainCategory) ? cat : 'All') as MainCategory,
+    subType:   p.get('sub') ?? '',
+    search:    p.get('q') ?? '',
+    ownedOnly: p.get('owned') === '1',
+    sort:      (VALID_SORTS.includes(sort as SortOrder) ? sort
+                : (localStorage.getItem('st_sort') ?? 'new')) as SortOrder,
+  };
+}
 
 export default function App() {
   const { blueprints, loading, error, refresh } = useBlueprints();
   const { get, update } = useUserData();
 
-  const [selectedCategory, setSelectedCategory] = useState<MainCategory>('All');
-  const [selectedSubType, setSelectedSubType] = useState('');
-  const [search, setSearch] = useState('');
-  const [showOwnedOnly, setShowOwnedOnly] = useState(false);
-  const [sort, setSort] = useState<SortOrder>(
-    () => (localStorage.getItem('st_sort') as SortOrder) ?? 'new',
-  );
+  const init = useRef(readURLFilters()).current;
+  const [selectedCategory, setSelectedCategory] = useState<MainCategory>(init.category);
+  const [selectedSubType, setSelectedSubType] = useState(init.subType);
+  const [search, setSearch] = useState(init.search);
+  const [showOwnedOnly, setShowOwnedOnly] = useState(init.ownedOnly);
+  const [sort, setSort] = useState<SortOrder>(init.sort);
+  const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
+
+  useEffect(() => {
+    const p = new URLSearchParams();
+    if (selectedCategory !== 'All') p.set('category', selectedCategory);
+    if (selectedSubType)            p.set('sub', selectedSubType);
+    if (search)                     p.set('q', search);
+    if (showOwnedOnly)              p.set('owned', '1');
+    if (sort !== 'new')             p.set('sort', sort);
+    const qs = p.toString();
+    window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort]);
 
   function handleSortChange(v: SortOrder) {
     setSort(v);
     localStorage.setItem('st_sort', v);
   }
-  const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
 
   function handleCategoryChange(category: MainCategory) {
     setSelectedCategory(category);
