@@ -5,23 +5,45 @@ import { FilterBar } from './components/FilterBar';
 import { BlueprintTable } from './components/BlueprintTable';
 import { BlueprintModal } from './components/BlueprintModal';
 import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
-import type { Blueprint } from './types';
+import { RESOURCE_DEFS } from './utils/resources';
+import type { Blueprint, ResourceKey, ResourceFilters } from './types';
 
 export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc';
 const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc'];
 const VALID_CATEGORIES = MAIN_CATEGORIES.map(c => c.id);
+
+const VALID_RESOURCE_KEYS = new Set(RESOURCE_DEFS.map(r => r.key));
+
+function parseResourceFilters(raw: string): ResourceFilters {
+  const result: ResourceFilters = {};
+  if (!raw) return result;
+  for (const part of raw.split(',')) {
+    const [key, state] = part.split(':');
+    if (VALID_RESOURCE_KEYS.has(key as ResourceKey) && (state === 'r' || state === 'e')) {
+      result[key as ResourceKey] = state === 'r' ? 'require' : 'exclude';
+    }
+  }
+  return result;
+}
+
+function serializeResourceFilters(filters: ResourceFilters): string {
+  return Object.entries(filters)
+    .map(([k, v]) => `${k}:${v === 'require' ? 'r' : 'e'}`)
+    .join(',');
+}
 
 function readURLFilters() {
   const p = new URLSearchParams(window.location.search);
   const cat = p.get('category') ?? '';
   const sort = p.get('sort') ?? '';
   return {
-    category:  (VALID_CATEGORIES.includes(cat as MainCategory) ? cat : 'All') as MainCategory,
-    subType:   p.get('sub') ?? '',
-    search:    p.get('q') ?? '',
-    ownedOnly: p.get('owned') === '1',
-    sort:      (VALID_SORTS.includes(sort as SortOrder) ? sort
-                : (localStorage.getItem('st_sort') ?? 'new')) as SortOrder,
+    category:        (VALID_CATEGORIES.includes(cat as MainCategory) ? cat : 'All') as MainCategory,
+    subType:         p.get('sub') ?? '',
+    search:          p.get('q') ?? '',
+    ownedOnly:       p.get('owned') === '1',
+    sort:            (VALID_SORTS.includes(sort as SortOrder) ? sort
+                      : (localStorage.getItem('st_sort') ?? 'new')) as SortOrder,
+    resourceFilters: parseResourceFilters(p.get('res') ?? ''),
   };
 }
 
@@ -35,6 +57,7 @@ export default function App() {
   const [search, setSearch] = useState(init.search);
   const [showOwnedOnly, setShowOwnedOnly] = useState(init.ownedOnly);
   const [sort, setSort] = useState<SortOrder>(init.sort);
+  const [resourceFilters, setResourceFilters] = useState<ResourceFilters>(init.resourceFilters);
   const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
 
   useEffect(() => {
@@ -44,9 +67,11 @@ export default function App() {
     if (search)                     p.set('q', search);
     if (showOwnedOnly)              p.set('owned', '1');
     if (sort !== 'new')             p.set('sort', sort);
+    const resSerialized = serializeResourceFilters(resourceFilters);
+    if (resSerialized)              p.set('res', resSerialized);
     const qs = p.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
-  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort]);
+  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort, resourceFilters]);
 
   function handleSortChange(v: SortOrder) {
     setSort(v);
@@ -58,8 +83,24 @@ export default function App() {
     setSelectedSubType('');
   }
 
+  function handleResourceFilterCycle(key: ResourceKey) {
+    setResourceFilters(prev => {
+      const current = prev[key];
+      if (!current) return { ...prev, [key]: 'require' };
+      if (current === 'require') return { ...prev, [key]: 'exclude' };
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  }
+
+  function handleResourceFiltersReset() {
+    setResourceFilters({});
+  }
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
+    const resEntries = Object.entries(resourceFilters) as [ResourceKey, 'require' | 'exclude'][];
     return blueprints.filter(bp => {
       if (selectedCategory !== 'All') {
         if (TYPE_TO_CATEGORY[bp.type] !== selectedCategory) return false;
@@ -73,9 +114,14 @@ export default function App() {
       }
       if (q && !bp.name.toLowerCase().includes(q)) return false;
       if (showOwnedOnly && !get(bp.name).owned) return false;
+      for (const [key, state] of resEntries) {
+        const has = bp.resources[key] > 0;
+        if (state === 'require' && !has) return false;
+        if (state === 'exclude' && has) return false;
+      }
       return true;
     });
-  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get]);
+  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get, resourceFilters]);
 
   const sorted = useMemo(() => {
     switch (sort) {
@@ -154,6 +200,9 @@ export default function App() {
             onShowOwnedOnlyChange={setShowOwnedOnly}
             sort={sort}
             onSortChange={handleSortChange}
+            resourceFilters={resourceFilters}
+            onResourceFilterCycle={handleResourceFilterCycle}
+            onResourceFiltersReset={handleResourceFiltersReset}
           />
           <BlueprintTable
             blueprints={sorted}
