@@ -29,33 +29,77 @@ function AscensionStars({ level, onChange }: { level: number; onChange: (v: numb
   );
 }
 
-function CraftProgressBar({ craftCount, milestones }: { craftCount: number; milestones: Blueprint['craftingMilestones'] }) {
-  if (milestones.length === 0) return null;
+function ProgressBar({
+  craftCount,
+  milestones,
+  color,
+  label,
+}: {
+  craftCount: number;
+  milestones: Blueprint['craftingMilestones'];
+  color: 'amber' | 'purple';
+  label?: string;
+}) {
   const status = getMilestoneStatus(craftCount, milestones);
-  if (status.allComplete) {
-    return (
-      <div className="px-3 py-2 border-t border-gray-700/50 text-center text-[11px] text-amber-500/70">
-        All milestones done
-      </div>
-    );
-  }
+  if (status.allComplete) return null;
   const next = milestones[status.completed];
-  const pct = Math.min(100, (craftCount / next.craftsNeeded) * 100);
+  const prev = milestones[status.completed - 1];
+  const prevNeeded = prev?.craftsNeeded ?? 0;
+  const relCrafts = craftCount - prevNeeded;
+  const relTotal = next.craftsNeeded - prevNeeded;
+  const pct = Math.min(100, (relCrafts / relTotal) * 100);
+  const barColor = color === 'purple' ? 'bg-purple-500' : 'bg-amber-500';
+  const textColor = color === 'purple' ? 'text-purple-400' : 'text-gray-400';
   return (
     <div className="px-3 pt-2 pb-2.5 border-t border-gray-700/50 flex flex-col gap-1">
       <div className="flex justify-between text-[11px] text-gray-400">
-        <span>{craftCount} / {next.craftsNeeded}</span>
+        <span className={textColor}>
+          {relCrafts} / {relTotal}{label && <span className="text-gray-600 ml-1">{label}</span>}
+        </span>
         <span className="text-gray-600 truncate max-w-[55%] text-right">{next.reward}</span>
       </div>
       <div className="h-1 bg-gray-700 rounded-full overflow-hidden">
-        <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
+        <div className={`h-full ${barColor} rounded-full transition-all`} style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
 }
 
+function CraftProgressBar({
+  craftCount,
+  milestones,
+  starforged,
+  starforgedMilestones,
+}: {
+  craftCount: number;
+  milestones: Blueprint['craftingMilestones'];
+  starforged: boolean;
+  starforgedMilestones: Blueprint['starforgedMilestones'];
+}) {
+  if (milestones.length === 0) return null;
+  const craftStatus = getMilestoneStatus(craftCount, milestones);
+
+  if (!craftStatus.allComplete) {
+    return <ProgressBar craftCount={craftCount} milestones={milestones} color="amber" />;
+  }
+
+  // Crafting milestones done — check SF milestones if applicable
+  if (starforged && starforgedMilestones.length > 0) {
+    const sfStatus = getMilestoneStatus(craftCount, starforgedMilestones);
+    if (!sfStatus.allComplete) {
+      return <ProgressBar craftCount={craftCount} milestones={starforgedMilestones} color="purple" label="SF" />;
+    }
+  }
+
+  return (
+    <div className="px-3 py-2 border-t border-gray-700/50 text-center text-[11px] text-amber-500/70">
+      All milestones done
+    </div>
+  );
+}
+
 export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUpdate, onClick }: BlueprintCardProps) {
-  const { name, type, tier, source, craftingMilestones } = blueprint;
+  const { name, type, tier, source, craftingMilestones, starforgedMilestones } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount } = data;
 
   const { circleBackground, itemImage, itemImageFallback } = getBlueprintImages(name, type, source);
@@ -148,7 +192,12 @@ export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUp
       </div>
 
       {/* Craft progress bar */}
-      <CraftProgressBar craftCount={craftCount} milestones={craftingMilestones} />
+      <CraftProgressBar
+        craftCount={craftCount}
+        milestones={craftingMilestones}
+        starforged={starforged}
+        starforgedMilestones={starforgedMilestones}
+      />
     </div>
   );
 });
