@@ -8,7 +8,7 @@ interface BlueprintCardProps {
   blueprint: Blueprint;
   data: UserBlueprintData;
   onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
-  onClick: () => void;
+  onClick: (tab?: 'milestones') => void;
 }
 
 function AscensionStars({ level, onChange }: { level: number; onChange: (v: number) => void }) {
@@ -34,11 +34,13 @@ function ProgressBar({
   milestones,
   color,
   label,
+  onClick,
 }: {
   craftCount: number;
   milestones: Blueprint['craftingMilestones'];
   color: 'amber' | 'purple';
   label?: string;
+  onClick?: (e: React.MouseEvent) => void;
 }) {
   const status = getMilestoneStatus(craftCount, milestones);
   if (status.allComplete) return null;
@@ -51,7 +53,10 @@ function ProgressBar({
   const barColor = color === 'purple' ? 'bg-purple-500' : 'bg-amber-500';
   const textColor = color === 'purple' ? 'text-purple-400' : 'text-gray-400';
   return (
-    <div className="px-3 pt-2 pb-2.5 border-t border-gray-700/50 flex flex-col gap-1">
+    <div
+      onClick={onClick}
+      className={`px-3 pt-2 pb-2.5 border-t border-gray-700/50 flex flex-col gap-1 rounded-b-xl ${onClick ? 'cursor-pointer hover:bg-gray-700/30 transition-colors' : ''}`}
+    >
       <div className="flex justify-between text-[11px] text-gray-400">
         <span className={textColor}>
           {relCrafts} / {relTotal}{label && <span className="text-gray-600 ml-1">{label}</span>}
@@ -70,29 +75,35 @@ function CraftProgressBar({
   milestones,
   starforged,
   starforgedMilestones,
+  onMilestonesClick,
 }: {
   craftCount: number;
   milestones: Blueprint['craftingMilestones'];
   starforged: boolean;
   starforgedMilestones: Blueprint['starforgedMilestones'];
+  onMilestonesClick: () => void;
 }) {
   if (milestones.length === 0) return null;
   const craftStatus = getMilestoneStatus(craftCount, milestones);
+  const handleClick = (e: React.MouseEvent) => { e.stopPropagation(); onMilestonesClick(); };
 
   if (!craftStatus.allComplete) {
-    return <ProgressBar craftCount={craftCount} milestones={milestones} color="amber" />;
+    return <ProgressBar craftCount={craftCount} milestones={milestones} color="amber" onClick={handleClick} />;
   }
 
   // Crafting milestones done — check SF milestones if applicable
   if (starforged && starforgedMilestones.length > 0) {
     const sfStatus = getMilestoneStatus(craftCount, starforgedMilestones);
     if (!sfStatus.allComplete) {
-      return <ProgressBar craftCount={craftCount} milestones={starforgedMilestones} color="purple" label="SF" />;
+      return <ProgressBar craftCount={craftCount} milestones={starforgedMilestones} color="purple" label="SF" onClick={handleClick} />;
     }
   }
 
   return (
-    <div className="px-3 py-2 border-t border-gray-700/50 text-center text-[11px] text-amber-500/70">
+    <div
+      onClick={handleClick}
+      className="px-3 py-2 border-t border-gray-700/50 text-center text-[11px] text-amber-500/70 rounded-b-xl cursor-pointer hover:bg-gray-700/30 transition-colors"
+    >
       All milestones done
     </div>
   );
@@ -107,7 +118,7 @@ export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUp
 
   return (
     <div
-      onClick={onClick}
+      onClick={() => onClick()}
       className={`relative isolate flex flex-col bg-gray-800 rounded-xl border border-gray-700/50 transition-opacity mt-6 cursor-pointer hover:border-gray-500 ${!owned ? 'opacity-50' : ''}`}
     >
       {/* Image area */}
@@ -197,6 +208,7 @@ export const BlueprintCard = memo(function BlueprintCard({ blueprint, data, onUp
         milestones={craftingMilestones}
         starforged={starforged}
         starforgedMilestones={starforgedMilestones}
+        onMilestonesClick={() => onClick('milestones')}
       />
     </div>
   );

@@ -59,6 +59,7 @@ export default function App() {
   const [sort, setSort] = useState<SortOrder>(init.sort);
   const [resourceFilters, setResourceFilters] = useState<ResourceFilters>(init.resourceFilters);
   const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
+  const [selectedBlueprintTab, setSelectedBlueprintTab] = useState<'milestones' | undefined>(undefined);
 
   useEffect(() => {
     const p = new URLSearchParams();
@@ -208,7 +209,7 @@ export default function App() {
             blueprints={sorted}
             getUserData={get}
             onUpdate={update}
-            onCardClick={setSelectedBlueprint}
+            onCardClick={(bp, tab) => { setSelectedBlueprint(bp); setSelectedBlueprintTab(tab); }}
           />
         </>
       )}
@@ -220,7 +221,8 @@ export default function App() {
           data={get(selectedBlueprint.name)}
           onUpdate={update}
           onNavigate={setSelectedBlueprint}
-          onClose={() => setSelectedBlueprint(null)}
+          onClose={() => { setSelectedBlueprint(null); setSelectedBlueprintTab(undefined); }}
+          initialTab={selectedBlueprintTab}
         />
       )}
     </div>

@@ -5,7 +5,7 @@ interface BlueprintTableProps {
   blueprints: Blueprint[];
   getUserData: (name: string) => UserBlueprintData;
   onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
-  onCardClick: (blueprint: Blueprint) => void;
+  onCardClick: (blueprint: Blueprint, tab?: 'milestones') => void;
 }
 
 export function BlueprintTable({ blueprints, getUserData, onUpdate, onCardClick }: BlueprintTableProps) {
@@ -25,7 +25,7 @@ export function BlueprintTable({ blueprints, getUserData, onUpdate, onCardClick 
           blueprint={bp}
           data={getUserData(bp.name)}
           onUpdate={onUpdate}
-          onClick={() => onCardClick(bp)}
+          onClick={(tab) => onCardClick(bp, tab)}
         />
       ))}
     </div>

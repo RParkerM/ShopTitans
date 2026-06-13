@@ -478,10 +478,11 @@ interface BlueprintModalProps {
   onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
   onNavigate: (bp: Blueprint) => void;
   onClose: () => void;
+  initialTab?: Tab;
 }
 
-export function BlueprintModal({ blueprint, blueprints, data, onUpdate, onNavigate, onClose }: BlueprintModalProps) {
-  const [tab, setTab] = useState<Tab>('info');
+export function BlueprintModal({ blueprint, blueprints, data, onUpdate, onNavigate, onClose, initialTab }: BlueprintModalProps) {
+  const [tab, setTab] = useState<Tab>(initialTab ?? 'info');
   const { name, type, tier, source, ascensionUpgrades } = blueprint;
   const { owned, starforged, ascensionLevel, craftCount, ascensionShards } = data;
 
