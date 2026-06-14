@@ -34,19 +34,21 @@ function ProgressBar({
   milestones,
   color,
   label,
+  baseCount = 0,
   onClick,
 }: {
   craftCount: number;
   milestones: Blueprint['craftingMilestones'];
   color: 'amber' | 'purple';
   label?: string;
+  baseCount?: number;
   onClick?: (e: React.MouseEvent) => void;
 }) {
   const status = getMilestoneStatus(craftCount, milestones);
   if (status.allComplete) return null;
   const next = milestones[status.completed];
   const prev = milestones[status.completed - 1];
-  const prevNeeded = prev?.craftsNeeded ?? 0;
+  const prevNeeded = prev?.craftsNeeded ?? baseCount;
   const relCrafts = craftCount - prevNeeded;
   const relTotal = next.craftsNeeded - prevNeeded;
   const pct = Math.min(100, (relCrafts / relTotal) * 100);
@@ -93,9 +95,11 @@ function CraftProgressBar({
 
   // Crafting milestones done — check SF milestones if applicable
   if (starforged && starforgedMilestones.length > 0) {
-    const sfStatus = getMilestoneStatus(craftCount, starforgedMilestones);
+    const lastCraftThreshold = milestones[milestones.length - 1].craftsNeeded;
+    const offsetSfMilestones = starforgedMilestones.map(m => ({ ...m, craftsNeeded: m.craftsNeeded + lastCraftThreshold }));
+    const sfStatus = getMilestoneStatus(craftCount, offsetSfMilestones);
     if (!sfStatus.allComplete) {
-      return <ProgressBar craftCount={craftCount} milestones={starforgedMilestones} color="purple" label="SF" onClick={handleClick} />;
+      return <ProgressBar craftCount={craftCount} milestones={offsetSfMilestones} color="purple" label="SF" baseCount={lastCraftThreshold} onClick={handleClick} />;
     }
   }
 
