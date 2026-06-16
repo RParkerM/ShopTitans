@@ -6,9 +6,11 @@ import { BlueprintTable } from './components/BlueprintTable';
 import { BlueprintModal } from './components/BlueprintModal';
 import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
 import { RESOURCE_DEFS } from './utils/resources';
+import { getMilestoneStatus } from './utils/milestones';
 import type { Blueprint, ResourceKey, ResourceFilters } from './types';
 
 export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc';
+export type MasteredFilter = 'all' | 'mastered' | 'not-mastered';
 const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc'];
 const VALID_CATEGORIES = MAIN_CATEGORIES.map(c => c.id);
 
@@ -32,6 +34,12 @@ function serializeResourceFilters(filters: ResourceFilters): string {
     .join(',');
 }
 
+function parseMasteredFilter(raw: string | null): MasteredFilter {
+  if (raw === '1') return 'mastered';
+  if (raw === '0') return 'not-mastered';
+  return 'all';
+}
+
 function readURLFilters() {
   const p = new URLSearchParams(window.location.search);
   const cat = p.get('category') ?? '';
@@ -44,6 +52,7 @@ function readURLFilters() {
     sort:            (VALID_SORTS.includes(sort as SortOrder) ? sort
                       : (localStorage.getItem('st_sort') ?? 'new')) as SortOrder,
     resourceFilters: parseResourceFilters(p.get('res') ?? ''),
+    masteredFilter:  parseMasteredFilter(p.get('mastered')),
   };
 }
 
@@ -58,6 +67,7 @@ export default function App() {
   const [showOwnedOnly, setShowOwnedOnly] = useState(init.ownedOnly);
   const [sort, setSort] = useState<SortOrder>(init.sort);
   const [resourceFilters, setResourceFilters] = useState<ResourceFilters>(init.resourceFilters);
+  const [masteredFilter, setMasteredFilter] = useState<MasteredFilter>(init.masteredFilter);
   const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
   const [selectedBlueprintTab, setSelectedBlueprintTab] = useState<'milestones' | undefined>(undefined);
 
@@ -70,9 +80,11 @@ export default function App() {
     if (sort !== 'new')             p.set('sort', sort);
     const resSerialized = serializeResourceFilters(resourceFilters);
     if (resSerialized)              p.set('res', resSerialized);
+    if (masteredFilter === 'mastered')     p.set('mastered', '1');
+    if (masteredFilter === 'not-mastered') p.set('mastered', '0');
     const qs = p.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
-  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort, resourceFilters]);
+  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort, resourceFilters, masteredFilter]);
 
   function handleSortChange(v: SortOrder) {
     setSort(v);
@@ -115,6 +127,11 @@ export default function App() {
       }
       if (q && !bp.name.toLowerCase().includes(q)) return false;
       if (showOwnedOnly && !get(bp.name).owned) return false;
+      if (masteredFilter !== 'all') {
+        const { allComplete } = getMilestoneStatus(get(bp.name).craftCount, bp.craftingMilestones);
+        if (masteredFilter === 'mastered' && !allComplete) return false;
+        if (masteredFilter === 'not-mastered' && allComplete) return false;
+      }
       for (const [key, state] of resEntries) {
         const has = bp.resources[key] > 0;
         if (state === 'require' && !has) return false;
@@ -122,7 +139,7 @@ export default function App() {
       }
       return true;
     });
-  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get, resourceFilters]);
+  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get, resourceFilters, masteredFilter]);
 
   const sorted = useMemo(() => {
     switch (sort) {
@@ -204,6 +221,8 @@ export default function App() {
             resourceFilters={resourceFilters}
             onResourceFilterCycle={handleResourceFilterCycle}
             onResourceFiltersReset={handleResourceFiltersReset}
+            masteredFilter={masteredFilter}
+            onMasteredFilterChange={setMasteredFilter}
           />
           <BlueprintTable
             blueprints={sorted}

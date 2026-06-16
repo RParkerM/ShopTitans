@@ -9,7 +9,9 @@
       "PowerShell(Get-CimInstance *)",
       "Bash(Get-ChildItem \"c:\\\\Development\\\\ShopTitans\" -Name)",
       "Bash(find \"/c/Development/Fan Kit Assets \\(Shop Titans\\)\" -maxdepth 2 -type d 2>/dev/null | head -30)",
-      "Read(//c/Development/Fan Kit Assets \\(Shop Titans\\)/**)"
+      "Read(//c/Development/Fan Kit Assets \\(Shop Titans\\)/**)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Development\\\\ShopTitans\")",
+      "Bash(Select-Object Name, Mode)"
     ]
   }
 }

@@ -1,6 +1,6 @@
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
 import { RESOURCE_DEFS } from '../utils/resources';
-import type { SortOrder } from '../App';
+import type { SortOrder, MasteredFilter } from '../App';
 import type { ResourceFilters, ResourceKey } from '../types';
 
 interface FilterBarProps {
@@ -17,6 +17,8 @@ interface FilterBarProps {
   resourceFilters: ResourceFilters;
   onResourceFilterCycle: (key: ResourceKey) => void;
   onResourceFiltersReset: () => void;
+  masteredFilter: MasteredFilter;
+  onMasteredFilterChange: (v: MasteredFilter) => void;
 }
 
 export function FilterBar({
@@ -33,6 +35,8 @@ export function FilterBar({
   resourceFilters,
   onResourceFilterCycle,
   onResourceFiltersReset,
+  masteredFilter,
+  onMasteredFilterChange,
 }: FilterBarProps) {
   const subcats = selectedCategory !== 'All' ? SUBCATEGORIES[selectedCategory] : [];
   const hasActiveResourceFilters = Object.keys(resourceFilters).length > 0;
@@ -58,6 +62,21 @@ export function FilterBar({
           />
           Owned only
         </label>
+        <div className="flex items-center rounded overflow-hidden border border-gray-700 text-xs">
+          {([['all', 'All'], ['mastered', 'Mastered'], ['not-mastered', 'Not Mastered']] as [MasteredFilter, string][]).map(([value, label]) => (
+            <button
+              key={value}
+              onClick={() => onMasteredFilterChange(value)}
+              className={`px-2 py-1 transition-colors whitespace-nowrap ${
+                masteredFilter === value
+                  ? 'bg-amber-500 text-gray-900 font-medium'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <select
           value={sort}
           onChange={e => onSortChange(e.target.value as SortOrder)}
