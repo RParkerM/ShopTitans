@@ -79,13 +79,15 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       : name.endsWith(' Spirit') ? 'Spirit'
       : 'Element';
 
-    const num = (idx: number) => idx !== -1 ? (parseFloat(row[idx]?.trim()) || 0) : 0;
+    const stripCommas = (s: string) => s.replace(/,/g, '');
+    const num = (idx: number) => idx !== -1 ? (parseFloat(stripCommas(row[idx]?.trim() ?? '')) || 0) : 0;
+    const int = (s: string) => parseInt(stripCommas(s)) || 0;
 
     const craftingMilestones = craftingUpgradeIdxs
       .map(idx => {
         if (idx === -1) return null;
         const reward = row[idx]?.trim() ?? '';
-        const craftsNeeded = parseInt(row[idx + 1]?.trim()) || 0;
+        const craftsNeeded = int(row[idx + 1]?.trim() ?? '');
         if (!reward || reward === '---' || craftsNeeded === 0) return null;
         return { reward, craftsNeeded };
       })
@@ -95,7 +97,7 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       .map(idx => {
         if (idx === -1) return null;
         const reward = row[idx]?.trim() ?? '';
-        const craftsNeeded = parseInt(row[idx + 1]?.trim()) || 0;
+        const craftsNeeded = int(row[idx + 1]?.trim() ?? '');
         if (!reward || reward === '---' || craftsNeeded === 0) return null;
         return { reward, craftsNeeded };
       })
@@ -105,7 +107,7 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       .map(idx => {
         if (idx === -1) return null;
         const description = row[idx]?.trim() ?? '';
-        const shardCost = parseInt(row[idx + 1]?.trim()) || 0;
+        const shardCost = int(row[idx + 1]?.trim() ?? '');
         if (!description || description === '---') return null;
         return { description, shardCost };
       })
@@ -115,7 +117,7 @@ function parseBlueprints(rows: string[][]): Blueprint[] {
       .map(idx => {
         const compName = row[idx]?.trim() ?? '';
         const quality  = row[idx + 1]?.trim() ?? '';
-        const amount   = parseInt(row[idx + 2]?.trim()) || 0;
+        const amount   = int(row[idx + 2]?.trim() ?? '');
         if (!compName || compName === '---' || amount === 0) return null;
         return { name: compName, amount, quality };
       })
