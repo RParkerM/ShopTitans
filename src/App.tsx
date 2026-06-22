@@ -6,8 +6,9 @@ import { BlueprintTable } from './components/BlueprintTable';
 import { BlueprintModal } from './components/BlueprintModal';
 import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
 import { RESOURCE_DEFS } from './utils/resources';
+import { STANDARD_COMPONENT_ICONS } from './utils/components';
 import { getMilestoneStatus } from './utils/milestones';
-import type { Blueprint, ResourceKey, ResourceFilters } from './types';
+import type { Blueprint, ResourceKey, ResourceFilters, ComponentFilters } from './types';
 
 export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc';
 export type MasteredFilter = 'all' | 'mastered' | 'not-mastered';
@@ -34,6 +35,27 @@ function serializeResourceFilters(filters: ResourceFilters): string {
     .join(',');
 }
 
+function parseComponentFilters(raw: string): ComponentFilters {
+  const result: ComponentFilters = {};
+  if (!raw) return result;
+  for (const part of raw.split(',')) {
+    const colonIdx = part.lastIndexOf(':');
+    if (colonIdx === -1) continue;
+    const name = part.slice(0, colonIdx);
+    const state = part.slice(colonIdx + 1);
+    if (name && (state === 'r' || state === 'e')) {
+      result[name] = state === 'r' ? 'require' : 'exclude';
+    }
+  }
+  return result;
+}
+
+function serializeComponentFilters(filters: ComponentFilters): string {
+  return Object.entries(filters)
+    .map(([k, v]) => `${k}:${v === 'require' ? 'r' : 'e'}`)
+    .join(',');
+}
+
 function parseMasteredFilter(raw: string | null): MasteredFilter {
   if (raw === '1') return 'mastered';
   if (raw === '0') return 'not-mastered';
@@ -51,8 +73,9 @@ function readURLFilters() {
     ownedOnly:       p.get('owned') === '1',
     sort:            (VALID_SORTS.includes(sort as SortOrder) ? sort
                       : (localStorage.getItem('st_sort') ?? 'new')) as SortOrder,
-    resourceFilters: parseResourceFilters(p.get('res') ?? ''),
-    masteredFilter:  parseMasteredFilter(p.get('mastered')),
+    resourceFilters:   parseResourceFilters(p.get('res') ?? ''),
+    componentFilters:  parseComponentFilters(p.get('comp') ?? ''),
+    masteredFilter:    parseMasteredFilter(p.get('mastered')),
   };
 }
 
@@ -67,6 +90,7 @@ export default function App() {
   const [showOwnedOnly, setShowOwnedOnly] = useState(init.ownedOnly);
   const [sort, setSort] = useState<SortOrder>(init.sort);
   const [resourceFilters, setResourceFilters] = useState<ResourceFilters>(init.resourceFilters);
+  const [componentFilters, setComponentFilters] = useState<ComponentFilters>(init.componentFilters);
   const [masteredFilter, setMasteredFilter] = useState<MasteredFilter>(init.masteredFilter);
   const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
   const [selectedBlueprintTab, setSelectedBlueprintTab] = useState<'milestones' | undefined>(undefined);
@@ -80,11 +104,13 @@ export default function App() {
     if (sort !== 'new')             p.set('sort', sort);
     const resSerialized = serializeResourceFilters(resourceFilters);
     if (resSerialized)              p.set('res', resSerialized);
+    const compSerialized = serializeComponentFilters(componentFilters);
+    if (compSerialized)             p.set('comp', compSerialized);
     if (masteredFilter === 'mastered')     p.set('mastered', '1');
     if (masteredFilter === 'not-mastered') p.set('mastered', '0');
     const qs = p.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
-  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort, resourceFilters, masteredFilter]);
+  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort, resourceFilters, componentFilters, masteredFilter]);
 
   function handleSortChange(v: SortOrder) {
     setSort(v);
@@ -111,9 +137,35 @@ export default function App() {
     setResourceFilters({});
   }
 
+  function handleComponentFilterCycle(name: string) {
+    setComponentFilters(prev => {
+      const current = prev[name];
+      if (!current) return { ...prev, [name]: 'require' };
+      if (current === 'require') return { ...prev, [name]: 'exclude' };
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+  }
+
+  function handleComponentFiltersReset() {
+    setComponentFilters({});
+  }
+
+  const allComponentNames = useMemo(() => {
+    const names = new Set<string>();
+    for (const bp of blueprints) {
+      for (const comp of bp.components) {
+        if (comp.name in STANDARD_COMPONENT_ICONS) names.add(comp.name);
+      }
+    }
+    return [...names].sort();
+  }, [blueprints]);
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     const resEntries = Object.entries(resourceFilters) as [ResourceKey, 'require' | 'exclude'][];
+    const compEntries = Object.entries(componentFilters) as [string, 'require' | 'exclude'][];
     return blueprints.filter(bp => {
       if (selectedCategory !== 'All') {
         if (TYPE_TO_CATEGORY[bp.type] !== selectedCategory) return false;
@@ -137,9 +189,14 @@ export default function App() {
         if (state === 'require' && !has) return false;
         if (state === 'exclude' && has) return false;
       }
+      for (const [name, state] of compEntries) {
+        const has = bp.components.some(c => c.name === name);
+        if (state === 'require' && !has) return false;
+        if (state === 'exclude' && has) return false;
+      }
       return true;
     });
-  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get, resourceFilters, masteredFilter]);
+  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get, resourceFilters, componentFilters, masteredFilter]);
 
   const sorted = useMemo(() => {
     switch (sort) {
@@ -223,6 +280,10 @@ export default function App() {
             onResourceFiltersReset={handleResourceFiltersReset}
             masteredFilter={masteredFilter}
             onMasteredFilterChange={setMasteredFilter}
+            allComponentNames={allComponentNames}
+            componentFilters={componentFilters}
+            onComponentFilterCycle={handleComponentFilterCycle}
+            onComponentFiltersReset={handleComponentFiltersReset}
           />
           <BlueprintTable
             blueprints={sorted}

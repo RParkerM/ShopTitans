@@ -1,7 +1,8 @@
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
 import { RESOURCE_DEFS } from '../utils/resources';
+import { STANDARD_COMPONENT_ICONS } from '../utils/components';
 import type { SortOrder, MasteredFilter } from '../App';
-import type { ResourceFilters, ResourceKey } from '../types';
+import type { ResourceFilters, ResourceKey, ComponentFilters } from '../types';
 
 interface FilterBarProps {
   selectedCategory: MainCategory;
@@ -19,6 +20,10 @@ interface FilterBarProps {
   onResourceFiltersReset: () => void;
   masteredFilter: MasteredFilter;
   onMasteredFilterChange: (v: MasteredFilter) => void;
+  allComponentNames: string[];
+  componentFilters: ComponentFilters;
+  onComponentFilterCycle: (name: string) => void;
+  onComponentFiltersReset: () => void;
 }
 
 export function FilterBar({
@@ -37,9 +42,14 @@ export function FilterBar({
   onResourceFiltersReset,
   masteredFilter,
   onMasteredFilterChange,
+  allComponentNames,
+  componentFilters,
+  onComponentFilterCycle,
+  onComponentFiltersReset,
 }: FilterBarProps) {
   const subcats = selectedCategory !== 'All' ? SUBCATEGORIES[selectedCategory] : [];
   const hasActiveResourceFilters = Object.keys(resourceFilters).length > 0;
+  const hasActiveComponentFilters = Object.keys(componentFilters).length > 0;
 
   return (
     <div className="sticky top-[57px] z-10 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-col gap-2">
@@ -173,6 +183,53 @@ export function FilterBar({
           </button>
         )}
       </div>
+
+      {/* Row 5: component filters */}
+      {allComponentNames.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1">
+          <span className="text-[10px] text-gray-500 uppercase tracking-wider mr-0.5">Components:</span>
+          {allComponentNames.map(name => {
+            const state = componentFilters[name];
+            return (
+              <button
+                key={name}
+                onClick={() => onComponentFilterCycle(name)}
+                title={`${name} — click to require, again to exclude, again to clear`}
+                className={`relative flex flex-col items-center gap-0.5 p-1 rounded text-[9px] font-medium transition-all ${
+                  state === 'require'
+                    ? 'ring-2 ring-green-500 bg-green-950/40 text-green-400'
+                    : state === 'exclude'
+                    ? 'ring-2 ring-red-600 bg-red-950/40 text-red-400'
+                    : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800'
+                }`}
+              >
+                <div className="relative">
+                  <img
+                    src={STANDARD_COMPONENT_ICONS[name]}
+                    alt={name}
+                    className={`h-7 w-7 object-contain transition-opacity ${state ? 'opacity-100' : 'opacity-40'}`}
+                  />
+                  {state === 'require' && (
+                    <span className="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] leading-none font-bold">✓</span>
+                  )}
+                  {state === 'exclude' && (
+                    <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] leading-none font-bold">✕</span>
+                  )}
+                </div>
+                <span>{name}</span>
+              </button>
+            );
+          })}
+          {hasActiveComponentFilters && (
+            <button
+              onClick={onComponentFiltersReset}
+              className="ml-1 text-[10px] text-amber-400 hover:text-amber-300 transition-colors px-2 py-1 border border-amber-800/50 rounded hover:border-amber-600"
+            >
+              Reset
+            </button>
+          )}
+        </div>
+      )}
 
     </div>
   );

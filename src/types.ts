@@ -66,3 +66,4 @@ export type UserData = Record<string, UserBlueprintData>;
 
 export type ResourceKey = keyof Resources;
 export type ResourceFilters = Partial<Record<ResourceKey, 'require' | 'exclude'>>;
+export type ComponentFilters = Partial<Record<string, 'require' | 'exclude'>>;
