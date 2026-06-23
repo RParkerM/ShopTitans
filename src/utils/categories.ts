@@ -121,6 +121,22 @@ const ELEMENT_BY_FIRST_WORD: Record<string, string> = {
   Luxurious: 'Gold', Opulent: 'Gold', Platinum: 'Gold',
 };
 
+function buildTypeSortOrder(): Record<string, number> {
+  const order: Record<string, number> = {};
+  let i = 0;
+  for (const cat of MAIN_CATEGORIES) {
+    if (cat.id === 'All') continue;
+    for (const sub of SUBCATEGORIES[cat.id]) {
+      // Enchantment subcategory values are element names, but bp.type is 'Element' or 'Spirit'
+      const key = cat.id === 'Enchantments' && sub.value !== 'Spirit' ? 'Element' : sub.value;
+      if (!(key in order)) order[key] = i++;
+    }
+  }
+  return order;
+}
+
+export const TYPE_SORT_ORDER = buildTypeSortOrder();
+
 export function getEnchantmentElement(name: string, type: string): string {
   if (type === 'Spirit') return 'Spirit';
   return ELEMENT_BY_FIRST_WORD[name.split(' ')[0]] ?? '';

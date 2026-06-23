@@ -4,15 +4,15 @@ import { useUserData } from './hooks/useUserData';
 import { FilterBar } from './components/FilterBar';
 import { BlueprintTable } from './components/BlueprintTable';
 import { BlueprintModal } from './components/BlueprintModal';
-import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, getEnchantmentElement, type MainCategory } from './utils/categories';
+import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, TYPE_SORT_ORDER, getEnchantmentElement, type MainCategory } from './utils/categories';
 import { RESOURCE_DEFS } from './utils/resources';
 import { STANDARD_COMPONENT_ICONS } from './utils/components';
 import { getMilestoneStatus } from './utils/milestones';
 import type { Blueprint, ResourceKey, ResourceFilters, ComponentFilters } from './types';
 
-export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc';
+export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc' | 'type';
 export type MasteredFilter = 'all' | 'mastered' | 'not-mastered';
-const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc'];
+const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc', 'type'];
 const VALID_CATEGORIES = MAIN_CATEGORIES.map(c => c.id);
 
 const VALID_RESOURCE_KEYS = new Set(RESOURCE_DEFS.map(r => r.key));
@@ -204,6 +204,11 @@ export default function App() {
       case 'new':       return [...filtered].reverse();
       case 'tier-asc':  return [...filtered].sort((a, b) => a.tier - b.tier);
       case 'tier-desc': return [...filtered].sort((a, b) => b.tier - a.tier);
+      case 'type':      return [...filtered].sort((a, b) => {
+        const ta = TYPE_SORT_ORDER[a.type] ?? 999;
+        const tb = TYPE_SORT_ORDER[b.type] ?? 999;
+        return ta !== tb ? ta - tb : a.tier - b.tier;
+      });
     }
   }, [filtered, sort]);
 

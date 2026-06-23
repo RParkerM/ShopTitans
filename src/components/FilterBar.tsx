@@ -96,6 +96,7 @@ export function FilterBar({
           <option value="old">Oldest first</option>
           <option value="tier-desc">Tier ↓</option>
           <option value="tier-asc">Tier ↑</option>
+          <option value="type">By type</option>
         </select>
       </div>
 
