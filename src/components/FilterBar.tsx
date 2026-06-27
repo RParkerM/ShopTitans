@@ -7,8 +7,8 @@ import type { ResourceFilters, ResourceKey, ComponentFilters } from '../types';
 interface FilterBarProps {
   selectedCategory: MainCategory;
   onCategoryChange: (category: MainCategory) => void;
-  selectedSubType: string;
-  onSubTypeChange: (subType: string) => void;
+  selectedSubTypes: Set<string>;
+  onSubTypeChange: (subType: string, shiftKey: boolean) => void;
   search: string;
   onSearchChange: (v: string) => void;
   showOwnedOnly: boolean;
@@ -29,7 +29,7 @@ interface FilterBarProps {
 export function FilterBar({
   selectedCategory,
   onCategoryChange,
-  selectedSubType,
+  selectedSubTypes,
   onSubTypeChange,
   search,
   onSearchChange,
@@ -124,9 +124,10 @@ export function FilterBar({
           {subcats.map(sub => (
             <button
               key={sub.value}
-              onClick={() => onSubTypeChange(selectedSubType === sub.value ? '' : sub.value)}
+              onClick={e => onSubTypeChange(sub.value, e.shiftKey)}
+              title={`${sub.label} — shift+click to select multiple`}
               className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded text-[10px] font-medium transition-colors leading-tight ${
-                selectedSubType === sub.value
+                selectedSubTypes.has(sub.value)
                   ? 'bg-amber-500 text-gray-900'
                   : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
               }`}

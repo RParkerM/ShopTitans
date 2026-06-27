@@ -68,7 +68,7 @@ function readURLFilters() {
   const sort = p.get('sort') ?? '';
   return {
     category:        (VALID_CATEGORIES.includes(cat as MainCategory) ? cat : 'All') as MainCategory,
-    subType:         p.get('sub') ?? '',
+    subTypes:        new Set((p.get('sub') ?? '').split(',').filter(Boolean)),
     search:          p.get('q') ?? '',
     ownedOnly:       p.get('owned') === '1',
     sort:            (VALID_SORTS.includes(sort as SortOrder) ? sort
@@ -85,7 +85,7 @@ export default function App() {
 
   const init = useRef(readURLFilters()).current;
   const [selectedCategory, setSelectedCategory] = useState<MainCategory>(init.category);
-  const [selectedSubType, setSelectedSubType] = useState(init.subType);
+  const [selectedSubTypes, setSelectedSubTypes] = useState<Set<string>>(init.subTypes);
   const [search, setSearch] = useState(init.search);
   const [showOwnedOnly, setShowOwnedOnly] = useState(init.ownedOnly);
   const [sort, setSort] = useState<SortOrder>(init.sort);
@@ -98,7 +98,7 @@ export default function App() {
   useEffect(() => {
     const p = new URLSearchParams();
     if (selectedCategory !== 'All') p.set('category', selectedCategory);
-    if (selectedSubType)            p.set('sub', selectedSubType);
+    if (selectedSubTypes.size > 0)  p.set('sub', [...selectedSubTypes].join(','));
     if (search)                     p.set('q', search);
     if (showOwnedOnly)              p.set('owned', '1');
     if (sort !== 'new')             p.set('sort', sort);
@@ -110,7 +110,7 @@ export default function App() {
     if (masteredFilter === 'not-mastered') p.set('mastered', '0');
     const qs = p.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
-  }, [selectedCategory, selectedSubType, search, showOwnedOnly, sort, resourceFilters, componentFilters, masteredFilter]);
+  }, [selectedCategory, selectedSubTypes, search, showOwnedOnly, sort, resourceFilters, componentFilters, masteredFilter]);
 
   function handleSortChange(v: SortOrder) {
     setSort(v);
@@ -119,7 +119,21 @@ export default function App() {
 
   function handleCategoryChange(category: MainCategory) {
     setSelectedCategory(category);
-    setSelectedSubType('');
+    setSelectedSubTypes(new Set());
+  }
+
+  function handleSubTypeChange(value: string, shiftKey: boolean) {
+    setSelectedSubTypes(prev => {
+      if (shiftKey) {
+        const next = new Set(prev);
+        if (next.has(value)) next.delete(value);
+        else next.add(value);
+        return next;
+      }
+      // Normal click: if already the sole selection, clear it; otherwise select only this one
+      if (prev.size === 1 && prev.has(value)) return new Set();
+      return new Set([value]);
+    });
   }
 
   function handleResourceFilterCycle(key: ResourceKey) {
@@ -169,11 +183,11 @@ export default function App() {
     return blueprints.filter(bp => {
       if (selectedCategory !== 'All') {
         if (TYPE_TO_CATEGORY[bp.type] !== selectedCategory) return false;
-        if (selectedSubType) {
+        if (selectedSubTypes.size > 0) {
           if (selectedCategory === 'Enchantments') {
-            if (getEnchantmentElement(bp.name, bp.type) !== selectedSubType) return false;
+            if (!selectedSubTypes.has(getEnchantmentElement(bp.name, bp.type))) return false;
           } else {
-            if (bp.type !== selectedSubType) return false;
+            if (!selectedSubTypes.has(bp.type)) return false;
           }
         }
       }
@@ -196,7 +210,7 @@ export default function App() {
       }
       return true;
     });
-  }, [blueprints, selectedCategory, selectedSubType, search, showOwnedOnly, get, resourceFilters, componentFilters, masteredFilter]);
+  }, [blueprints, selectedCategory, selectedSubTypes, search, showOwnedOnly, get, resourceFilters, componentFilters, masteredFilter]);
 
   const sorted = useMemo(() => {
     switch (sort) {
@@ -272,8 +286,8 @@ export default function App() {
           <FilterBar
             selectedCategory={selectedCategory}
             onCategoryChange={handleCategoryChange}
-            selectedSubType={selectedSubType}
-            onSubTypeChange={setSelectedSubType}
+            selectedSubTypes={selectedSubTypes}
+            onSubTypeChange={handleSubTypeChange}
             search={search}
             onSearchChange={setSearch}
             showOwnedOnly={showOwnedOnly}
