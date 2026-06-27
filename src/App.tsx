@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
+import { useDebounce } from './hooks/useDebounce';
 import { useBlueprints } from './hooks/useBlueprints';
 import { useUserData } from './hooks/useUserData';
 import { FilterBar } from './components/FilterBar';
@@ -95,6 +96,14 @@ export default function App() {
   const [selectedBlueprint, setSelectedBlueprint] = useState<Blueprint | null>(null);
   const [selectedBlueprintTab, setSelectedBlueprintTab] = useState<'milestones' | undefined>(undefined);
 
+  const debouncedCategory = useDebounce(selectedCategory, 100);
+  const debouncedSubTypes = useDebounce(selectedSubTypes, 100);
+  const debouncedSearch = useDebounce(search, 100);
+  const debouncedShowOwnedOnly = useDebounce(showOwnedOnly, 100);
+  const debouncedResourceFilters = useDebounce(resourceFilters, 100);
+  const debouncedComponentFilters = useDebounce(componentFilters, 100);
+  const debouncedMasteredFilter = useDebounce(masteredFilter, 100);
+
   useEffect(() => {
     const p = new URLSearchParams();
     if (selectedCategory !== 'All') p.set('category', selectedCategory);
@@ -177,26 +186,26 @@ export default function App() {
   }, [blueprints]);
 
   const filtered = useMemo(() => {
-    const q = search.toLowerCase();
-    const resEntries = Object.entries(resourceFilters) as [ResourceKey, 'require' | 'exclude'][];
-    const compEntries = Object.entries(componentFilters) as [string, 'require' | 'exclude'][];
+    const q = debouncedSearch.toLowerCase();
+    const resEntries = Object.entries(debouncedResourceFilters) as [ResourceKey, 'require' | 'exclude'][];
+    const compEntries = Object.entries(debouncedComponentFilters) as [string, 'require' | 'exclude'][];
     return blueprints.filter(bp => {
-      if (selectedCategory !== 'All') {
-        if (TYPE_TO_CATEGORY[bp.type] !== selectedCategory) return false;
-        if (selectedSubTypes.size > 0) {
-          if (selectedCategory === 'Enchantments') {
-            if (!selectedSubTypes.has(getEnchantmentElement(bp.name, bp.type))) return false;
+      if (debouncedCategory !== 'All') {
+        if (TYPE_TO_CATEGORY[bp.type] !== debouncedCategory) return false;
+        if (debouncedSubTypes.size > 0) {
+          if (debouncedCategory === 'Enchantments') {
+            if (!debouncedSubTypes.has(getEnchantmentElement(bp.name, bp.type))) return false;
           } else {
-            if (!selectedSubTypes.has(bp.type)) return false;
+            if (!debouncedSubTypes.has(bp.type)) return false;
           }
         }
       }
       if (q && !bp.name.toLowerCase().includes(q)) return false;
-      if (showOwnedOnly && !get(bp.name).owned) return false;
-      if (masteredFilter !== 'all') {
+      if (debouncedShowOwnedOnly && !get(bp.name).owned) return false;
+      if (debouncedMasteredFilter !== 'all') {
         const { allComplete } = getMilestoneStatus(get(bp.name).craftCount, bp.craftingMilestones);
-        if (masteredFilter === 'mastered' && !allComplete) return false;
-        if (masteredFilter === 'not-mastered' && allComplete) return false;
+        if (debouncedMasteredFilter === 'mastered' && !allComplete) return false;
+        if (debouncedMasteredFilter === 'not-mastered' && allComplete) return false;
       }
       for (const [key, state] of resEntries) {
         const has = bp.resources[key] > 0;
@@ -210,7 +219,7 @@ export default function App() {
       }
       return true;
     });
-  }, [blueprints, selectedCategory, selectedSubTypes, search, showOwnedOnly, get, resourceFilters, componentFilters, masteredFilter]);
+  }, [blueprints, debouncedCategory, debouncedSubTypes, debouncedSearch, debouncedShowOwnedOnly, get, debouncedResourceFilters, debouncedComponentFilters, debouncedMasteredFilter]);
 
   const sorted = useMemo(() => {
     switch (sort) {
