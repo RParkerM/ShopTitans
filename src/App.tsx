@@ -188,12 +188,6 @@ export default function App() {
     setComponentFilters({});
   }
 
-  function handleAscensionRowClick(category: MainCategory, subType: string | null) {
-    setSelectedCategory(category);
-    setSelectedSubTypes(subType ? new Set([subType]) : new Set());
-    setView('blueprints');
-  }
-
   const allComponentNames = useMemo(() => {
     const names = new Set<string>();
     for (const bp of blueprints) {
@@ -334,7 +328,7 @@ export default function App() {
         <AscensionSummary
           blueprints={blueprints}
           getUserData={get}
-          onSelectSubType={handleAscensionRowClick}
+          onUpdate={update}
         />
       )}
 

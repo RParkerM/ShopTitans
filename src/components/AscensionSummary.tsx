@@ -1,13 +1,13 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
+import { getBlueprintImages } from '../utils/blueprintImages';
 import type { Blueprint, UserBlueprintData } from '../types';
 
 interface SummaryRowDef {
   label: string;
   icon: string;
-  type: string;       // matches bp.type
+  type: string; // matches bp.type
   category: Exclude<MainCategory, 'All'>;
-  subValue: string | null; // value passed to sub-type filter when clicked (null = whole category)
 }
 
 // Enchantment blueprints have type 'Element' or 'Spirit', but the Enchantments
@@ -19,7 +19,6 @@ const ROW_DEFS: SummaryRowDef[] = (['Weapons', 'Armor', 'Accessories', 'Stones']
       icon: sub.icon,
       type: sub.value,
       category: cat as Exclude<MainCategory, 'All'>,
-      subValue: sub.value,
     })),
   )
   .concat([
@@ -28,14 +27,12 @@ const ROW_DEFS: SummaryRowDef[] = (['Weapons', 'Armor', 'Accessories', 'Stones']
       icon: '/fan-kit/Item%20Types/icon_global_item_fire_big.png',
       type: 'Element',
       category: 'Enchantments',
-      subValue: null,
     },
     {
       label: 'Spirits',
       icon: '/fan-kit/Item%20Types/icon_global_item_spirit_big.png',
       type: 'Spirit',
       category: 'Enchantments',
-      subValue: 'Spirit',
     },
   ]);
 
@@ -48,7 +45,7 @@ interface TypeStats {
 interface AscensionSummaryProps {
   blueprints: Blueprint[];
   getUserData: (name: string) => UserBlueprintData;
-  onSelectSubType: (category: MainCategory, subType: string | null) => void;
+  onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
 }
 
 function ProgressBar({ value, max }: { value: number; max: number }) {
@@ -73,26 +70,134 @@ function StatLine({ stats }: { stats: TypeStats }) {
   );
 }
 
-export function AscensionSummary({ blueprints, getUserData, onSelectSubType }: AscensionSummaryProps) {
+function MiniBlueprintIcon({ blueprint }: { blueprint: Blueprint }) {
+  const { circleBackground, itemImage, itemImageFallback } = getBlueprintImages(
+    blueprint.name, blueprint.type, blueprint.source,
+  );
+  const [imgSrc, setImgSrc] = useState<string | null>(itemImage);
+  return (
+    <div className="relative w-8 h-8 shrink-0 flex items-center justify-center">
+      <img src={circleBackground} alt="" className="absolute inset-0 w-full h-full object-contain" draggable={false} />
+      {imgSrc ? (
+        <img
+          src={imgSrc}
+          alt={blueprint.name}
+          className="relative z-10 w-6 h-6 object-contain"
+          onError={() => {
+            if (itemImageFallback && imgSrc !== itemImageFallback) setImgSrc(itemImageFallback);
+            else setImgSrc(null);
+          }}
+          draggable={false}
+        />
+      ) : (
+        <span className="relative z-10 text-[10px] text-gray-500 select-none">{blueprint.type[0] ?? '?'}</span>
+      )}
+    </div>
+  );
+}
+
+function AscensionStars({
+  level, max, dimmed, onChange,
+}: {
+  level: number; max: number; dimmed: boolean; onChange: (v: number) => void;
+}) {
+  return (
+    <div className={`flex gap-0.5 shrink-0 ${dimmed ? 'opacity-40' : ''}`} title={`Ascension: ${level}/${max}`}>
+      {[1, 2, 3].map(star => (
+        <button
+          key={star}
+          disabled={star > max}
+          onClick={() => onChange(level === star ? star - 1 : star)}
+          className={`text-3xl leading-none px-0.5 transition-colors ${
+            star > max ? 'text-transparent cursor-default'
+            : star <= level ? 'text-amber-400 hover:text-amber-300'
+            : 'text-gray-600 hover:text-gray-400'
+          }`}
+        >
+          ★
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function BlueprintRow({
+  blueprint, data, onUpdate,
+}: {
+  blueprint: Blueprint;
+  data: UserBlueprintData;
+  onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
+}) {
+  const maxStars = Math.min(blueprint.ascensionUpgrades.length, 3);
+  return (
+    <div className={`flex items-center gap-2.5 px-3 py-1.5 rounded transition-opacity ${data.owned ? '' : 'opacity-60'}`}>
+      <MiniBlueprintIcon blueprint={blueprint} />
+      <span className="text-xs text-gray-300 truncate w-44 shrink-0" title={blueprint.name}>{blueprint.name}</span>
+      <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0" title="Owned">
+        <span className="text-xs text-gray-400">Owned</span>
+        <input
+          type="checkbox"
+          checked={data.owned}
+          onChange={e => onUpdate(blueprint.name, e.target.checked ? { owned: true } : { owned: false, starforged: false })}
+          className="accent-amber-500 w-3.5 h-3.5 cursor-pointer"
+        />
+      </label>
+      <AscensionStars
+        level={Math.min(data.ascensionLevel, maxStars)}
+        max={maxStars}
+        dimmed={!data.owned}
+        onChange={v => onUpdate(blueprint.name, { ascensionLevel: v })}
+      />
+      <span className="text-[10px] text-gray-600 tabular-nums shrink-0 ml-auto">T{blueprint.tier}</span>
+    </div>
+  );
+}
+
+export function AscensionSummary({ blueprints, getUserData, onUpdate }: AscensionSummaryProps) {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  function toggleExpanded(type: string) {
+    setExpanded(prev => {
+      const next = new Set(prev);
+      if (next.has(type)) next.delete(type);
+      else next.add(type);
+      return next;
+    });
+  }
+
+  // Ascendable blueprints grouped by type, newest first (the app's default sort).
+  const blueprintsByType = useMemo(() => {
+    const map = new Map<string, Blueprint[]>();
+    for (const bp of blueprints) {
+      if (bp.ascensionUpgrades.length === 0) continue;
+      let list = map.get(bp.type);
+      if (!list) {
+        list = [];
+        map.set(bp.type, list);
+      }
+      list.push(bp);
+    }
+    for (const list of map.values()) list.reverse();
+    return map;
+  }, [blueprints]);
+
   const statsByType = useMemo(() => {
     const map = new Map<string, TypeStats>();
-    for (const bp of blueprints) {
-      const maxStars = Math.min(bp.ascensionUpgrades.length, 3);
-      if (maxStars === 0) continue; // not ascendable
-      let stats = map.get(bp.type);
-      if (!stats) {
-        stats = { earned: 0, ownedMax: 0, totalMax: 0 };
-        map.set(bp.type, stats);
+    for (const [type, bps] of blueprintsByType) {
+      const stats: TypeStats = { earned: 0, ownedMax: 0, totalMax: 0 };
+      for (const bp of bps) {
+        const maxStars = Math.min(bp.ascensionUpgrades.length, 3);
+        stats.totalMax += maxStars;
+        const data = getUserData(bp.name);
+        if (data.owned) {
+          stats.ownedMax += maxStars;
+          stats.earned += Math.min(data.ascensionLevel, maxStars);
+        }
       }
-      stats.totalMax += maxStars;
-      const data = getUserData(bp.name);
-      if (data.owned) {
-        stats.ownedMax += maxStars;
-        stats.earned += Math.min(data.ascensionLevel, maxStars);
-      }
+      map.set(type, stats);
     }
     return map;
-  }, [blueprints, getUserData]);
+  }, [blueprintsByType, getUserData]);
 
   const sections = useMemo(() => {
     return MAIN_CATEGORIES
@@ -161,21 +266,38 @@ export function AscensionSummary({ blueprints, getUserData, onSelectSubType }: A
             <StatLine stats={subtotal} />
           </div>
           <div className="flex flex-col gap-1">
-            {rows.map(row => (
-              <button
-                key={row.type}
-                onClick={() => onSelectSubType(row.category, row.subValue)}
-                title={`View ${row.label} blueprints`}
-                className="flex items-center gap-3 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 hover:border-gray-500 transition-colors text-left"
-              >
-                <img src={row.icon} alt="" className="h-7 w-7 object-contain shrink-0" />
-                <span className="text-xs font-medium text-gray-300 w-28 shrink-0">{row.label}</span>
-                <div className="flex-1 min-w-0">
-                  <ProgressBar value={row.stats.earned} max={row.stats.ownedMax} />
+            {rows.map(row => {
+              const isExpanded = expanded.has(row.type);
+              return (
+                <div key={row.type} className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => toggleExpanded(row.type)}
+                    title={`${isExpanded ? 'Collapse' : 'Expand'} ${row.label}`}
+                    className="flex items-center gap-3 px-3 py-2 w-full hover:bg-gray-700/40 transition-colors text-left"
+                  >
+                    <span className={`text-gray-500 text-[10px] shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
+                    <img src={row.icon} alt="" className="h-7 w-7 object-contain shrink-0" />
+                    <span className="text-xs font-medium text-gray-300 w-28 shrink-0">{row.label}</span>
+                    <div className="flex-1 min-w-0">
+                      <ProgressBar value={row.stats.earned} max={row.stats.ownedMax} />
+                    </div>
+                    <StatLine stats={row.stats} />
+                  </button>
+                  {isExpanded && (
+                    <div className="border-t border-gray-700 py-1.5 flex flex-col">
+                      {(blueprintsByType.get(row.type) ?? []).map(bp => (
+                        <BlueprintRow
+                          key={bp.name}
+                          blueprint={bp}
+                          data={getUserData(bp.name)}
+                          onUpdate={onUpdate}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <StatLine stats={row.stats} />
-              </button>
-            ))}
+              );
+            })}
           </div>
         </section>
       ))}
