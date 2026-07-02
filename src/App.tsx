@@ -4,6 +4,7 @@ import { useBlueprints } from './hooks/useBlueprints';
 import { useUserData } from './hooks/useUserData';
 import { FilterBar } from './components/FilterBar';
 import { BlueprintTable } from './components/BlueprintTable';
+import { AscensionSummary } from './components/AscensionSummary';
 import { BlueprintModal } from './components/BlueprintModal';
 import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, TYPE_SORT_ORDER, getEnchantmentElement, type MainCategory } from './utils/categories';
 import { RESOURCE_DEFS } from './utils/resources';
@@ -13,6 +14,7 @@ import type { Blueprint, ResourceKey, ResourceFilters, ComponentFilters } from '
 
 export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc' | 'type';
 export type MasteredFilter = 'all' | 'mastered' | 'not-mastered';
+export type View = 'blueprints' | 'ascensions';
 const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc', 'type'];
 const VALID_CATEGORIES = MAIN_CATEGORIES.map(c => c.id);
 
@@ -68,6 +70,7 @@ function readURLFilters() {
   const cat = p.get('category') ?? '';
   const sort = p.get('sort') ?? '';
   return {
+    view:            (p.get('view') === 'ascensions' ? 'ascensions' : 'blueprints') as View,
     category:        (VALID_CATEGORIES.includes(cat as MainCategory) ? cat : 'All') as MainCategory,
     subTypes:        new Set((p.get('sub') ?? '').split(',').filter(Boolean)),
     search:          p.get('q') ?? '',
@@ -85,6 +88,7 @@ export default function App() {
   const { get, update } = useUserData();
 
   const init = useRef(readURLFilters()).current;
+  const [view, setView] = useState<View>(init.view);
   const [selectedCategory, setSelectedCategory] = useState<MainCategory>(init.category);
   const [selectedSubTypes, setSelectedSubTypes] = useState<Set<string>>(init.subTypes);
   const [search, setSearch] = useState(init.search);
@@ -106,6 +110,7 @@ export default function App() {
 
   useEffect(() => {
     const p = new URLSearchParams();
+    if (view !== 'blueprints')      p.set('view', view);
     if (selectedCategory !== 'All') p.set('category', selectedCategory);
     if (selectedSubTypes.size > 0)  p.set('sub', [...selectedSubTypes].join(','));
     if (search)                     p.set('q', search);
@@ -119,7 +124,7 @@ export default function App() {
     if (masteredFilter === 'not-mastered') p.set('mastered', '0');
     const qs = p.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
-  }, [selectedCategory, selectedSubTypes, search, showOwnedOnly, sort, resourceFilters, componentFilters, masteredFilter]);
+  }, [view, selectedCategory, selectedSubTypes, search, showOwnedOnly, sort, resourceFilters, componentFilters, masteredFilter]);
 
   function handleSortChange(v: SortOrder) {
     setSort(v);
@@ -173,6 +178,12 @@ export default function App() {
 
   function handleComponentFiltersReset() {
     setComponentFilters({});
+  }
+
+  function handleAscensionRowClick(category: MainCategory, subType: string | null) {
+    setSelectedCategory(category);
+    setSelectedSubTypes(subType ? new Set([subType]) : new Set());
+    setView('blueprints');
   }
 
   const allComponentNames = useMemo(() => {
@@ -254,6 +265,23 @@ export default function App() {
             </p>
           )}
         </div>
+        {blueprints.length > 0 && (
+          <div className="flex items-center rounded overflow-hidden border border-gray-700 text-xs">
+            {([['blueprints', 'Blueprints'], ['ascensions', 'Ascensions']] as [View, string][]).map(([value, label]) => (
+              <button
+                key={value}
+                onClick={() => setView(value)}
+                className={`px-3 py-1.5 transition-colors whitespace-nowrap ${
+                  view === value
+                    ? 'bg-amber-500 text-gray-900 font-medium'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
         <button
           onClick={refresh}
           disabled={loading}
@@ -290,7 +318,15 @@ export default function App() {
         </div>
       )}
 
-      {blueprints.length > 0 && (
+      {blueprints.length > 0 && view === 'ascensions' && (
+        <AscensionSummary
+          blueprints={blueprints}
+          getUserData={get}
+          onSelectSubType={handleAscensionRowClick}
+        />
+      )}
+
+      {blueprints.length > 0 && view === 'blueprints' && (
         <>
           <FilterBar
             selectedCategory={selectedCategory}
