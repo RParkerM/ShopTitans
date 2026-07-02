@@ -1,7 +1,7 @@
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
 import { RESOURCE_DEFS } from '../utils/resources';
 import { STANDARD_COMPONENT_ICONS } from '../utils/components';
-import type { SortOrder, MasteredFilter } from '../App';
+import type { SortOrder, MasteredFilter, OwnedFilter } from '../App';
 import type { ResourceFilters, ResourceKey, ComponentFilters } from '../types';
 
 interface FilterBarProps {
@@ -11,8 +11,8 @@ interface FilterBarProps {
   onSubTypeChange: (subType: string, shiftKey: boolean) => void;
   search: string;
   onSearchChange: (v: string) => void;
-  showOwnedOnly: boolean;
-  onShowOwnedOnlyChange: (v: boolean) => void;
+  ownedFilter: OwnedFilter;
+  onOwnedFilterChange: (v: OwnedFilter) => void;
   sort: SortOrder;
   onSortChange: (v: SortOrder) => void;
   resourceFilters: ResourceFilters;
@@ -33,8 +33,8 @@ export function FilterBar({
   onSubTypeChange,
   search,
   onSearchChange,
-  showOwnedOnly,
-  onShowOwnedOnlyChange,
+  ownedFilter,
+  onOwnedFilterChange,
   sort,
   onSortChange,
   resourceFilters,
@@ -63,15 +63,25 @@ export function FilterBar({
           onChange={e => onSearchChange(e.target.value)}
           className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 w-48"
         />
-        <label className="flex items-center gap-1.5 text-sm text-gray-400 cursor-pointer select-none whitespace-nowrap">
-          <input
-            type="checkbox"
-            checked={showOwnedOnly}
-            onChange={e => onShowOwnedOnlyChange(e.target.checked)}
-            className="accent-amber-500"
-          />
-          Owned only
-        </label>
+        <button
+          onClick={() => onOwnedFilterChange(ownedFilter === 'all' ? 'owned' : ownedFilter === 'owned' ? 'not-owned' : 'all')}
+          title="Owned — click to show owned, again for not owned, again to clear"
+          className={`relative px-2.5 py-1 rounded text-sm font-medium transition-all whitespace-nowrap ${
+            ownedFilter === 'owned'
+              ? 'ring-2 ring-green-500 bg-green-950/40 text-green-400'
+              : ownedFilter === 'not-owned'
+              ? 'ring-2 ring-red-600 bg-red-950/40 text-red-400'
+              : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
+          }`}
+        >
+          {ownedFilter === 'not-owned' ? 'Not Owned' : 'Owned'}
+          {ownedFilter === 'owned' && (
+            <span className="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] leading-none font-bold">✓</span>
+          )}
+          {ownedFilter === 'not-owned' && (
+            <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] leading-none font-bold">✕</span>
+          )}
+        </button>
         <div className="flex items-center rounded overflow-hidden border border-gray-700 text-xs">
           {([['all', 'All'], ['mastered', 'Mastered'], ['not-mastered', 'Not Mastered']] as [MasteredFilter, string][]).map(([value, label]) => (
             <button

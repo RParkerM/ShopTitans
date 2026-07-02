@@ -14,6 +14,7 @@ import type { Blueprint, ResourceKey, ResourceFilters, ComponentFilters } from '
 
 export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc' | 'type';
 export type MasteredFilter = 'all' | 'mastered' | 'not-mastered';
+export type OwnedFilter = 'all' | 'owned' | 'not-owned';
 export type View = 'blueprints' | 'ascensions';
 const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc', 'type'];
 const VALID_CATEGORIES = MAIN_CATEGORIES.map(c => c.id);
@@ -65,6 +66,12 @@ function parseMasteredFilter(raw: string | null): MasteredFilter {
   return 'all';
 }
 
+function parseOwnedFilter(raw: string | null): OwnedFilter {
+  if (raw === '1') return 'owned';
+  if (raw === '0') return 'not-owned';
+  return 'all';
+}
+
 function readURLFilters() {
   const p = new URLSearchParams(window.location.search);
   const cat = p.get('category') ?? '';
@@ -74,7 +81,7 @@ function readURLFilters() {
     category:        (VALID_CATEGORIES.includes(cat as MainCategory) ? cat : 'All') as MainCategory,
     subTypes:        new Set((p.get('sub') ?? '').split(',').filter(Boolean)),
     search:          p.get('q') ?? '',
-    ownedOnly:       p.get('owned') === '1',
+    ownedFilter:     parseOwnedFilter(p.get('owned')),
     sort:            (VALID_SORTS.includes(sort as SortOrder) ? sort
                       : (localStorage.getItem('st_sort') ?? 'new')) as SortOrder,
     resourceFilters:   parseResourceFilters(p.get('res') ?? ''),
@@ -92,7 +99,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<MainCategory>(init.category);
   const [selectedSubTypes, setSelectedSubTypes] = useState<Set<string>>(init.subTypes);
   const [search, setSearch] = useState(init.search);
-  const [showOwnedOnly, setShowOwnedOnly] = useState(init.ownedOnly);
+  const [ownedFilter, setOwnedFilter] = useState<OwnedFilter>(init.ownedFilter);
   const [sort, setSort] = useState<SortOrder>(init.sort);
   const [resourceFilters, setResourceFilters] = useState<ResourceFilters>(init.resourceFilters);
   const [componentFilters, setComponentFilters] = useState<ComponentFilters>(init.componentFilters);
@@ -103,7 +110,7 @@ export default function App() {
   const debouncedCategory = useDebounce(selectedCategory, 100);
   const debouncedSubTypes = useDebounce(selectedSubTypes, 100);
   const debouncedSearch = useDebounce(search, 100);
-  const debouncedShowOwnedOnly = useDebounce(showOwnedOnly, 100);
+  const debouncedOwnedFilter = useDebounce(ownedFilter, 100);
   const debouncedResourceFilters = useDebounce(resourceFilters, 100);
   const debouncedComponentFilters = useDebounce(componentFilters, 100);
   const debouncedMasteredFilter = useDebounce(masteredFilter, 100);
@@ -114,7 +121,8 @@ export default function App() {
     if (selectedCategory !== 'All') p.set('category', selectedCategory);
     if (selectedSubTypes.size > 0)  p.set('sub', [...selectedSubTypes].join(','));
     if (search)                     p.set('q', search);
-    if (showOwnedOnly)              p.set('owned', '1');
+    if (ownedFilter === 'owned')     p.set('owned', '1');
+    if (ownedFilter === 'not-owned') p.set('owned', '0');
     if (sort !== 'new')             p.set('sort', sort);
     const resSerialized = serializeResourceFilters(resourceFilters);
     if (resSerialized)              p.set('res', resSerialized);
@@ -124,7 +132,7 @@ export default function App() {
     if (masteredFilter === 'not-mastered') p.set('mastered', '0');
     const qs = p.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
-  }, [view, selectedCategory, selectedSubTypes, search, showOwnedOnly, sort, resourceFilters, componentFilters, masteredFilter]);
+  }, [view, selectedCategory, selectedSubTypes, search, ownedFilter, sort, resourceFilters, componentFilters, masteredFilter]);
 
   function handleSortChange(v: SortOrder) {
     setSort(v);
@@ -212,7 +220,11 @@ export default function App() {
         }
       }
       if (q && !bp.name.toLowerCase().includes(q)) return false;
-      if (debouncedShowOwnedOnly && !get(bp.name).owned) return false;
+      if (debouncedOwnedFilter !== 'all') {
+        const owned = get(bp.name).owned;
+        if (debouncedOwnedFilter === 'owned' && !owned) return false;
+        if (debouncedOwnedFilter === 'not-owned' && owned) return false;
+      }
       if (debouncedMasteredFilter !== 'all') {
         const { allComplete } = getMilestoneStatus(get(bp.name).craftCount, bp.craftingMilestones);
         if (debouncedMasteredFilter === 'mastered' && !allComplete) return false;
@@ -230,7 +242,7 @@ export default function App() {
       }
       return true;
     });
-  }, [blueprints, debouncedCategory, debouncedSubTypes, debouncedSearch, debouncedShowOwnedOnly, get, debouncedResourceFilters, debouncedComponentFilters, debouncedMasteredFilter]);
+  }, [blueprints, debouncedCategory, debouncedSubTypes, debouncedSearch, debouncedOwnedFilter, get, debouncedResourceFilters, debouncedComponentFilters, debouncedMasteredFilter]);
 
   const sorted = useMemo(() => {
     switch (sort) {
@@ -335,8 +347,8 @@ export default function App() {
             onSubTypeChange={handleSubTypeChange}
             search={search}
             onSearchChange={setSearch}
-            showOwnedOnly={showOwnedOnly}
-            onShowOwnedOnlyChange={setShowOwnedOnly}
+            ownedFilter={ownedFilter}
+            onOwnedFilterChange={setOwnedFilter}
             sort={sort}
             onSortChange={handleSortChange}
             resourceFilters={resourceFilters}
