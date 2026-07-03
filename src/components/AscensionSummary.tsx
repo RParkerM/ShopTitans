@@ -62,10 +62,10 @@ function ProgressBar({ value, max }: { value: number; max: number }) {
 
 function StatLine({ stats }: { stats: TypeStats }) {
   return (
-    <div className="flex items-baseline gap-1.5 tabular-nums whitespace-nowrap">
+    <div className="flex items-baseline gap-1.5 tabular-nums whitespace-nowrap shrink-0">
       <span className="text-amber-400 font-semibold text-sm">★ {stats.earned}</span>
-      <span className="text-gray-400 text-sm">/ {stats.ownedMax} owned</span>
-      <span className="text-gray-600 text-xs">/ {stats.totalMax} total</span>
+      <span className="text-gray-400 text-sm">/ {stats.ownedMax}<span className="hidden sm:inline"> owned</span></span>
+      <span className="text-gray-600 text-xs">/ {stats.totalMax}<span className="hidden sm:inline"> total</span></span>
     </div>
   );
 }
@@ -108,7 +108,7 @@ function AscensionStars({
           key={star}
           disabled={star > max}
           onClick={() => onChange(level === star ? star - 1 : star)}
-          className={`text-3xl leading-none px-0.5 transition-colors ${
+          className={`text-2xl sm:text-3xl leading-none px-0.5 transition-colors ${
             star > max ? 'text-transparent cursor-default'
             : star <= level ? 'text-amber-400 hover:text-amber-300'
             : 'text-gray-600 hover:text-gray-400'
@@ -133,9 +133,9 @@ function BlueprintRow({
     <div className={`isolate flex items-center gap-2.5 px-3 py-1.5 rounded transition-opacity ${data.owned ? '' : 'opacity-60'}`}>
       <span className="text-xs text-gray-500 tabular-nums w-7 shrink-0">T{blueprint.tier}</span>
       <MiniBlueprintIcon blueprint={blueprint} />
-      <span className="text-xs text-gray-300 truncate w-44 shrink-0" title={blueprint.name}>{blueprint.name}</span>
+      <span className="text-xs text-gray-300 truncate flex-1 min-w-0" title={blueprint.name}>{blueprint.name}</span>
       <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0" title="Owned">
-        <span className="text-xs text-gray-400">Owned</span>
+        <span className="hidden sm:inline text-xs text-gray-400">Owned</span>
         <input
           type="checkbox"
           checked={data.owned}
@@ -274,14 +274,14 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate }: Ascensio
                   <button
                     onClick={() => toggleExpanded(row.type)}
                     title={`${isExpanded ? 'Collapse' : 'Expand'} ${row.label}`}
-                    className={`sticky top-[57px] z-10 flex items-center gap-3 px-3 py-2 w-full bg-gray-800 hover:bg-gray-700 transition-colors text-left rounded-t-lg ${
+                    className={`sticky top-[var(--header-h)] z-10 flex items-center gap-3 px-3 py-2 w-full bg-gray-800 hover:bg-gray-700 transition-colors text-left rounded-t-lg ${
                       isExpanded ? 'shadow-md shadow-gray-950/50' : 'rounded-b-lg'
                     }`}
                   >
                     <span className={`text-gray-500 text-[10px] shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
                     <img src={row.icon} alt="" className="h-7 w-7 object-contain shrink-0" />
-                    <span className="text-xs font-medium text-gray-300 w-28 shrink-0">{row.label}</span>
-                    <div className="flex-1 min-w-0">
+                    <span className="text-xs font-medium text-gray-300 truncate min-w-0 flex-1 sm:flex-none sm:w-28">{row.label}</span>
+                    <div className="hidden sm:block flex-1 min-w-0">
                       <ProgressBar value={row.stats.earned} max={row.stats.ownedMax} />
                     </div>
                     <StatLine stats={row.stats} />

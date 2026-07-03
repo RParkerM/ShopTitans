@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useDebounce } from './hooks/useDebounce';
 import { useBlueprints } from './hooks/useBlueprints';
 import { useUserData } from './hooks/useUserData';
@@ -257,10 +257,24 @@ export default function App() {
     [blueprints, get],
   );
 
+  // Publish the header's real height as --header-h so sticky bars below it
+  // offset correctly even when the header wraps on narrow screens.
+  const headerRef = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const setVar = () =>
+      document.documentElement.style.setProperty('--header-h', `${el.offsetHeight}px`);
+    setVar();
+    const ro = new ResizeObserver(setVar);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [blueprints.length]);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-gray-900 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
+      <header ref={headerRef} className="sticky top-0 z-20 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
         <div>
           <h1 className="text-base font-bold text-amber-400 leading-tight">
             Shop Titans Blueprint Tracker
@@ -291,9 +305,10 @@ export default function App() {
         <button
           onClick={refresh}
           disabled={loading}
-          className="text-xs text-gray-500 hover:text-gray-300 transition-colors px-3 py-1.5 border border-gray-700 rounded hover:border-gray-600 disabled:opacity-40"
+          className="text-xs text-gray-500 hover:text-gray-300 transition-colors px-3 py-1.5 border border-gray-700 rounded hover:border-gray-600 disabled:opacity-40 whitespace-nowrap"
+          title="Refresh Data"
         >
-          {loading ? 'Loading…' : '↻ Refresh Data'}
+          {loading ? 'Loading…' : <>↻<span className="hidden sm:inline"> Refresh Data</span></>}
         </button>
       </header>
 

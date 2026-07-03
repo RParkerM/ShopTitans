@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Real header height, measured at runtime, so sticky bars offset correctly
+   even when the header wraps to multiple lines on narrow screens. */
+:root {
+  --header-h: 57px;
+}
+
 /* Custom number input — hide spinners for cleaner look */
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
 import { RESOURCE_DEFS } from '../utils/resources';
 import { STANDARD_COMPONENT_ICONS } from '../utils/components';
@@ -48,20 +49,38 @@ export function FilterBar({
   onComponentFiltersReset,
 }: FilterBarProps) {
   const subcats = selectedCategory !== 'All' ? SUBCATEGORIES[selectedCategory] : [];
-  const hasActiveResourceFilters = Object.keys(resourceFilters).length > 0;
-  const hasActiveComponentFilters = Object.keys(componentFilters).length > 0;
+  const activeResourceCount = Object.keys(resourceFilters).length;
+  const activeComponentCount = Object.keys(componentFilters).length;
+  const hasActiveResourceFilters = activeResourceCount > 0;
+  const hasActiveComponentFilters = activeComponentCount > 0;
+  const activeFilterCount = activeResourceCount + activeComponentCount;
+
+  // Resource/component filter rows are hidden by default (they dominate small
+  // screens). Remember the user's choice; auto-open when filters are active.
+  const [expanded, setExpanded] = useState<boolean>(() => {
+    const stored = localStorage.getItem('st_filters_expanded');
+    if (stored !== null) return stored === '1';
+    return activeFilterCount > 0;
+  });
+  function toggleExpanded() {
+    setExpanded(prev => {
+      const next = !prev;
+      localStorage.setItem('st_filters_expanded', next ? '1' : '0');
+      return next;
+    });
+  }
 
   return (
-    <div className="sticky top-[57px] z-10 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-col gap-2">
+    <div className="sticky top-[var(--header-h)] z-10 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-col gap-2">
 
       {/* Row 1: search + owned only + sort */}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <input
           type="text"
           placeholder="Search blueprints…"
           value={search}
           onChange={e => onSearchChange(e.target.value)}
-          className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 w-48"
+          className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 flex-1 min-w-[160px]"
         />
         <button
           onClick={() => onOwnedFilterChange(ownedFilter === 'all' ? 'owned' : ownedFilter === 'owned' ? 'not-owned' : 'all')}
@@ -149,6 +168,22 @@ export function FilterBar({
         </div>
       )}
 
+      {/* Toggle for the resource/component filter rows */}
+      <button
+        onClick={toggleExpanded}
+        className="flex items-center gap-2 self-start text-[10px] uppercase tracking-wider text-gray-400 hover:text-gray-200 transition-colors py-0.5"
+      >
+        <span className={`text-[10px] leading-none transition-transform ${expanded ? 'rotate-90' : ''}`}>▶</span>
+        <span>Resource &amp; Component Filters</span>
+        {activeFilterCount > 0 && (
+          <span className="bg-amber-500 text-gray-900 rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center text-[9px] font-bold leading-none">
+            {activeFilterCount}
+          </span>
+        )}
+      </button>
+
+      {expanded && (
+        <>
       {/* Row 4: resource filters */}
       <div className="flex flex-wrap items-center gap-1">
         <span className="text-[10px] text-gray-500 uppercase tracking-wider mr-0.5">Resources:</span>
@@ -241,6 +276,8 @@ export function FilterBar({
             </button>
           )}
         </div>
+      )}
+        </>
       )}
 
     </div>
