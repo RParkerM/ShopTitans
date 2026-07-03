@@ -71,7 +71,7 @@ export function FilterBar({
   }
 
   return (
-    <div className="sticky top-[var(--header-h)] z-10 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-col gap-2">
+    <div className="sticky top-[var(--header-h)] z-10 bg-gray-900 border-b border-gray-700 px-4 py-3 flex flex-col gap-2 max-h-[calc(100dvh-var(--header-h))] overflow-y-auto">
 
       {/* Row 1: search + owned only + sort */}
       <div className="flex flex-wrap items-center gap-2">
@@ -149,20 +149,20 @@ export function FilterBar({
 
       {/* Row 3: subcategory icon+label buttons — only when a specific category is selected */}
       {subcats.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1 sm:gap-1.5">
           {subcats.map(sub => (
             <button
               key={sub.value}
               onClick={e => onSubTypeChange(sub.value, e.shiftKey)}
               title={`${sub.label} — shift+click to select multiple`}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded text-[10px] font-medium transition-colors leading-tight ${
+              className={`flex flex-col items-center gap-0.5 px-1.5 py-1 sm:px-2 rounded text-[10px] font-medium transition-colors leading-tight ${
                 selectedSubTypes.has(sub.value)
                   ? 'bg-amber-500 text-gray-900'
                   : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
               }`}
             >
-              <img src={sub.icon} alt="" className="h-6 w-6 object-contain" />
-              {sub.label}
+              <img src={sub.icon} alt="" className="h-[26px] w-[26px] sm:h-6 sm:w-6 object-contain" />
+              <span className="hidden sm:block">{sub.label}</span>
             </button>
           ))}
         </div>
@@ -206,7 +206,7 @@ export function FilterBar({
                 <img
                   src={res.icon}
                   alt={res.label}
-                  className={`h-7 w-7 object-contain transition-opacity ${
+                  className={`h-6 w-6 sm:h-7 sm:w-7 object-contain transition-opacity ${
                     state ? 'opacity-100' : 'opacity-40'
                   }`}
                 />
@@ -217,7 +217,7 @@ export function FilterBar({
                   <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] leading-none font-bold">✕</span>
                 )}
               </div>
-              <span>{res.label}</span>
+              <span className="hidden sm:block">{res.label}</span>
             </button>
           );
         })}
@@ -254,7 +254,7 @@ export function FilterBar({
                   <img
                     src={STANDARD_COMPONENT_ICONS[name]}
                     alt={name}
-                    className={`h-7 w-7 object-contain transition-opacity ${state ? 'opacity-100' : 'opacity-40'}`}
+                    className={`h-6 w-6 sm:h-7 sm:w-7 object-contain transition-opacity ${state ? 'opacity-100' : 'opacity-40'}`}
                   />
                   {state === 'require' && (
                     <span className="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] leading-none font-bold">✓</span>
@@ -263,7 +263,7 @@ export function FilterBar({
                     <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] leading-none font-bold">✕</span>
                   )}
                 </div>
-                <span>{name}</span>
+                <span className="hidden sm:block">{name}</span>
               </button>
             );
           })}
