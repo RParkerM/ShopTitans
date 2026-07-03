@@ -130,7 +130,8 @@ function BlueprintRow({
 }) {
   const maxStars = Math.min(blueprint.ascensionUpgrades.length, 3);
   return (
-    <div className={`flex items-center gap-2.5 px-3 py-1.5 rounded transition-opacity ${data.owned ? '' : 'opacity-60'}`}>
+    <div className={`isolate flex items-center gap-2.5 px-3 py-1.5 rounded transition-opacity ${data.owned ? '' : 'opacity-60'}`}>
+      <span className="text-xs text-gray-500 tabular-nums w-7 shrink-0">T{blueprint.tier}</span>
       <MiniBlueprintIcon blueprint={blueprint} />
       <span className="text-xs text-gray-300 truncate w-44 shrink-0" title={blueprint.name}>{blueprint.name}</span>
       <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0" title="Owned">
@@ -148,7 +149,6 @@ function BlueprintRow({
         dimmed={!data.owned}
         onChange={v => onUpdate(blueprint.name, { ascensionLevel: v })}
       />
-      <span className="text-[10px] text-gray-600 tabular-nums shrink-0 ml-auto">T{blueprint.tier}</span>
     </div>
   );
 }
@@ -269,11 +269,14 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate }: Ascensio
             {rows.map(row => {
               const isExpanded = expanded.has(row.type);
               return (
-                <div key={row.type} className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+                <div key={row.type} className="bg-gray-800 border border-gray-700 rounded-lg">
+                  {/* Sticks below the app header (57px) until the section scrolls past */}
                   <button
                     onClick={() => toggleExpanded(row.type)}
                     title={`${isExpanded ? 'Collapse' : 'Expand'} ${row.label}`}
-                    className="flex items-center gap-3 px-3 py-2 w-full hover:bg-gray-700/40 transition-colors text-left"
+                    className={`sticky top-[57px] z-10 flex items-center gap-3 px-3 py-2 w-full bg-gray-800 hover:bg-gray-700 transition-colors text-left rounded-t-lg ${
+                      isExpanded ? 'shadow-md shadow-gray-950/50' : 'rounded-b-lg'
+                    }`}
                   >
                     <span className={`text-gray-500 text-[10px] shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
                     <img src={row.icon} alt="" className="h-7 w-7 object-contain shrink-0" />
