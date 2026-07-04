@@ -6,6 +6,7 @@ import { FilterBar } from './components/FilterBar';
 import { BlueprintTable } from './components/BlueprintTable';
 import { AscensionSummary } from './components/AscensionSummary';
 import { BlueprintModal } from './components/BlueprintModal';
+import { SyncControls } from './components/SyncControls';
 import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, TYPE_SORT_ORDER, getEnchantmentElement, type MainCategory } from './utils/categories';
 import { RESOURCE_DEFS } from './utils/resources';
 import { STANDARD_COMPONENT_ICONS } from './utils/components';
@@ -92,7 +93,8 @@ function readURLFilters() {
 
 export default function App() {
   const { blueprints, loading, error, refresh } = useBlueprints();
-  const { get, update } = useUserData();
+  const store = useUserData();
+  const { get, update } = store;
 
   const init = useRef(readURLFilters()).current;
   const [view, setView] = useState<View>(init.view);
@@ -285,31 +287,34 @@ export default function App() {
             </p>
           )}
         </div>
-        {blueprints.length > 0 && (
-          <div className="flex items-center rounded overflow-hidden border border-gray-700 text-xs">
-            {([['blueprints', 'Blueprints'], ['ascensions', 'Ascensions']] as [View, string][]).map(([value, label]) => (
-              <button
-                key={value}
-                onClick={() => setView(value)}
-                className={`px-3 py-1.5 transition-colors whitespace-nowrap ${
-                  view === value
-                    ? 'bg-amber-500 text-gray-900 font-medium'
-                    : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-        <button
-          onClick={refresh}
-          disabled={loading}
-          className="text-xs text-gray-500 hover:text-gray-300 transition-colors px-3 py-1.5 border border-gray-700 rounded hover:border-gray-600 disabled:opacity-40 whitespace-nowrap"
-          title="Refresh Data"
-        >
-          {loading ? 'Loading…' : <>↻<span className="hidden sm:inline"> Refresh Data</span></>}
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {blueprints.length > 0 && (
+            <div className="flex items-center rounded overflow-hidden border border-gray-700 text-xs">
+              {([['blueprints', 'Blueprints'], ['ascensions', 'Ascensions']] as [View, string][]).map(([value, label]) => (
+                <button
+                  key={value}
+                  onClick={() => setView(value)}
+                  className={`px-3 py-1.5 transition-colors whitespace-nowrap ${
+                    view === value
+                      ? 'bg-amber-500 text-gray-900 font-medium'
+                      : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+          {blueprints.length > 0 && <SyncControls store={store} />}
+          <button
+            onClick={refresh}
+            disabled={loading}
+            className="text-xs text-gray-500 hover:text-gray-300 transition-colors px-3 py-1.5 border border-gray-700 rounded hover:border-gray-600 disabled:opacity-40 whitespace-nowrap"
+            title="Refresh Data"
+          >
+            {loading ? 'Loading…' : <>↻<span className="hidden sm:inline"> Refresh Data</span></>}
+          </button>
+        </div>
       </header>
 
       {loading && blueprints.length === 0 && (

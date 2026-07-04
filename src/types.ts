@@ -64,6 +64,16 @@ export interface UserBlueprintData {
 
 export type UserData = Record<string, UserBlueprintData>;
 
+export interface ProfileMeta {
+  id: string;
+  name: string;
+  updatedAt: number;      // ms timestamp of last local change
+  driveFileId?: string;   // cached Drive file id, once synced
+  lastSyncedAt?: number;  // updatedAt value at last successful sync
+}
+
+export type SyncStatus = 'disabled' | 'signedOut' | 'idle' | 'syncing' | 'error';
+
 export type ResourceKey = keyof Resources;
 export type ResourceFilters = Partial<Record<ResourceKey, 'require' | 'exclude'>>;
 export type ComponentFilters = Partial<Record<string, 'require' | 'exclude'>>;
