@@ -33,6 +33,10 @@ function saveData(id: string, data: UserData): void {
   localStorage.setItem(dataKey(id), JSON.stringify(data));
 }
 
+function isEmpty(data: UserData): boolean {
+  return Object.keys(data).length === 0;
+}
+
 // Load the profile registry, migrating a legacy single-save on first run.
 function initProfiles(): ProfilesState {
   try {
@@ -135,7 +139,23 @@ export function useUserData(): UserDataStore {
     try {
       const remote = await drive.listProfiles();
       const remoteById = new Map(remote.map(r => [r.id, r]));
-      const list = profilesRef.current.map(p => ({ ...p }));
+      const remoteExists = remote.length > 0;
+
+      // On a fresh device the app auto-creates an empty "Default". If Drive
+      // already has data, drop that throwaway rather than pushing it as a
+      // duplicate empty profile — then we adopt the real profile(s) below.
+      const dropped = new Set<string>();
+      const list = profilesRef.current
+        .map(p => ({ ...p }))
+        .filter(p => {
+          const throwaway =
+            remoteExists && !p.lastSyncedAt && !p.driveFileId &&
+            !remoteById.has(p.id) && isEmpty(loadData(p.id));
+          if (throwaway) { dropped.add(p.id); return false; }
+          return true;
+        });
+      for (const id of dropped) localStorage.removeItem(dataKey(id));
+
       const known = new Set(list.map(p => p.id));
 
       // Profiles that exist only on Drive (created on another device).
@@ -156,7 +176,6 @@ export function useUserData(): UserDataStore {
           const file = await drive.readProfile(r.fileId);
           saveData(p.id, (file.data as UserData) ?? {});
           p.name = r.name; p.updatedAt = r.updatedAt; p.driveFileId = r.fileId; p.lastSyncedAt = r.updatedAt;
-          if (p.id === activeIdRef.current) setUserData(loadData(p.id));
         } else if (p.updatedAt > r.updatedAt) {
           const fileId = await drive.writeProfile({ fileId: r.fileId, id: p.id, name: p.name, updatedAt: p.updatedAt, data: loadData(p.id) });
           p.driveFileId = fileId; p.lastSyncedAt = p.updatedAt;
@@ -165,8 +184,15 @@ export function useUserData(): UserDataStore {
         }
       }
 
+      // If the active profile was a dropped throwaway, adopt a real one.
+      let active = activeIdRef.current;
+      if (!list.some(p => p.id === active)) active = list[0]?.id ?? active;
+
       setProfiles(list);
-      persist(list, activeIdRef.current);
+      setActiveId(active);
+      activeIdRef.current = active;
+      setUserData(loadData(active));
+      persist(list, active);
       setSyncStatus('idle');
       setSyncError(null);
     } catch (e) {
