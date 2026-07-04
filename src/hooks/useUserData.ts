@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import type { UserData, UserBlueprintData, ProfileMeta, SyncStatus } from '../types';
+import type { UserData, UserBlueprintData, ProfileMeta, SyncStatus, SyncConflict } from '../types';
 import * as drive from '../utils/googleDrive';
 
 const LEGACY_KEY = 'st_user_data';
@@ -81,6 +81,10 @@ export interface UserDataStore {
   signIn: () => void;
   signOut: () => void;
   syncNow: () => void;
+  // Conflicts (both device and cloud changed since last sync)
+  conflicts: SyncConflict[];
+  resolveConflict: (id: string, choice: 'local' | 'cloud') => void;
+  dismissConflicts: () => void;
 }
 
 export function useUserData(): UserDataStore {
@@ -94,11 +98,13 @@ export function useUserData(): UserDataStore {
     drive.isConfigured() ? 'signedOut' : 'disabled',
   );
   const [syncError, setSyncError] = useState<string | null>(null);
+  const [conflicts, setConflicts] = useState<SyncConflict[]>([]);
 
   // Refs so async sync routines never read stale state.
   const profilesRef = useRef(profiles); profilesRef.current = profiles;
   const activeIdRef = useRef(activeId); activeIdRef.current = activeId;
   const signedInRef = useRef(signedIn); signedInRef.current = signedIn;
+  const conflictsRef = useRef(conflicts); conflictsRef.current = conflicts;
 
   const persist = useCallback((list: ProfileMeta[], active: string) => {
     localStorage.setItem(PROFILES_KEY, JSON.stringify({ activeId: active, profiles: list }));
@@ -116,6 +122,8 @@ export function useUserData(): UserDataStore {
 
   const pushActive = useCallback(async () => {
     if (!signedInRef.current) return;
+    // Don't auto-push a profile that's awaiting a conflict decision.
+    if (conflictsRef.current.some(c => c.id === activeIdRef.current)) return;
     const p = profilesRef.current.find(x => x.id === activeIdRef.current);
     if (!p) return;
     setSyncStatus('syncing');
@@ -166,21 +174,38 @@ export function useUserData(): UserDataStore {
         list.push({ id: r.id, name: r.name, updatedAt: r.updatedAt, driveFileId: r.fileId, lastSyncedAt: r.updatedAt });
       }
 
-      // Reconcile each local profile against Drive (last-write-wins).
+      // Reconcile each local profile against Drive. Safe cases (only one side
+      // changed) sync automatically; if BOTH changed since the last sync we
+      // defer to the user rather than silently overwriting.
+      const conflictList: SyncConflict[] = [];
       for (const p of list) {
         const r = remoteById.get(p.id);
         if (!r) {
           const fileId = await drive.writeProfile({ id: p.id, name: p.name, updatedAt: p.updatedAt, data: loadData(p.id) });
           p.driveFileId = fileId; p.lastSyncedAt = p.updatedAt;
-        } else if (r.updatedAt > p.updatedAt) {
+          continue;
+        }
+        if (r.updatedAt === p.updatedAt) {
+          p.driveFileId = r.fileId; p.lastSyncedAt = r.updatedAt;
+          continue;
+        }
+        const base = p.lastSyncedAt ?? 0;
+        const localDirty = p.updatedAt > base;
+        const remoteAhead = r.updatedAt > base;
+        if (localDirty && remoteAhead) {
+          // Both sides diverged — ask the user which to keep.
+          p.driveFileId = r.fileId;
+          conflictList.push({
+            id: p.id, name: r.name,
+            localUpdatedAt: p.updatedAt, remoteUpdatedAt: r.updatedAt, remoteFileId: r.fileId,
+          });
+        } else if (remoteAhead) {
           const file = await drive.readProfile(r.fileId);
           saveData(p.id, (file.data as UserData) ?? {});
           p.name = r.name; p.updatedAt = r.updatedAt; p.driveFileId = r.fileId; p.lastSyncedAt = r.updatedAt;
-        } else if (p.updatedAt > r.updatedAt) {
+        } else {
           const fileId = await drive.writeProfile({ fileId: r.fileId, id: p.id, name: p.name, updatedAt: p.updatedAt, data: loadData(p.id) });
           p.driveFileId = fileId; p.lastSyncedAt = p.updatedAt;
-        } else {
-          p.driveFileId = r.fileId; p.lastSyncedAt = r.updatedAt;
         }
       }
 
@@ -193,6 +218,7 @@ export function useUserData(): UserDataStore {
       activeIdRef.current = active;
       setUserData(loadData(active));
       persist(list, active);
+      setConflicts(conflictList);
       setSyncStatus('idle');
       setSyncError(null);
     } catch (e) {
@@ -296,6 +322,35 @@ export function useUserData(): UserDataStore {
 
   const syncNow = useCallback(() => { void fullSync(); }, [fullSync]);
 
+  const resolveConflict = useCallback((id: string, choice: 'local' | 'cloud') => {
+    const c = conflictsRef.current.find(x => x.id === id);
+    if (!c) return;
+    const p = profilesRef.current.find(x => x.id === id);
+    setSyncStatus('syncing');
+    void (async () => {
+      try {
+        if (choice === 'cloud') {
+          const file = await drive.readProfile(c.remoteFileId);
+          saveData(id, (file.data as UserData) ?? {});
+          patchMeta(id, { name: c.name, updatedAt: c.remoteUpdatedAt, lastSyncedAt: c.remoteUpdatedAt, driveFileId: c.remoteFileId });
+          if (id === activeIdRef.current) setUserData(loadData(id));
+        } else {
+          const updatedAt = p?.updatedAt ?? Date.now();
+          const fileId = await drive.writeProfile({ fileId: c.remoteFileId, id, name: p?.name ?? c.name, updatedAt, data: loadData(id) });
+          patchMeta(id, { driveFileId: fileId, lastSyncedAt: updatedAt });
+        }
+        setConflicts(prev => prev.filter(x => x.id !== id));
+        setSyncStatus('idle');
+        setSyncError(null);
+      } catch (e) {
+        setSyncStatus('error');
+        setSyncError(e instanceof Error ? e.message : String(e));
+      }
+    })();
+  }, [patchMeta]);
+
+  const dismissConflicts = useCallback(() => setConflicts([]), []);
+
   // Silent re-auth on load if the user previously enabled sync.
   useEffect(() => {
     if (!drive.isConfigured() || localStorage.getItem(SYNC_FLAG) !== '1') return;
@@ -325,5 +380,6 @@ export function useUserData(): UserDataStore {
     syncConfigured: drive.isConfigured(),
     signedIn, syncStatus, syncError,
     signIn, signOut, syncNow,
+    conflicts, resolveConflict, dismissConflicts,
   };
 }

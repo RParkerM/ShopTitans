@@ -7,6 +7,7 @@ import { BlueprintTable } from './components/BlueprintTable';
 import { AscensionSummary } from './components/AscensionSummary';
 import { BlueprintModal } from './components/BlueprintModal';
 import { SyncControls } from './components/SyncControls';
+import { ConflictModal } from './components/ConflictModal';
 import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, TYPE_SORT_ORDER, getEnchantmentElement, type MainCategory } from './utils/categories';
 import { RESOURCE_DEFS } from './utils/resources';
 import { STANDARD_COMPONENT_ICONS } from './utils/components';
@@ -395,6 +396,8 @@ export default function App() {
           initialTab={selectedBlueprintTab}
         />
       )}
+
+      <ConflictModal store={store} />
     </div>
   );
 }

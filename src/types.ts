@@ -74,6 +74,14 @@ export interface ProfileMeta {
 
 export type SyncStatus = 'disabled' | 'signedOut' | 'idle' | 'syncing' | 'error';
 
+export interface SyncConflict {
+  id: string;              // profile id
+  name: string;
+  localUpdatedAt: number;
+  remoteUpdatedAt: number;
+  remoteFileId: string;
+}
+
 export type ResourceKey = keyof Resources;
 export type ResourceFilters = Partial<Record<ResourceKey, 'require' | 'exclude'>>;
 export type ComponentFilters = Partial<Record<string, 'require' | 'exclude'>>;
