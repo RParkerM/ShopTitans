@@ -1,4 +1,4 @@
-import type { UserDataStore } from '../hooks/useUserData';
+import { profileEntryCount, type UserDataStore } from '../hooks/useUserData';
 
 const NEW_PROFILE = '__new__';
 
@@ -48,7 +48,7 @@ export function SyncControls({ store }: { store: UserDataStore }) {
         className="max-w-[7rem] px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-200 focus:outline-none focus:border-amber-500 cursor-pointer"
       >
         {profiles.map(p => (
-          <option key={p.id} value={p.id}>{p.name}</option>
+          <option key={p.id} value={p.id}>{p.name} · {profileEntryCount(p.id)}</option>
         ))}
         <option value={NEW_PROFILE}>＋ New profile…</option>
       </select>
