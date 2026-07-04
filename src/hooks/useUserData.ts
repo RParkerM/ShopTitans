@@ -408,6 +408,13 @@ export function useUserData(): UserDataStore {
   useEffect(() => {
     if (!drive.isConfigured() || localStorage.getItem(SYNC_FLAG) !== '1') return;
     let cancelled = false;
+    // Reuse a cached, still-valid token across reloads with no round-trip.
+    if (drive.hasToken()) {
+      setSignedIn(true);
+      signedInRef.current = true;
+      void fullSync();
+      return () => { cancelled = true; };
+    }
     drive.requestToken(false)
       .then(() => {
         if (cancelled) return;

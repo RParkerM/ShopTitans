@@ -36,6 +36,32 @@ let tokenClient: any = null;
 let accessToken: string | null = null;
 let tokenExpiry = 0;
 
+// Cache the access token so reloads within its ~1h lifetime don't need a
+// fresh (and on some browsers interactive) sign-in. Scope is limited to
+// drive.appdata and the token is short-lived, so localStorage is acceptable.
+const TOKEN_CACHE_KEY = 'st_drive_token';
+
+function persistToken(token: string, expiry: number): void {
+  accessToken = token;
+  tokenExpiry = expiry;
+  try {
+    localStorage.setItem(TOKEN_CACHE_KEY, JSON.stringify({ token, expiry }));
+  } catch { /* ignore */ }
+}
+
+// Rehydrate a still-valid token from a previous page load.
+(function rehydrateToken() {
+  try {
+    const raw = localStorage.getItem(TOKEN_CACHE_KEY);
+    if (!raw) return;
+    const { token, expiry } = JSON.parse(raw) as { token: string; expiry: number };
+    if (token && Date.now() < expiry) {
+      accessToken = token;
+      tokenExpiry = expiry;
+    }
+  } catch { /* ignore */ }
+})();
+
 async function ensureTokenClient(): Promise<void> {
   await loadGis();
   if (tokenClient) return;
@@ -58,9 +84,8 @@ export async function requestToken(interactive: boolean): Promise<string> {
         reject(new Error(resp.error));
         return;
       }
-      accessToken = resp.access_token;
       // Refresh a minute early to avoid using an about-to-expire token.
-      tokenExpiry = Date.now() + ((resp.expires_in ?? 3600) - 60) * 1000;
+      persistToken(resp.access_token, Date.now() + ((resp.expires_in ?? 3600) - 60) * 1000);
       resolve(accessToken as string);
     };
     tokenClient.error_callback = (err: any) => reject(new Error(err?.type ?? 'auth_failed'));
@@ -84,6 +109,9 @@ export function hasToken(): boolean {
 export function clearToken(): void {
   accessToken = null;
   tokenExpiry = 0;
+  try {
+    localStorage.removeItem(TOKEN_CACHE_KEY);
+  } catch { /* ignore */ }
 }
 
 async function authedFetch(url: string, init: RequestInit = {}): Promise<Response> {
