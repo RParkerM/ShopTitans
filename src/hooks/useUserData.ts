@@ -42,13 +42,44 @@ export function profileEntryCount(id: string): number {
   return Object.keys(loadData(id)).length;
 }
 
-/** Return `desired`, or `desired (2)`, `(3)`… if it collides (case-insensitive). */
+/**
+ * Return `desired`, or `base (2)`, `(3)`… if it collides (case-insensitive).
+ * A trailing " (n)" on `desired` is treated as the counter, so a collision on
+ * "Default (2)" yields "Default (3)", not "Default (2) (2)".
+ */
 function uniqueName(desired: string, existing: string[]): string {
   const taken = new Set(existing.map(n => n.toLowerCase()));
   if (!taken.has(desired.toLowerCase())) return desired;
+  const base = desired.replace(/\s\(\d+\)$/, '');
   let i = 2;
-  while (taken.has(`${desired} (${i})`.toLowerCase())) i++;
-  return `${desired} (${i})`;
+  while (taken.has(`${base} (${i})`.toLowerCase())) i++;
+  return `${base} (${i})`;
+}
+
+/**
+ * Collapse duplicate metas for the same profile id, keeping the synced (or
+ * newest) copy. Older clients racing concurrent syncs could adopt the same
+ * remote profile twice, and duplicate ids then break every id-keyed lookup.
+ */
+function dedupeById(profiles: ProfileMeta[]): ProfileMeta[] {
+  const byId = new Map<string, ProfileMeta>();
+  for (const p of profiles) {
+    const cur = byId.get(p.id);
+    if (!cur) { byId.set(p.id, p); continue; }
+    const better = (p.driveFileId ? 1 : 0) - (cur.driveFileId ? 1 : 0) || p.updatedAt - cur.updatedAt;
+    if (better > 0) byId.set(p.id, p);
+  }
+  return byId.size === profiles.length ? profiles : [...byId.values()];
+}
+
+/** Repair "X (2) (2) (2)" → "X (2)": debris from an old self-renaming loop. */
+function collapseRepeatedSuffix(name: string): string {
+  let prev;
+  do {
+    prev = name;
+    name = name.replace(/(\s\((\d+)\))(?:\s\(\2\))+$/, '$1');
+  } while (name !== prev);
+  return name;
 }
 
 /**
@@ -58,13 +89,13 @@ function uniqueName(desired: string, existing: string[]): string {
  * derives the same names from the same profile set. Cosmetic: updatedAt is
  * NOT bumped — a dedupe must never look like a user edit, or devices push
  * their (order-dependent) renames at each other and every round trip appends
- * another " (2)".
+ * another " (2)". Callers must collapse duplicate ids (dedupeById) first.
  */
 function dedupeProfileNames(profiles: ProfileMeta[]): { profiles: ProfileMeta[]; changed: boolean } {
   const rename = new Map<string, string>();
   const seen: string[] = [];
   for (const p of [...profiles].sort((a, b) => (a.id < b.id ? -1 : 1))) {
-    const name = uniqueName(p.name, seen);
+    const name = uniqueName(collapseRepeatedSuffix(p.name), seen);
     seen.push(name);
     if (name !== p.name) rename.set(p.id, name);
   }
@@ -82,9 +113,12 @@ function initProfiles(): ProfilesState {
     if (raw) {
       const parsed = JSON.parse(raw) as ProfilesState;
       if (parsed.profiles?.length && parsed.activeId) {
-        const { profiles, changed } = dedupeProfileNames(parsed.profiles);
+        const healed = dedupeById(parsed.profiles);
+        const { profiles, changed } = dedupeProfileNames(healed);
         const state = { activeId: parsed.activeId, profiles };
-        if (changed) localStorage.setItem(PROFILES_KEY, JSON.stringify(state));
+        if (changed || healed !== parsed.profiles) {
+          localStorage.setItem(PROFILES_KEY, JSON.stringify(state));
+        }
         return state;
       }
     }
@@ -167,36 +201,6 @@ export function useUserData(): UserDataStore {
   const syncBusyRef = useRef(false);
   const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const pushActive = useCallback(async () => {
-    if (!signedInRef.current) return;
-    // Don't auto-push a profile that's awaiting a conflict decision.
-    if (conflictsRef.current.some(c => c.id === activeIdRef.current)) return;
-    if (syncBusyRef.current) {
-      // A sync is in flight — retry once it has finished.
-      if (syncTimer.current) clearTimeout(syncTimer.current);
-      syncTimer.current = setTimeout(() => { void pushActive(); }, 1000);
-      return;
-    }
-    const p = profilesRef.current.find(x => x.id === activeIdRef.current);
-    if (!p) return;
-    syncBusyRef.current = true;
-    setSyncStatus('syncing');
-    try {
-      const fileId = await drive.writeProfile({
-        fileId: p.driveFileId, id: p.id, name: p.name, updatedAt: p.updatedAt,
-        data: loadData(p.id),
-      });
-      patchMeta(p.id, { driveFileId: fileId, lastSyncedAt: p.updatedAt });
-      setSyncStatus('idle');
-      setSyncError(null);
-    } catch (e) {
-      setSyncStatus('error');
-      setSyncError(e instanceof Error ? e.message : String(e));
-    } finally {
-      syncBusyRef.current = false;
-    }
-  }, [patchMeta]);
-
   const fullSync = useCallback(async () => {
     if (!signedInRef.current) return;
     if (syncBusyRef.current) return; // e.g. focus event during sign-in sync
@@ -204,8 +208,26 @@ export function useUserData(): UserDataStore {
     setSyncStatus('syncing');
     try {
       const remote = await drive.listProfiles();
-      const remoteById = new Map(remote.map(r => [r.id, r]));
-      const remoteExists = remote.length > 0;
+      // Drive can hold several files for one profile id (older clients racing
+      // concurrent syncs created blind duplicates). Keep the newest and delete
+      // the rest so they can't be adopted as duplicate local profiles.
+      const remoteById = new Map<string, drive.RemoteProfile>();
+      const staleFileIds: string[] = [];
+      for (const r of remote) {
+        const cur = remoteById.get(r.id);
+        if (!cur) {
+          remoteById.set(r.id, r);
+        } else if (r.updatedAt > cur.updatedAt) {
+          staleFileIds.push(cur.fileId);
+          remoteById.set(r.id, r);
+        } else {
+          staleFileIds.push(r.fileId);
+        }
+      }
+      for (const fileId of staleFileIds) {
+        await drive.deleteProfile(fileId).catch(() => { /* best effort */ });
+      }
+      const remoteExists = remoteById.size > 0;
 
       // On a fresh device the app auto-creates an empty "Default". If Drive
       // already has data, drop that throwaway rather than pushing it as a
@@ -213,9 +235,10 @@ export function useUserData(): UserDataStore {
       // Only the sole profile qualifies: with more than one local profile,
       // an empty unsynced one was created deliberately by the user (a focus
       // event fires this sync right after the new-profile prompt closes).
-      const soleLocal = profilesRef.current.length === 1;
+      const localProfiles = dedupeById(profilesRef.current);
+      const soleLocal = localProfiles.length === 1;
       const dropped = new Set<string>();
-      const list = profilesRef.current
+      const list = localProfiles
         .map(p => ({ ...p }))
         .filter(p => {
           const throwaway =
@@ -229,8 +252,9 @@ export function useUserData(): UserDataStore {
       const known = new Set(list.map(p => p.id));
 
       // Profiles that exist only on Drive (created on another device).
-      for (const r of remote) {
+      for (const r of remoteById.values()) {
         if (known.has(r.id)) continue;
+        known.add(r.id);
         const file = await drive.readProfile(r.fileId);
         saveData(r.id, (file.data as UserData) ?? {});
         list.push({ id: r.id, name: r.name, updatedAt: r.updatedAt, driveFileId: r.fileId, lastSyncedAt: r.updatedAt });
@@ -310,6 +334,43 @@ export function useUserData(): UserDataStore {
       syncBusyRef.current = false;
     }
   }, [persist]);
+
+  const pushActive = useCallback(async () => {
+    if (!signedInRef.current) return;
+    // Don't auto-push a profile that's awaiting a conflict decision.
+    if (conflictsRef.current.some(c => c.id === activeIdRef.current)) return;
+    if (syncBusyRef.current) {
+      // A sync is in flight — retry once it has finished.
+      if (syncTimer.current) clearTimeout(syncTimer.current);
+      syncTimer.current = setTimeout(() => { void pushActive(); }, 1000);
+      return;
+    }
+    const p = profilesRef.current.find(x => x.id === activeIdRef.current);
+    if (!p) return;
+    if (!p.driveFileId) {
+      // Never synced: reconcile via fullSync, which checks Drive for an
+      // existing file for this id. A blind create here is how duplicate
+      // Drive files (and then duplicate profiles) were born.
+      void fullSync();
+      return;
+    }
+    syncBusyRef.current = true;
+    setSyncStatus('syncing');
+    try {
+      const fileId = await drive.writeProfile({
+        fileId: p.driveFileId, id: p.id, name: p.name, updatedAt: p.updatedAt,
+        data: loadData(p.id),
+      });
+      patchMeta(p.id, { driveFileId: fileId, lastSyncedAt: p.updatedAt });
+      setSyncStatus('idle');
+      setSyncError(null);
+    } catch (e) {
+      setSyncStatus('error');
+      setSyncError(e instanceof Error ? e.message : String(e));
+    } finally {
+      syncBusyRef.current = false;
+    }
+  }, [patchMeta, fullSync]);
 
   // Debounced push after edits settle.
   const scheduleSync = useCallback(() => {
