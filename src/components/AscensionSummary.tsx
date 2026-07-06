@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
 import { getBlueprintImages } from '../utils/blueprintImages';
-import type { Blueprint, UserBlueprintData } from '../types';
+import { getGoalStatus, type GoalStatus } from '../utils/ascensionGoals';
+import type { AscensionGoals, Blueprint, UserBlueprintData } from '../types';
 
 interface SummaryRowDef {
   label: string;
@@ -46,6 +47,117 @@ interface AscensionSummaryProps {
   blueprints: Blueprint[];
   getUserData: (name: string) => UserBlueprintData;
   onUpdate: (name: string, patch: Partial<UserBlueprintData>) => void;
+  goals: AscensionGoals;
+  onSetGoal: (type: string, stars: number) => void;
+}
+
+interface GoalEntry extends SummaryRowDef {
+  status: GoalStatus;
+}
+
+const TOP_COUNT_KEY = 'st_goal_top_count';
+const OWNED_ONLY_KEY = 'st_goal_owned_only';
+
+function CheapestGoalsPanel({
+  entries, topCount, onTopCountChange, ownedOnly, onOwnedOnlyChange,
+}: {
+  entries: GoalEntry[];
+  topCount: number;
+  onTopCountChange: (n: number) => void;
+  ownedOnly: boolean;
+  onOwnedOnlyChange: (v: boolean) => void;
+}) {
+  const met = entries.filter(e => e.status.needed === 0);
+  const unreachable = entries.filter(e => e.status.needed > 0 && e.status.cost === null);
+  const ranked = entries
+    .filter(e => e.status.needed > 0 && e.status.cost !== null)
+    .sort((a, b) =>
+      (a.status.cost! - b.status.cost!) ||
+      (a.status.needed - b.status.needed) ||
+      a.label.localeCompare(b.label),
+    )
+    .slice(0, topCount);
+
+  return (
+    <div className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <span className="text-sm font-bold text-white">Cheapest Goals</span>
+        <div className="flex items-center gap-3">
+          <div
+            className="flex items-center rounded overflow-hidden border border-gray-600 text-xs"
+            title="Which blueprints may count toward a goal"
+          >
+            {([[true, 'Owned'], [false, 'All']] as [boolean, string][]).map(([value, label]) => (
+              <button
+                key={label}
+                onClick={() => onOwnedOnlyChange(value)}
+                className={`px-2 py-0.5 transition-colors ${
+                  ownedOnly === value
+                    ? 'bg-amber-500 text-gray-900 font-medium'
+                    : 'bg-gray-900 text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <label className="flex items-center gap-1.5 text-xs text-gray-400">
+            show top
+            <select
+              value={topCount}
+              onChange={e => onTopCountChange(parseInt(e.target.value))}
+              className="bg-gray-900 border border-gray-600 rounded px-1 py-0.5 text-xs text-gray-200"
+            >
+              {[1, 3, 5, 10].map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
+          </label>
+        </div>
+      </div>
+      {entries.length === 0 ? (
+        <p className="text-xs text-gray-500 py-1">
+          Set a goal star count on any subtype row below, and the cheapest goals to
+          finish with your owned blueprints will be ranked here.
+        </p>
+      ) : (
+        <>
+          {ranked.length > 0 && (
+            <div className="flex flex-col">
+              {ranked.map((e, i) => (
+                <div key={e.type} className="flex items-center gap-2.5 py-1.5">
+                  <span className="text-xs text-gray-500 tabular-nums w-5 shrink-0">#{i + 1}</span>
+                  <img src={e.icon} alt="" className="h-6 w-6 object-contain shrink-0" />
+                  <span className="text-xs text-gray-300 truncate min-w-0 flex-1">{e.label}</span>
+                  <span className="text-xs text-gray-400 tabular-nums whitespace-nowrap shrink-0">
+                    ★ {e.status.earned} / {e.status.goal}
+                  </span>
+                  <span className="text-xs text-amber-400 font-semibold tabular-nums whitespace-nowrap shrink-0 w-28 text-right">
+                    {e.status.cost!.toLocaleString()} shards
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+          {ranked.length === 0 && unreachable.length === 0 && (
+            <p className="text-xs text-green-500 py-1">All goals met ✓</p>
+          )}
+          <div className="flex flex-col gap-0.5">
+            {met.length > 0 && (ranked.length > 0 || unreachable.length > 0) && (
+              <p className="text-[10px] text-green-600">✓ {met.length} goal{met.length === 1 ? '' : 's'} already met</p>
+            )}
+            {unreachable.length > 0 && (
+              <p className="text-[10px] text-gray-500">
+                Not reachable with {ownedOnly ? 'owned' : 'all'} blueprints: {unreachable.map(e => e.label).join(', ')}
+              </p>
+            )}
+          </div>
+          <p className="text-[10px] text-gray-500">
+            Cost = fewest ascension shards still needed
+            {ownedOnly ? ' using owned blueprints' : ' if any blueprint may be ascended'}
+          </p>
+        </>
+      )}
+    </div>
+  );
 }
 
 function ProgressBar({ value, max }: { value: number; max: number }) {
@@ -153,8 +265,23 @@ function BlueprintRow({
   );
 }
 
-export function AscensionSummary({ blueprints, getUserData, onUpdate }: AscensionSummaryProps) {
+export function AscensionSummary({ blueprints, getUserData, onUpdate, goals, onSetGoal }: AscensionSummaryProps) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [topCount, setTopCount] = useState(() => {
+    const v = parseInt(localStorage.getItem(TOP_COUNT_KEY) ?? '');
+    return v > 0 ? v : 3;
+  });
+  const [ownedOnly, setOwnedOnly] = useState(() => localStorage.getItem(OWNED_ONLY_KEY) !== '0');
+
+  function changeTopCount(n: number) {
+    setTopCount(n);
+    localStorage.setItem(TOP_COUNT_KEY, String(n));
+  }
+
+  function changeOwnedOnly(v: boolean) {
+    setOwnedOnly(v);
+    localStorage.setItem(OWNED_ONLY_KEY, v ? '1' : '0');
+  }
 
   function toggleExpanded(type: string) {
     setExpanded(prev => {
@@ -198,6 +325,17 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate }: Ascensio
     }
     return map;
   }, [blueprintsByType, getUserData]);
+
+  const goalEntries = useMemo(() => {
+    return ROW_DEFS
+      .map(row => {
+        const goal = goals[row.type] ?? 0;
+        const bps = blueprintsByType.get(row.type);
+        if (goal <= 0 || !bps) return null;
+        return { ...row, status: getGoalStatus(goal, bps, getUserData, ownedOnly) };
+      })
+      .filter((e): e is GoalEntry => e !== null);
+  }, [goals, blueprintsByType, getUserData, ownedOnly]);
 
   const sections = useMemo(() => {
     return MAIN_CATEGORIES
@@ -255,6 +393,15 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate }: Ascensio
         </p>
       </div>
 
+      {/* Cheapest goals to finish */}
+      <CheapestGoalsPanel
+        entries={goalEntries}
+        topCount={topCount}
+        onTopCountChange={changeTopCount}
+        ownedOnly={ownedOnly}
+        onOwnedOnlyChange={changeOwnedOnly}
+      />
+
       {/* Per-category sections */}
       {sections.map(({ category, rows, subtotal }) => (
         <section key={category.id} className="flex flex-col gap-1.5">
@@ -268,24 +415,53 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate }: Ascensio
           <div className="flex flex-col gap-1">
             {rows.map(row => {
               const isExpanded = expanded.has(row.type);
+              const goal = goals[row.type] ?? 0;
+              const goalMet = goal > 0 && row.stats.earned >= goal;
               return (
                 <div key={row.type} className="bg-gray-800 border border-gray-700 rounded-lg">
                   {/* Sticks below the app header (57px) until the section scrolls past */}
-                  <button
-                    onClick={() => toggleExpanded(row.type)}
-                    title={`${isExpanded ? 'Collapse' : 'Expand'} ${row.label}`}
-                    className={`sticky top-[var(--header-h)] z-10 flex items-center gap-3 px-3 py-2 w-full bg-gray-800 hover:bg-gray-700 transition-colors text-left rounded-t-lg ${
+                  <div
+                    className={`sticky top-[var(--header-h)] z-10 flex items-center bg-gray-800 rounded-t-lg ${
                       isExpanded ? 'shadow-md shadow-gray-950/50' : 'rounded-b-lg'
                     }`}
                   >
-                    <span className={`text-gray-500 text-[10px] shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
-                    <img src={row.icon} alt="" className="h-7 w-7 object-contain shrink-0" />
-                    <span className="text-xs font-medium text-gray-300 truncate min-w-0 flex-1 sm:flex-none sm:w-28">{row.label}</span>
-                    <div className="hidden sm:block flex-1 min-w-0">
-                      <ProgressBar value={row.stats.earned} max={row.stats.ownedMax} />
-                    </div>
-                    <StatLine stats={row.stats} />
-                  </button>
+                    <button
+                      onClick={() => toggleExpanded(row.type)}
+                      title={`${isExpanded ? 'Collapse' : 'Expand'} ${row.label}`}
+                      className={`flex items-center gap-3 pl-3 pr-2 py-2 flex-1 min-w-0 hover:bg-gray-700 transition-colors text-left rounded-tl-lg ${
+                        isExpanded ? '' : 'rounded-bl-lg'
+                      }`}
+                    >
+                      <span className={`text-gray-500 text-[10px] shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
+                      <img src={row.icon} alt="" className="h-7 w-7 object-contain shrink-0" />
+                      <span className="text-xs font-medium text-gray-300 truncate min-w-0 flex-1 sm:flex-none sm:w-28">{row.label}</span>
+                      <div className="hidden sm:block flex-1 min-w-0">
+                        <ProgressBar value={row.stats.earned} max={row.stats.ownedMax} />
+                      </div>
+                      <StatLine stats={row.stats} />
+                    </button>
+                    <label
+                      className="flex items-center gap-1 pl-1 pr-3 py-2 shrink-0"
+                      title={`Goal ascension stars for ${row.label} (0–${row.stats.totalMax})`}
+                    >
+                      <span className="hidden sm:inline text-[10px] text-gray-500">Goal</span>
+                      <input
+                        type="number"
+                        min={0}
+                        max={row.stats.totalMax}
+                        value={goal > 0 ? goal : ''}
+                        placeholder="–"
+                        onChange={e => {
+                          const raw = parseInt(e.target.value);
+                          const v = Number.isNaN(raw) ? 0 : Math.max(0, Math.min(raw, row.stats.totalMax));
+                          onSetGoal(row.type, v);
+                        }}
+                        className={`w-12 bg-gray-900 border rounded px-1 py-0.5 text-xs text-right tabular-nums text-gray-200 placeholder-gray-600 focus:outline-none focus:border-amber-500 ${
+                          goalMet ? 'border-green-600' : 'border-gray-600'
+                        }`}
+                      />
+                    </label>
+                  </div>
                   {isExpanded && (
                     <div className="border-t border-gray-700 py-1.5 flex flex-col">
                       {(blueprintsByType.get(row.type) ?? []).map(bp => (

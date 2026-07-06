@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import type { UserData, UserBlueprintData, ProfileMeta, SyncStatus, SyncConflict } from '../types';
+import type { UserData, UserBlueprintData, ProfileData, AscensionGoals, ProfileMeta, SyncStatus, SyncConflict } from '../types';
 import * as drive from '../utils/googleDrive';
 
 const LEGACY_KEY = 'st_user_data';
@@ -20,26 +20,44 @@ interface ProfilesState {
   profiles: ProfileMeta[];
 }
 
-function loadData(id: string): UserData {
+function emptyProfile(): ProfileData {
+  return { blueprints: {}, ascensionGoals: {} };
+}
+
+// Profiles saved before ascension goals existed are a bare blueprint record;
+// wrap them (and anything malformed) into the current shape.
+function normalizeProfileData(raw: unknown): ProfileData {
+  if (!raw || typeof raw !== 'object') return emptyProfile();
+  const obj = raw as Record<string, unknown>;
+  if ('blueprints' in obj) {
+    return {
+      blueprints: (obj.blueprints as UserData) ?? {},
+      ascensionGoals: (obj.ascensionGoals as AscensionGoals) ?? {},
+    };
+  }
+  return { blueprints: raw as UserData, ascensionGoals: {} };
+}
+
+function loadData(id: string): ProfileData {
   try {
     const raw = localStorage.getItem(dataKey(id));
-    return raw ? (JSON.parse(raw) as UserData) : {};
+    return raw ? normalizeProfileData(JSON.parse(raw)) : emptyProfile();
   } catch {
-    return {};
+    return emptyProfile();
   }
 }
 
-function saveData(id: string, data: UserData): void {
+function saveData(id: string, data: ProfileData): void {
   localStorage.setItem(dataKey(id), JSON.stringify(data));
 }
 
-function isEmpty(data: UserData): boolean {
-  return Object.keys(data).length === 0;
+function isEmpty(data: ProfileData): boolean {
+  return Object.keys(data.blueprints).length === 0 && Object.keys(data.ascensionGoals).length === 0;
 }
 
 /** Number of blueprints tracked in a profile — used to distinguish profiles. */
 export function profileEntryCount(id: string): number {
-  return Object.keys(loadData(id)).length;
+  return Object.keys(loadData(id).blueprints).length;
 }
 
 /**
@@ -130,7 +148,7 @@ function initProfiles(): ProfilesState {
     const raw = localStorage.getItem(LEGACY_KEY);
     if (raw) legacy = JSON.parse(raw) as UserData;
   } catch { /* ignore */ }
-  saveData(id, legacy);
+  saveData(id, { blueprints: legacy, ascensionGoals: {} });
   const state: ProfilesState = {
     activeId: id,
     profiles: [{ id, name: 'Default', updatedAt: Date.now() }],
@@ -143,6 +161,9 @@ export interface UserDataStore {
   // Active-profile data access (unchanged API for existing consumers).
   get: (name: string) => UserBlueprintData;
   update: (name: string, patch: Partial<UserBlueprintData>) => void;
+  // Per-subtype ascension goals
+  goals: AscensionGoals;
+  setGoal: (type: string, stars: number) => void;
   // Profiles
   profiles: ProfileMeta[];
   activeId: string;
@@ -168,7 +189,7 @@ export function useUserData(): UserDataStore {
   const [initial] = useState(initProfiles);
   const [profiles, setProfiles] = useState<ProfileMeta[]>(initial.profiles);
   const [activeId, setActiveId] = useState<string>(initial.activeId);
-  const [userData, setUserData] = useState<UserData>(() => loadData(initial.activeId));
+  const [userData, setUserData] = useState<ProfileData>(() => loadData(initial.activeId));
 
   const [signedIn, setSignedIn] = useState(false);
   const [syncStatus, setSyncStatus] = useState<SyncStatus>(
@@ -256,7 +277,7 @@ export function useUserData(): UserDataStore {
         if (known.has(r.id)) continue;
         known.add(r.id);
         const file = await drive.readProfile(r.fileId);
-        saveData(r.id, (file.data as UserData) ?? {});
+        saveData(r.id, normalizeProfileData(file.data));
         list.push({ id: r.id, name: r.name, updatedAt: r.updatedAt, driveFileId: r.fileId, lastSyncedAt: r.updatedAt });
       }
 
@@ -296,7 +317,7 @@ export function useUserData(): UserDataStore {
           });
         } else if (remoteAhead) {
           const file = await drive.readProfile(r.fileId);
-          saveData(p.id, (file.data as UserData) ?? {});
+          saveData(p.id, normalizeProfileData(file.data));
           p.name = r.name; p.updatedAt = r.updatedAt; p.driveFileId = r.fileId; p.lastSyncedAt = r.updatedAt;
         } else {
           const fileId = await drive.writeProfile({ fileId: r.fileId, id: p.id, name: p.name, updatedAt: p.updatedAt, data: loadData(p.id) });
@@ -307,7 +328,7 @@ export function useUserData(): UserDataStore {
       const merged = list.filter(p => !removeIds.has(p.id));
       if (merged.length === 0) {
         const id = uid();
-        saveData(id, {});
+        saveData(id, emptyProfile());
         merged.push({ id, name: 'Default', updatedAt: Date.now() });
       }
       // Adopted remote profiles can collide with local names (e.g. two
@@ -383,7 +404,10 @@ export function useUserData(): UserDataStore {
 
   const update = useCallback((name: string, patch: Partial<UserBlueprintData>) => {
     setUserData(prev => {
-      const next = { ...prev, [name]: { ...(prev[name] ?? DEFAULT_DATA), ...patch } };
+      const next = {
+        ...prev,
+        blueprints: { ...prev.blueprints, [name]: { ...(prev.blueprints[name] ?? DEFAULT_DATA), ...patch } },
+      };
       saveData(activeIdRef.current, next);
       return next;
     });
@@ -392,8 +416,21 @@ export function useUserData(): UserDataStore {
   }, [patchMeta, scheduleSync]);
 
   const get = useCallback((name: string): UserBlueprintData => {
-    return userData[name] ?? DEFAULT_DATA;
+    return userData.blueprints[name] ?? DEFAULT_DATA;
   }, [userData]);
+
+  const setGoal = useCallback((type: string, stars: number) => {
+    setUserData(prev => {
+      const ascensionGoals = { ...prev.ascensionGoals };
+      if (stars > 0) ascensionGoals[type] = stars;
+      else delete ascensionGoals[type];
+      const next = { ...prev, ascensionGoals };
+      saveData(activeIdRef.current, next);
+      return next;
+    });
+    patchMeta(activeIdRef.current, { updatedAt: Date.now() });
+    scheduleSync();
+  }, [patchMeta, scheduleSync]);
 
   // ── Profile management ────────────────────────────────────────────────
 
@@ -410,7 +447,7 @@ export function useUserData(): UserDataStore {
 
   const createProfile = useCallback((name: string) => {
     const id = uid();
-    saveData(id, {});
+    saveData(id, emptyProfile());
     const finalName = uniqueName(name, profilesRef.current.map(p => p.name));
     const meta: ProfileMeta = { id, name: finalName, updatedAt: Date.now() };
     const next = [...profilesRef.current, meta];
@@ -418,7 +455,7 @@ export function useUserData(): UserDataStore {
     activeIdRef.current = id;
     setProfiles(next);
     setActiveId(id);
-    setUserData({});
+    setUserData(emptyProfile());
     persist(next, id);
     scheduleSync();
   }, [persist, scheduleSync]);
@@ -478,7 +515,7 @@ export function useUserData(): UserDataStore {
       try {
         if (choice === 'cloud') {
           const file = await drive.readProfile(c.remoteFileId);
-          saveData(id, (file.data as UserData) ?? {});
+          saveData(id, normalizeProfileData(file.data));
           patchMeta(id, { name: c.name, updatedAt: c.remoteUpdatedAt, lastSyncedAt: c.remoteUpdatedAt, driveFileId: c.remoteFileId });
           if (id === activeIdRef.current) setUserData(loadData(id));
         } else {
@@ -556,6 +593,7 @@ export function useUserData(): UserDataStore {
 
   return {
     get, update,
+    goals: userData.ascensionGoals, setGoal,
     profiles, activeId,
     switchProfile, createProfile, renameProfile, deleteProfile,
     syncConfigured: drive.isConfigured(),

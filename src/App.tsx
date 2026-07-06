@@ -350,6 +350,8 @@ export default function App() {
           blueprints={blueprints}
           getUserData={get}
           onUpdate={update}
+          goals={store.goals}
+          onSetGoal={store.setGoal}
         />
       )}
 

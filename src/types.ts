@@ -64,6 +64,15 @@ export interface UserBlueprintData {
 
 export type UserData = Record<string, UserBlueprintData>;
 
+/** Per-subtype goal star counts, keyed by blueprint type (e.g. 'Sword'). */
+export type AscensionGoals = Record<string, number>;
+
+/** Everything stored in (and synced for) one profile. */
+export interface ProfileData {
+  blueprints: UserData;
+  ascensionGoals: AscensionGoals;
+}
+
 export interface ProfileMeta {
   id: string;
   name: string;
