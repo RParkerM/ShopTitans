@@ -51,21 +51,28 @@ function uniqueName(desired: string, existing: string[]): string {
   return `${desired} (${i})`;
 }
 
-/** Give any same-named profiles distinct names (fixes legacy duplicate saves). */
-function dedupeProfileNames(state: ProfilesState): ProfilesState {
+/**
+ * Give any same-named profiles distinct display names.
+ *
+ * Deterministic: suffixes are assigned in profile-id order, so every device
+ * derives the same names from the same profile set. Cosmetic: updatedAt is
+ * NOT bumped — a dedupe must never look like a user edit, or devices push
+ * their (order-dependent) renames at each other and every round trip appends
+ * another " (2)".
+ */
+function dedupeProfileNames(profiles: ProfileMeta[]): { profiles: ProfileMeta[]; changed: boolean } {
+  const rename = new Map<string, string>();
   const seen: string[] = [];
-  let changed = false;
-  const profiles = state.profiles.map(p => {
-    if (!seen.some(n => n.toLowerCase() === p.name.toLowerCase())) {
-      seen.push(p.name);
-      return p;
-    }
+  for (const p of [...profiles].sort((a, b) => (a.id < b.id ? -1 : 1))) {
     const name = uniqueName(p.name, seen);
     seen.push(name);
-    changed = true;
-    return { ...p, name, updatedAt: Date.now() };
-  });
-  return changed ? { activeId: state.activeId, profiles } : state;
+    if (name !== p.name) rename.set(p.id, name);
+  }
+  if (rename.size === 0) return { profiles, changed: false };
+  return {
+    profiles: profiles.map(p => (rename.has(p.id) ? { ...p, name: rename.get(p.id)! } : p)),
+    changed: true,
+  };
 }
 
 // Load the profile registry, migrating a legacy single-save on first run.
@@ -75,9 +82,10 @@ function initProfiles(): ProfilesState {
     if (raw) {
       const parsed = JSON.parse(raw) as ProfilesState;
       if (parsed.profiles?.length && parsed.activeId) {
-        const deduped = dedupeProfileNames(parsed);
-        if (deduped !== parsed) localStorage.setItem(PROFILES_KEY, JSON.stringify(deduped));
-        return deduped;
+        const { profiles, changed } = dedupeProfileNames(parsed.profiles);
+        const state = { activeId: parsed.activeId, profiles };
+        if (changed) localStorage.setItem(PROFILES_KEY, JSON.stringify(state));
+        return state;
       }
     }
   } catch { /* fall through to migration */ }
@@ -146,21 +154,32 @@ export function useUserData(): UserDataStore {
   }, []);
 
   const patchMeta = useCallback((id: string, patch: Partial<ProfileMeta>) => {
-    setProfiles(prev => {
-      const next = prev.map(p => (p.id === id ? { ...p, ...patch } : p));
-      persist(next, activeIdRef.current);
-      return next;
-    });
+    const next = profilesRef.current.map(p => (p.id === id ? { ...p, ...patch } : p));
+    profilesRef.current = next;
+    setProfiles(next);
+    persist(next, activeIdRef.current);
   }, [persist]);
 
   // ── Sync routines ─────────────────────────────────────────────────────
+
+  // Serialize sync work: focus events, sign-in, and debounced pushes can all
+  // fire together, and overlapping runs clobber each other's writes.
+  const syncBusyRef = useRef(false);
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const pushActive = useCallback(async () => {
     if (!signedInRef.current) return;
     // Don't auto-push a profile that's awaiting a conflict decision.
     if (conflictsRef.current.some(c => c.id === activeIdRef.current)) return;
+    if (syncBusyRef.current) {
+      // A sync is in flight — retry once it has finished.
+      if (syncTimer.current) clearTimeout(syncTimer.current);
+      syncTimer.current = setTimeout(() => { void pushActive(); }, 1000);
+      return;
+    }
     const p = profilesRef.current.find(x => x.id === activeIdRef.current);
     if (!p) return;
+    syncBusyRef.current = true;
     setSyncStatus('syncing');
     try {
       const fileId = await drive.writeProfile({
@@ -173,11 +192,15 @@ export function useUserData(): UserDataStore {
     } catch (e) {
       setSyncStatus('error');
       setSyncError(e instanceof Error ? e.message : String(e));
+    } finally {
+      syncBusyRef.current = false;
     }
   }, [patchMeta]);
 
   const fullSync = useCallback(async () => {
     if (!signedInRef.current) return;
+    if (syncBusyRef.current) return; // e.g. focus event during sign-in sync
+    syncBusyRef.current = true;
     setSyncStatus('syncing');
     try {
       const remote = await drive.listProfiles();
@@ -187,12 +210,16 @@ export function useUserData(): UserDataStore {
       // On a fresh device the app auto-creates an empty "Default". If Drive
       // already has data, drop that throwaway rather than pushing it as a
       // duplicate empty profile — then we adopt the real profile(s) below.
+      // Only the sole profile qualifies: with more than one local profile,
+      // an empty unsynced one was created deliberately by the user (a focus
+      // event fires this sync right after the new-profile prompt closes).
+      const soleLocal = profilesRef.current.length === 1;
       const dropped = new Set<string>();
       const list = profilesRef.current
         .map(p => ({ ...p }))
         .filter(p => {
           const throwaway =
-            remoteExists && !p.lastSyncedAt && !p.driveFileId &&
+            soleLocal && remoteExists && !p.lastSyncedAt && !p.driveFileId &&
             !remoteById.has(p.id) && isEmpty(loadData(p.id));
           if (throwaway) { dropped.add(p.id); return false; }
           return true;
@@ -253,17 +280,21 @@ export function useUserData(): UserDataStore {
         }
       }
 
-      const finalList = list.filter(p => !removeIds.has(p.id));
-      if (finalList.length === 0) {
+      const merged = list.filter(p => !removeIds.has(p.id));
+      if (merged.length === 0) {
         const id = uid();
         saveData(id, {});
-        finalList.push({ id, name: 'Default', updatedAt: Date.now() });
+        merged.push({ id, name: 'Default', updatedAt: Date.now() });
       }
+      // Adopted remote profiles can collide with local names (e.g. two
+      // devices both starting with "Default").
+      const { profiles: finalList } = dedupeProfileNames(merged);
 
       // Adopt a surviving profile if the active one was dropped or deleted.
       let active = activeIdRef.current;
       if (!finalList.some(p => p.id === active)) active = finalList[0].id;
 
+      profilesRef.current = finalList;
       setProfiles(finalList);
       setActiveId(active);
       activeIdRef.current = active;
@@ -275,11 +306,12 @@ export function useUserData(): UserDataStore {
     } catch (e) {
       setSyncStatus('error');
       setSyncError(e instanceof Error ? e.message : String(e));
+    } finally {
+      syncBusyRef.current = false;
     }
   }, [persist]);
 
   // Debounced push after edits settle.
-  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scheduleSync = useCallback(() => {
     if (!signedInRef.current) return;
     if (syncTimer.current) clearTimeout(syncTimer.current);
@@ -304,8 +336,12 @@ export function useUserData(): UserDataStore {
 
   // ── Profile management ────────────────────────────────────────────────
 
+  // Note: mutators update the refs alongside state so that a sync starting
+  // in the same tick (e.g. the focus event right after a prompt closes)
+  // can't act on a stale snapshot.
   const switchProfile = useCallback((id: string) => {
     if (id === activeIdRef.current) return;
+    activeIdRef.current = id;
     setActiveId(id);
     setUserData(loadData(id));
     persist(profilesRef.current, id);
@@ -317,6 +353,8 @@ export function useUserData(): UserDataStore {
     const finalName = uniqueName(name, profilesRef.current.map(p => p.name));
     const meta: ProfileMeta = { id, name: finalName, updatedAt: Date.now() };
     const next = [...profilesRef.current, meta];
+    profilesRef.current = next;
+    activeIdRef.current = id;
     setProfiles(next);
     setActiveId(id);
     setUserData({});
@@ -337,8 +375,10 @@ export function useUserData(): UserDataStore {
     const next = current.filter(p => p.id !== id);
     const nextActive = id === activeIdRef.current ? next[0].id : activeIdRef.current;
     localStorage.removeItem(dataKey(id));
+    profilesRef.current = next;
     setProfiles(next);
     if (id === activeIdRef.current) {
+      activeIdRef.current = nextActive;
       setActiveId(nextActive);
       setUserData(loadData(nextActive));
     }
@@ -373,6 +413,7 @@ export function useUserData(): UserDataStore {
     const p = profilesRef.current.find(x => x.id === id);
     setSyncStatus('syncing');
     void (async () => {
+      syncBusyRef.current = true;
       try {
         if (choice === 'cloud') {
           const file = await drive.readProfile(c.remoteFileId);
@@ -390,6 +431,8 @@ export function useUserData(): UserDataStore {
       } catch (e) {
         setSyncStatus('error');
         setSyncError(e instanceof Error ? e.message : String(e));
+      } finally {
+        syncBusyRef.current = false;
       }
     })();
   }, [patchMeta]);
