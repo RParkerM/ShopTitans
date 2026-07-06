@@ -1,0 +1,5 @@
+# Environment for the Pages Functions during local dev (`npm run dev:cf`).
+# Copy to .dev.vars (gitignored) and fill in. In production these are set in
+# the Cloudflare Pages project settings (mark the secret as a secret).
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=

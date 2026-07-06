@@ -351,22 +351,14 @@ export function useUserData(): UserDataStore {
   // ── Auth ──────────────────────────────────────────────────────────────
 
   const signIn = useCallback(() => {
+    // Full-page redirect to Google; the OAuth callback returns to the app
+    // with ?sync=connected|error, handled by the load effect below.
     setSyncStatus('syncing');
-    drive.requestToken(true)
-      .then(() => {
-        localStorage.setItem(SYNC_FLAG, '1');
-        setSignedIn(true);
-        signedInRef.current = true;
-        return fullSync();
-      })
-      .catch(e => {
-        setSyncStatus('signedOut');
-        setSyncError(e instanceof Error ? e.message : String(e));
-      });
-  }, [fullSync]);
+    drive.beginSignIn();
+  }, []);
 
   const signOut = useCallback(() => {
-    drive.clearToken();
+    void drive.signOut(); // revokes the refresh token, best effort
     localStorage.removeItem(SYNC_FLAG);
     setSignedIn(false);
     signedInRef.current = false;
@@ -404,25 +396,50 @@ export function useUserData(): UserDataStore {
 
   const dismissConflicts = useCallback(() => setConflicts([]), []);
 
-  // Silent re-auth on load if the user previously enabled sync.
+  // On load: consume the OAuth-callback outcome (?sync=…), then silently
+  // re-auth if the user previously enabled sync on this device.
   useEffect(() => {
-    if (!drive.isConfigured() || localStorage.getItem(SYNC_FLAG) !== '1') return;
+    if (!drive.isConfigured()) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const outcome = params.get('sync');
+    if (outcome) {
+      const reason = params.get('reason');
+      params.delete('sync');
+      params.delete('reason');
+      const qs = params.toString();
+      window.history.replaceState(null, '',
+        window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash);
+      if (outcome === 'connected') {
+        localStorage.setItem(SYNC_FLAG, '1');
+      } else {
+        setSyncStatus('signedOut');
+        setSyncError(`Sign-in failed${reason ? ` (${reason})` : ''}`);
+        return;
+      }
+    }
+
+    if (localStorage.getItem(SYNC_FLAG) !== '1') return;
     let cancelled = false;
-    // Reuse a cached, still-valid token across reloads with no round-trip.
-    if (drive.hasToken()) {
+    const finishSignIn = () => {
       setSignedIn(true);
       signedInRef.current = true;
-      void fullSync();
+      return fullSync();
+    };
+    // Reuse a cached, still-valid token across reloads with no round-trip.
+    if (drive.hasToken()) {
+      void finishSignIn();
       return () => { cancelled = true; };
     }
-    drive.requestToken(false)
-      .then(() => {
+    drive.refreshAccessToken()
+      .then(() => { if (!cancelled) return finishSignIn(); })
+      .catch(e => {
         if (cancelled) return;
-        setSignedIn(true);
-        signedInRef.current = true;
-        return fullSync();
-      })
-      .catch(() => { if (!cancelled) setSyncStatus('signedOut'); });
+        // No refresh cookie on this device (cleared, expired, or revoked):
+        // drop the flag so we stop retrying on every load.
+        if (e instanceof drive.NotSignedInError) localStorage.removeItem(SYNC_FLAG);
+        setSyncStatus('signedOut');
+      });
     return () => { cancelled = true; };
   }, [fullSync]);
 

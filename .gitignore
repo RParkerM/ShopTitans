@@ -12,6 +12,10 @@ dist-ssr/
 .env
 .env.local
 .env.*.local
+.dev.vars
+
+# Wrangler cache (npm run dev:cf)
+.wrangler/
 
 # Logs
 npm-debug.log*

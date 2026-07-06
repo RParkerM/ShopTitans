@@ -1,12 +1,14 @@
-// Google Identity Services (GIS) auth + Google Drive appDataFolder helpers.
+// Google Drive appDataFolder sync, authenticated via our own OAuth backend
+// (Cloudflare Pages Functions under /api/oauth).
 //
 // Save data is stored as one JSON file per profile inside the app's hidden
 // appDataFolder — invisible in the user's normal Drive, readable only by this
-// app. OAuth uses the GIS token flow (short-lived access tokens, silently
-// re-requested), so there is no backend and no long-lived secret.
+// app. Sign-in uses the authorization-code flow: /api/oauth/start redirects
+// to Google, and the callback stores a long-lived refresh token in an
+// HttpOnly cookie only the backend can read. The browser holds nothing but
+// short-lived access tokens, silently renewed via /api/oauth/refresh — so one
+// sign-in per device lasts until the user signs out or revokes access.
 
-const GIS_SRC = 'https://accounts.google.com/gsi/client';
-const SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
 const FILES_URL = 'https://www.googleapis.com/drive/v3/files';
 const UPLOAD_URL = 'https://www.googleapis.com/upload/drive/v3/files';
 
@@ -14,31 +16,14 @@ export function isConfigured(): boolean {
   return !!import.meta.env.VITE_GOOGLE_CLIENT_ID;
 }
 
-// ── GIS loading + token management ─────────────────────────────────────────
+// ── Token management ────────────────────────────────────────────────────────
 
-let gisLoaded: Promise<void> | null = null;
-function loadGis(): Promise<void> {
-  if (gisLoaded) return gisLoaded;
-  gisLoaded = new Promise<void>((resolve, reject) => {
-    if ((window as any).google?.accounts?.oauth2) return resolve();
-    const s = document.createElement('script');
-    s.src = GIS_SRC;
-    s.async = true;
-    s.defer = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error('Failed to load Google sign-in'));
-    document.head.appendChild(s);
-  });
-  return gisLoaded;
-}
-
-let tokenClient: any = null;
 let accessToken: string | null = null;
 let tokenExpiry = 0;
 
-// Cache the access token so reloads within its ~1h lifetime don't need a
-// fresh (and on some browsers interactive) sign-in. Scope is limited to
-// drive.appdata and the token is short-lived, so localStorage is acceptable.
+// Cache the access token so reloads within its ~1h lifetime skip the
+// refresh round-trip. Scope is limited to drive.appdata and the token is
+// short-lived, so localStorage is acceptable.
 const TOKEN_CACHE_KEY = 'st_drive_token';
 
 function persistToken(token: string, expiry: number): void {
@@ -62,44 +47,39 @@ function persistToken(token: string, expiry: number): void {
   } catch { /* ignore */ }
 })();
 
-async function ensureTokenClient(): Promise<void> {
-  await loadGis();
-  if (tokenClient) return;
-  tokenClient = (window as any).google.accounts.oauth2.initTokenClient({
-    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    scope: SCOPE,
-    callback: () => {}, // replaced per request
-  });
+/** No refresh-token cookie on this device — an interactive sign-in is needed. */
+export class NotSignedInError extends Error {
+  constructor() {
+    super('not_signed_in');
+    this.name = 'NotSignedInError';
+  }
 }
 
-/**
- * Request an access token. `interactive` shows the Google consent/account
- * popup; non-interactive attempts a silent grant (works if already consented).
- */
-export async function requestToken(interactive: boolean): Promise<string> {
-  await ensureTokenClient();
-  return new Promise<string>((resolve, reject) => {
-    tokenClient.callback = (resp: any) => {
-      if (resp.error) {
-        reject(new Error(resp.error));
-        return;
-      }
-      // Refresh a minute early to avoid using an about-to-expire token.
-      persistToken(resp.access_token, Date.now() + ((resp.expires_in ?? 3600) - 60) * 1000);
-      resolve(accessToken as string);
-    };
-    tokenClient.error_callback = (err: any) => reject(new Error(err?.type ?? 'auth_failed'));
-    try {
-      tokenClient.requestAccessToken({ prompt: interactive ? 'consent' : '' });
-    } catch (e) {
-      reject(e as Error);
-    }
-  });
+/** Navigate to Google sign-in; completes via redirect back to the app. */
+export function beginSignIn(): void {
+  window.location.assign('/api/oauth/start');
+}
+
+/** Silently obtain a fresh access token from the refresh-token cookie. */
+export async function refreshAccessToken(): Promise<string> {
+  const res = await fetch('/api/oauth/refresh', { method: 'POST' });
+  if (res.status === 401) {
+    clearToken();
+    throw new NotSignedInError();
+  }
+  if (!res.ok) throw new Error(`Token refresh failed (${res.status})`);
+  const { access_token, expires_in } = (await res.json()) as {
+    access_token: string;
+    expires_in?: number;
+  };
+  // Refresh a minute early to avoid using an about-to-expire token.
+  persistToken(access_token, Date.now() + ((expires_in ?? 3600) - 60) * 1000);
+  return access_token;
 }
 
 async function getToken(): Promise<string> {
   if (accessToken && Date.now() < tokenExpiry) return accessToken;
-  return requestToken(false);
+  return refreshAccessToken();
 }
 
 export function hasToken(): boolean {
@@ -114,6 +94,14 @@ export function clearToken(): void {
   } catch { /* ignore */ }
 }
 
+/** Clear local tokens and revoke the server-side refresh token. */
+export async function signOut(): Promise<void> {
+  clearToken();
+  try {
+    await fetch('/api/oauth/signout', { method: 'POST' });
+  } catch { /* best effort */ }
+}
+
 async function authedFetch(url: string, init: RequestInit = {}): Promise<Response> {
   const token = await getToken();
   const headers = new Headers(init.headers);
@@ -122,7 +110,7 @@ async function authedFetch(url: string, init: RequestInit = {}): Promise<Respons
   if (res.status === 401) {
     // Token expired/revoked — get a fresh one silently and retry once.
     clearToken();
-    const fresh = await requestToken(false);
+    const fresh = await refreshAccessToken();
     headers.set('Authorization', `Bearer ${fresh}`);
     res = await fetch(url, { ...init, headers });
   }
