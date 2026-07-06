@@ -68,11 +68,12 @@ function CheapestGoalsPanel({
   onOwnedOnlyChange: (v: boolean) => void;
 }) {
   const met = entries.filter(e => e.status.needed === 0);
-  const unreachable = entries.filter(e => e.status.needed > 0 && e.status.cost === null);
+  // Unmet goals, cheapest first; unreachable ones (cost null) sort to the end.
   const ranked = entries
-    .filter(e => e.status.needed > 0 && e.status.cost !== null)
+    .filter(e => e.status.needed > 0)
     .sort((a, b) =>
-      (a.status.cost! - b.status.cost!) ||
+      ((a.status.cost === null ? 1 : 0) - (b.status.cost === null ? 1 : 0)) ||
+      ((a.status.cost ?? 0) - (b.status.cost ?? 0)) ||
       (a.status.needed - b.status.needed) ||
       a.label.localeCompare(b.label),
     )
@@ -104,11 +105,12 @@ function CheapestGoalsPanel({
           <label className="flex items-center gap-1.5 text-xs text-gray-400">
             show top
             <select
-              value={topCount}
-              onChange={e => onTopCountChange(parseInt(e.target.value))}
+              value={Number.isFinite(topCount) ? String(topCount) : 'all'}
+              onChange={e => onTopCountChange(e.target.value === 'all' ? Number.POSITIVE_INFINITY : parseInt(e.target.value))}
               className="bg-gray-900 border border-gray-600 rounded px-1 py-0.5 text-xs text-gray-200"
             >
               {[1, 3, 5, 10].map(n => <option key={n} value={n}>{n}</option>)}
+              <option value="all">all</option>
             </select>
           </label>
         </div>
@@ -130,26 +132,28 @@ function CheapestGoalsPanel({
                   <span className="text-xs text-gray-400 tabular-nums whitespace-nowrap shrink-0">
                     ★ {e.status.earned} / {e.status.goal}
                   </span>
-                  <span className="text-xs text-amber-400 font-semibold tabular-nums whitespace-nowrap shrink-0 w-28 text-right">
-                    {e.status.cost!.toLocaleString()} shards
-                  </span>
+                  {e.status.cost === null ? (
+                    <span
+                      className="text-xs text-red-500 font-semibold whitespace-nowrap shrink-0 w-28 text-right"
+                      title={`Not enough ascension stars available on ${ownedOnly ? 'owned' : 'all'} blueprints`}
+                    >
+                      Unreachable
+                    </span>
+                  ) : (
+                    <span className="text-xs text-amber-400 font-semibold tabular-nums whitespace-nowrap shrink-0 w-28 text-right">
+                      {e.status.cost.toLocaleString()} shards
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
           )}
-          {ranked.length === 0 && unreachable.length === 0 && (
+          {ranked.length === 0 && (
             <p className="text-xs text-green-500 py-1">All goals met ✓</p>
           )}
-          <div className="flex flex-col gap-0.5">
-            {met.length > 0 && (ranked.length > 0 || unreachable.length > 0) && (
-              <p className="text-[10px] text-green-600">✓ {met.length} goal{met.length === 1 ? '' : 's'} already met</p>
-            )}
-            {unreachable.length > 0 && (
-              <p className="text-[10px] text-gray-500">
-                Not reachable with {ownedOnly ? 'owned' : 'all'} blueprints: {unreachable.map(e => e.label).join(', ')}
-              </p>
-            )}
-          </div>
+          {met.length > 0 && ranked.length > 0 && (
+            <p className="text-[10px] text-green-600">✓ {met.length} goal{met.length === 1 ? '' : 's'} already met</p>
+          )}
           <p className="text-[10px] text-gray-500">
             Cost = fewest ascension shards still needed
             {ownedOnly ? ' using owned blueprints' : ' if any blueprint may be ascended'}
@@ -268,14 +272,16 @@ function BlueprintRow({
 export function AscensionSummary({ blueprints, getUserData, onUpdate, goals, onSetGoal }: AscensionSummaryProps) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [topCount, setTopCount] = useState(() => {
-    const v = parseInt(localStorage.getItem(TOP_COUNT_KEY) ?? '');
+    const raw = localStorage.getItem(TOP_COUNT_KEY) ?? '';
+    if (raw === 'all') return Number.POSITIVE_INFINITY;
+    const v = parseInt(raw);
     return v > 0 ? v : 3;
   });
   const [ownedOnly, setOwnedOnly] = useState(() => localStorage.getItem(OWNED_ONLY_KEY) !== '0');
 
   function changeTopCount(n: number) {
     setTopCount(n);
-    localStorage.setItem(TOP_COUNT_KEY, String(n));
+    localStorage.setItem(TOP_COUNT_KEY, Number.isFinite(n) ? String(n) : 'all');
   }
 
   function changeOwnedOnly(v: boolean) {
