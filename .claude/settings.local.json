@@ -12,7 +12,10 @@
       "Read(//c/Development/Fan Kit Assets \\(Shop Titans\\)/**)",
       "Bash(Get-ChildItem -Path \"C:\\\\Development\\\\ShopTitans\")",
       "Bash(Select-Object Name, Mode)",
-      "WebFetch(domain:playshoptitans.com)"
+      "WebFetch(domain:playshoptitans.com)",
+      "Bash(curl -sL 'https://docs.google.com/spreadsheets/d/1WLa7X8h3O0-aGKxeAlCL7bnN8-FhGd3t7pz2RCzSg8c/gviz/tq?tqx=out:csv&sheet=Blueprints' -o __TRACKED_VAR__/blueprints.csv)",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/1WLa7X8h3O0-aGKxeAlCL7bnN8-FhGd3t7pz2RCzSg8c/gviz/tq?tqx=out:csv&sheet=Blueprints\" -o /c/Users/richa/AppData/Local/Temp/claude/C--Development-ShopTitans/a0a9c5a8-6eaa-485b-8de1-18520866be4a/scratchpad/blueprints.csv)",
+      "Read(//c/Users/richa/AppData/Local/Temp/claude/C--Development-ShopTitans/a0a9c5a8-6eaa-485b-8de1-18520866be4a/scratchpad/**)"
     ]
   }
 }
