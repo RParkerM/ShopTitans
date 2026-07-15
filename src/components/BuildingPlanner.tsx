@@ -130,6 +130,12 @@ export function BuildingPlanner() {
     });
   };
 
+  const stepLevel = (c: BuildingCost, delta: 1 | -1) => {
+    const next = Math.min(Math.max(c.level + delta, 1), c.building.maxLevel);
+    if (next === c.level) return;
+    updateBuilding(c.building.name, { level: String(next), ticks: '0' });
+  };
+
   const applyTotalEdit = (building: Building) => {
     if (!totalEdit || totalEdit.name !== building.name) return;
     const total = parseInt(totalEdit.value.replace(/,/g, ''));
@@ -180,6 +186,8 @@ export function BuildingPlanner() {
 
   const inputCls =
     'w-full bg-gray-800 border border-gray-700 rounded px-2 py-1 text-sm text-white text-right placeholder-gray-600 focus:outline-none focus:border-amber-500/60';
+  const arrowBtnCls =
+    'px-1 text-[7px] leading-[14px] border border-gray-700 bg-gray-800 text-gray-400 hover:text-amber-400 hover:border-amber-500/60 disabled:opacity-30 disabled:pointer-events-none transition-colors';
 
   if (loading && buildings.length === 0) {
     return (
@@ -250,7 +258,7 @@ export function BuildingPlanner() {
 
       {/* Building list */}
       <div className="lg:order-1 flex-1 min-w-0 flex flex-col gap-1.5">
-        <div className="hidden sm:grid grid-cols-[minmax(0,1fr)_6.5rem_7rem_6rem_6.5rem] gap-2 px-3 pb-1 text-[10px] uppercase tracking-wide text-gray-500">
+        <div className="hidden sm:grid grid-cols-[minmax(0,1fr)_8rem_7rem_6rem_6.5rem] gap-2 px-3 pb-1 text-[10px] uppercase tracking-wide text-gray-500">
           <span>Building</span>
           <span className="text-right">Level</span>
           <span className="text-right">Ticks Invested</span>
@@ -281,7 +289,7 @@ export function BuildingPlanner() {
                 backgroundColor: hue !== undefined ? `hsla(${hue}, 65%, 45%, 0.06)` : undefined,
               }}
             >
-              <div className="grid grid-cols-2 sm:grid-cols-[minmax(0,1fr)_6.5rem_7rem_6rem_6.5rem] gap-x-2 gap-y-1 items-center">
+              <div className="grid grid-cols-2 sm:grid-cols-[minmax(0,1fr)_8rem_7rem_6rem_6.5rem] gap-x-2 gap-y-1 items-center">
                 <div className="col-span-2 sm:col-span-1 min-w-0 flex items-center gap-2">
                   {BUILDING_META[c.building.name] && (
                     <img
@@ -365,6 +373,24 @@ export function BuildingPlanner() {
                         className={inputCls}
                         aria-label={`${c.building.name} level`}
                       />
+                      <div className="flex flex-col shrink-0">
+                        <button
+                          onClick={() => stepLevel(c, 1)}
+                          disabled={c.level >= c.building.maxLevel}
+                          aria-label={`${c.building.name} level up`}
+                          className={`${arrowBtnCls} rounded-t border-b-0`}
+                        >
+                          ▲
+                        </button>
+                        <button
+                          onClick={() => stepLevel(c, -1)}
+                          disabled={c.level <= 1}
+                          aria-label={`${c.building.name} level down`}
+                          className={`${arrowBtnCls} rounded-b`}
+                        >
+                          ▼
+                        </button>
+                      </div>
                     </div>
                     <div className="sm:col-span-3 text-right text-xs font-semibold text-gray-500">
                       MAX (Lv. {c.building.maxLevel})
@@ -391,6 +417,24 @@ export function BuildingPlanner() {
                         className={inputCls}
                         aria-label={`${c.building.name} level`}
                       />
+                      <div className="flex flex-col shrink-0">
+                        <button
+                          onClick={() => stepLevel(c, 1)}
+                          disabled={c.level >= c.building.maxLevel}
+                          aria-label={`${c.building.name} level up`}
+                          className={`${arrowBtnCls} rounded-t border-b-0`}
+                        >
+                          ▲
+                        </button>
+                        <button
+                          onClick={() => stepLevel(c, -1)}
+                          disabled={c.level <= 1}
+                          aria-label={`${c.building.name} level down`}
+                          className={`${arrowBtnCls} rounded-b`}
+                        >
+                          ▼
+                        </button>
+                      </div>
                     </div>
                     <div className="flex items-center gap-1">
                       <input
