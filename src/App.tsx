@@ -9,6 +9,7 @@ import { BlueprintModal } from './components/BlueprintModal';
 import { SyncControls } from './components/SyncControls';
 import { ConflictModal } from './components/ConflictModal';
 import { EnergyCalculator } from './components/EnergyCalculator';
+import { BuildingPlanner } from './components/BuildingPlanner';
 import { MAIN_CATEGORIES, TYPE_TO_CATEGORY, TYPE_SORT_ORDER, getEnchantmentElement, type MainCategory } from './utils/categories';
 import { RESOURCE_DEFS } from './utils/resources';
 import { STANDARD_COMPONENT_ICONS } from './utils/components';
@@ -18,8 +19,8 @@ import type { Blueprint, ResourceKey, ResourceFilters, ComponentFilters } from '
 export type SortOrder = 'new' | 'old' | 'tier-desc' | 'tier-asc' | 'type';
 export type MasteredFilter = 'all' | 'mastered' | 'not-mastered';
 export type OwnedFilter = 'all' | 'owned' | 'not-owned';
-export type View = 'blueprints' | 'ascensions' | 'energy';
-const VALID_VIEWS: View[] = ['blueprints', 'ascensions', 'energy'];
+export type View = 'blueprints' | 'ascensions' | 'energy' | 'buildings';
+const VALID_VIEWS: View[] = ['blueprints', 'ascensions', 'energy', 'buildings'];
 const VALID_SORTS: SortOrder[] = ['new', 'old', 'tier-desc', 'tier-asc', 'type'];
 const VALID_CATEGORIES = MAIN_CATEGORIES.map(c => c.id);
 
@@ -293,7 +294,7 @@ export default function App() {
         <div className="flex flex-wrap items-center gap-2">
           {blueprints.length > 0 && (
             <div className="flex items-center rounded overflow-hidden border border-gray-700 text-xs">
-              {([['blueprints', 'Blueprints'], ['ascensions', 'Ascensions'], ['energy', 'Energy']] as [View, string][]).map(([value, label]) => (
+              {([['blueprints', 'Blueprints'], ['ascensions', 'Ascensions'], ['energy', 'Energy'], ['buildings', 'Buildings']] as [View, string][]).map(([value, label]) => (
                 <button
                   key={value}
                   onClick={() => setView(value)}
@@ -358,6 +359,8 @@ export default function App() {
       )}
 
       {blueprints.length > 0 && view === 'energy' && <EnergyCalculator />}
+
+      {blueprints.length > 0 && view === 'buildings' && <BuildingPlanner />}
 
       {blueprints.length > 0 && view === 'blueprints' && (
         <>
