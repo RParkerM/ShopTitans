@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { useBuildings, type Building } from '../hooks/useBuildings';
-import { BUILDING_CATEGORIES, BUILDING_META } from '../utils/buildings';
+import { BUILDING_CATEGORIES, BUILDING_META, BUILDING_ORDER } from '../utils/buildings';
+import { encodeTotals, planFromHash, INITIAL_SHARED_TOTALS } from '../utils/sharePlan';
 
 // Cost per tick at 1141+ total ticks invested (assumed for everyone), before
 // the building's tier multiplier.
@@ -71,6 +72,16 @@ function computeCost(building: Building, input: BuildingInput | undefined): Buil
   };
 }
 
+/** Cumulative total ticks invested implied by an input, with the same clamping as computeCost. */
+function totalTicksInvested(building: Building, input: BuildingInput | undefined): number {
+  const c = computeCost(building, input);
+  let total = 0;
+  for (const l of building.levels) {
+    if (l.level > 1 && l.level <= c.level) total += l.ticks;
+  }
+  return total + c.ticksInvested;
+}
+
 /** Convert cumulative total ticks invested into a level + progress toward the next. */
 function levelFromTotalTicks(building: Building, total: number): { level: number; ticks: number } {
   let level = 1;
@@ -104,8 +115,12 @@ export function BuildingPlanner() {
   const [progress, setProgress] = useState<ProgressMap>(loadProgress);
   const [totalEdit, setTotalEdit] = useState<{ name: string; value: string } | null>(null);
   const [flashName, setFlashName] = useState<string | null>(null);
+  const [viewingShared, setViewingShared] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [sharedTotals, setSharedTotals] = useState<number[] | null>(INITIAL_SHARED_TOTALS);
   const rowRefs = useRef(new Map<string, HTMLDivElement>());
   const flashTimer = useRef<number>();
+  const copyTimer = useRef<number>();
 
   const jumpToBuilding = (name: string) => {
     const el = rowRefs.current.get(name);
@@ -117,11 +132,64 @@ export function BuildingPlanner() {
     flashTimer.current = window.setTimeout(() => setFlashName(null), 1500);
   };
 
-  useEffect(() => () => window.clearTimeout(flashTimer.current), []);
+  useEffect(() => () => {
+    window.clearTimeout(flashTimer.current);
+    window.clearTimeout(copyTimer.current);
+  }, []);
 
   useEffect(() => {
+    // While viewing a shared plan the user's own saved progress stays untouched.
+    if (viewingShared) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  }, [progress]);
+  }, [progress, viewingShared]);
+
+  // Pasting a share link into an already-open tab is a hash-only navigation —
+  // no reload, so the module-load capture misses it. Watch for it here.
+  useEffect(() => {
+    const onHashChange = () => {
+      const totals = planFromHash(window.location.hash);
+      if (totals) setSharedTotals(totals);
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  // Apply a shared plan from the URL once building data is available.
+  useEffect(() => {
+    if (!sharedTotals || buildings.length === 0) return;
+    const byName = new Map(buildings.map(b => [b.name, b]));
+    const shared: ProgressMap = {};
+    sharedTotals.forEach((total, i) => {
+      const building = byName.get(BUILDING_ORDER[i]);
+      if (!building || total <= 0) return;
+      const { level, ticks } = levelFromTotalTicks(building, total);
+      shared[building.name] = { level: String(level), ticks: String(ticks) };
+    });
+    setProgress(shared);
+    setViewingShared(true);
+    setSharedTotals(null);
+    // Drop the hash so pasting the same link again still fires hashchange.
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, [buildings, sharedTotals]);
+
+  const sharePlan = async () => {
+    const byName = new Map(buildings.map(b => [b.name, b]));
+    const totals = BUILDING_ORDER.map(name => {
+      const building = byName.get(name);
+      return building ? totalTicksInvested(building, progress[name]) : 0;
+    });
+    const url = `${location.origin}${location.pathname}?view=buildings#plan=${encodeTotals(totals)}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.clearTimeout(copyTimer.current);
+      copyTimer.current = window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.prompt('Copy this link:', url);
+    }
+  };
 
   const updateBuilding = (name: string, patch: Partial<BuildingInput>) => {
     setProgress(prev => {
@@ -212,10 +280,42 @@ export function BuildingPlanner() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col lg:flex-row gap-4 lg:items-start">
+    <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-4">
+      {viewingShared && (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 bg-sky-900/30 border border-sky-800/60 rounded-lg px-4 py-2.5 text-sm text-sky-200">
+          <span className="flex-1 min-w-48">
+            Viewing a shared building plan — your own saved progress is untouched.
+          </span>
+          <button
+            onClick={() => setViewingShared(false)}
+            className="px-3 py-1 rounded border border-sky-700 hover:bg-sky-800/50 text-xs whitespace-nowrap transition-colors"
+          >
+            Save as my progress
+          </button>
+          <button
+            onClick={() => {
+              setProgress(loadProgress());
+              setViewingShared(false);
+            }}
+            className="px-3 py-1 rounded border border-gray-700 text-gray-400 hover:text-gray-200 hover:bg-gray-800 text-xs whitespace-nowrap transition-colors"
+          >
+            Back to mine
+          </button>
+        </div>
+      )}
+      <div className="flex flex-col lg:flex-row gap-4 lg:items-start">
       {/* Ranking panel — shown first on mobile, right column on desktop */}
       <div className="lg:order-2 lg:w-72 lg:sticky lg:top-[calc(var(--header-h,57px)+1rem)] shrink-0 bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-        <h2 className="text-sm font-semibold text-amber-400 mb-3">Cheapest Next Levels</h2>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-semibold text-amber-400">Cheapest Next Levels</h2>
+          <button
+            onClick={sharePlan}
+            title="Copy a link that shows this plan to anyone who opens it"
+            className="px-2 py-0.5 rounded border border-gray-700 text-xs text-gray-400 hover:text-amber-400 hover:border-amber-500/60 transition-colors"
+          >
+            {copied ? 'Copied!' : '🔗 Share'}
+          </button>
+        </div>
         {ranking.length === 0 ? (
           <p className="text-xs text-gray-500">All buildings are maxed.</p>
         ) : (
@@ -473,6 +573,7 @@ export function BuildingPlanner() {
             })}
           </Fragment>
         ))}
+      </div>
       </div>
     </div>
   );

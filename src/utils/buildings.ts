@@ -53,6 +53,21 @@ const CATEGORY_DEFS: Record<BuildingCategory, [name: string, image: string][]> =
   ],
 };
 
+// Canonical building order for share links: totals are encoded positionally
+// against this list, so it is APPEND-ONLY — never reorder, insert, or remove.
+// When a new building is added to CATEGORY_DEFS, append its name at the END
+// of this list regardless of its category.
+export const BUILDING_ORDER: string[] = [
+  'Smithy', 'Wood Workshop', 'Tailor Workshop', 'Apothecary', 'Jewel Workshop',
+  'Wizard Tower', 'Temple', 'Laboratory', 'Academy', "Summoner's Tent",
+  'Luna Tower', 'Sol Tower', 'Bakery', 'Restaurant', 'Amphitheatre',
+  'Military Camp', 'Wind Nexus', 'Master Lodge',
+  'Iron Mine', 'Lumberyard', 'Tannery', 'Garden', 'Smelter',
+  'Ironwood Sawmill', 'Weaver Mill', 'Oil Press', 'Jewel Storehouse',
+  'Ether Well', 'Mausoleum',
+  'Town Hall', 'Emerald Inn', 'Tavern', 'Training Hall',
+];
+
 export const BUILDING_META: Record<string, BuildingMeta> = {};
 for (const category of BUILDING_CATEGORIES) {
   CATEGORY_DEFS[category].forEach(([name, image], order) => {
