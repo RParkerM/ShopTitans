@@ -9,6 +9,7 @@ const GOLD_PER_TICK = 100_000_000;
 const GEMS_PER_TICK = 250;
 
 const STORAGE_KEY = 'st_building_progress';
+const TOP_COUNT_KEY = 'st_building_top_count';
 
 interface BuildingInput {
   level: string;
@@ -118,6 +119,17 @@ export function BuildingPlanner() {
   const [viewingShared, setViewingShared] = useState(false);
   const [copied, setCopied] = useState(false);
   const [sharedTotals, setSharedTotals] = useState<number[] | null>(INITIAL_SHARED_TOTALS);
+  const [topCount, setTopCount] = useState(() => {
+    const raw = localStorage.getItem(TOP_COUNT_KEY) ?? '';
+    if (raw === 'all') return Number.POSITIVE_INFINITY;
+    const v = parseInt(raw);
+    return v > 0 ? v : 5;
+  });
+
+  const changeTopCount = (n: number) => {
+    setTopCount(n);
+    localStorage.setItem(TOP_COUNT_KEY, Number.isFinite(n) ? String(n) : 'all');
+  };
   const rowRefs = useRef(new Map<string, HTMLDivElement>());
   const flashTimer = useRef<number>();
   const copyTimer = useRef<number>();
@@ -305,8 +317,8 @@ export function BuildingPlanner() {
       )}
       <div className="flex flex-col lg:flex-row gap-4 lg:items-start">
       {/* Ranking panel — shown first on mobile, right column on desktop */}
-      <div className="lg:order-2 lg:w-72 lg:sticky lg:top-[calc(var(--header-h,57px)+1rem)] shrink-0 bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-        <div className="flex items-center justify-between mb-3">
+      <div className="lg:order-2 lg:w-72 lg:sticky lg:top-[calc(var(--header-h,57px)+1rem)] lg:max-h-[calc(100vh-var(--header-h,57px)-2rem)] lg:overflow-y-auto shrink-0 bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+        <div className="flex items-center justify-between mb-1.5">
           <h2 className="text-sm font-semibold text-amber-400">Cheapest Next Levels</h2>
           <button
             onClick={sharePlan}
@@ -316,11 +328,22 @@ export function BuildingPlanner() {
             {copied ? 'Copied!' : '🔗 Share'}
           </button>
         </div>
+        <label className="flex items-center gap-1.5 text-xs text-gray-400 mb-2">
+          show top
+          <select
+            value={Number.isFinite(topCount) ? String(topCount) : 'all'}
+            onChange={e => changeTopCount(e.target.value === 'all' ? Number.POSITIVE_INFINITY : parseInt(e.target.value))}
+            className="bg-gray-900 border border-gray-600 rounded px-1 py-0.5 text-xs text-gray-200"
+          >
+            {[5, 10, 15].map(n => <option key={n} value={n}>{n}</option>)}
+            <option value="all">all</option>
+          </select>
+        </label>
         {ranking.length === 0 ? (
           <p className="text-xs text-gray-500">All buildings are maxed.</p>
         ) : (
           <ol className="flex flex-col gap-2">
-            {ranking.slice(0, 5).map((c, i) => (
+            {ranking.slice(0, topCount).map((c, i) => (
               <li key={c.building.name}>
                 <button
                   onClick={() => jumpToBuilding(c.building.name)}
