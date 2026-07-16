@@ -425,11 +425,16 @@ export function BuildingPlanner() {
                   <div className="min-w-0">
                     <div className="text-sm text-gray-200 font-medium truncate">
                       {c.building.name}
-                      {c.building.tierMultiplier > 1 && (
-                        <span className="ml-1.5 text-[10px] text-purple-400 border border-purple-800/60 rounded px-1 py-px align-middle">
-                          ×{c.building.tierMultiplier}
-                        </span>
-                      )}
+                      <span
+                        title={`Upgrade costs are ${c.building.tierMultiplier}× the base tick cost`}
+                        className={`ml-1.5 text-[10px] rounded px-1 py-px align-middle whitespace-nowrap border ${
+                          c.building.tierMultiplier > 1
+                            ? 'text-purple-400 border-purple-800/60'
+                            : 'text-gray-500 border-gray-700/60'
+                        }`}
+                      >
+                        {c.building.tierMultiplier}x cost
+                      </span>
                     </div>
                     {!c.isMaxed && c.nextEffect && (
                       <div className="text-xs text-gray-500 truncate" title={c.nextEffect}>
