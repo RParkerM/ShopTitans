@@ -340,9 +340,9 @@ export function BuildingPlanner() {
                       className="w-5 h-5 shrink-0 object-contain"
                     />
                   )}
-                  <span className="text-gray-200 truncate flex-1">
-                    {c.building.name}
-                    <span className="text-gray-500 text-xs"> → Lv. {c.level + 1}</span>
+                  <span className="flex-1 min-w-0 flex items-baseline gap-1">
+                    <span className="text-gray-200 truncate">{c.building.name}</span>
+                    <span className="text-gray-500 text-xs whitespace-nowrap shrink-0">→ Lv. {c.level + 1}</span>
                   </span>
                   <span className="text-amber-300 font-medium whitespace-nowrap">{fmtCompact(c.gold)}</span>
                 </button>
