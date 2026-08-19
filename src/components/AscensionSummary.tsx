@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { MAIN_CATEGORIES, SUBCATEGORIES, type MainCategory } from '../utils/categories';
 import { getBlueprintImages } from '../utils/blueprintImages';
 import { getGoalStatus, type GoalStatus } from '../utils/ascensionGoals';
@@ -59,13 +59,14 @@ const TOP_COUNT_KEY = 'st_goal_top_count';
 const OWNED_ONLY_KEY = 'st_goal_owned_only';
 
 function CheapestGoalsPanel({
-  entries, topCount, onTopCountChange, ownedOnly, onOwnedOnlyChange,
+  entries, topCount, onTopCountChange, ownedOnly, onOwnedOnlyChange, onJump,
 }: {
   entries: GoalEntry[];
   topCount: number;
   onTopCountChange: (n: number) => void;
   ownedOnly: boolean;
   onOwnedOnlyChange: (v: boolean) => void;
+  onJump: (type: string) => void;
 }) {
   const met = entries.filter(e => e.status.needed === 0);
   // Unmet goals, cheapest first; unreachable ones (cost null) sort to the end.
@@ -125,7 +126,12 @@ function CheapestGoalsPanel({
           {ranked.length > 0 && (
             <div className="flex flex-col">
               {ranked.map((e, i) => (
-                <div key={e.type} className="flex items-center gap-2.5 py-1.5">
+                <button
+                  key={e.type}
+                  onClick={() => onJump(e.type)}
+                  title={`Go to ${e.label}`}
+                  className="flex items-center gap-2.5 py-1.5 -mx-1 px-1 rounded hover:bg-gray-700 transition-colors text-left"
+                >
                   <span className="text-xs text-gray-500 tabular-nums w-5 shrink-0">#{i + 1}</span>
                   <img src={e.icon} alt="" className="h-6 w-6 object-contain shrink-0" />
                   <span className="text-xs text-gray-300 truncate min-w-0 flex-1">{e.label}</span>
@@ -144,7 +150,7 @@ function CheapestGoalsPanel({
                       {e.status.cost.toLocaleString()} shards
                     </span>
                   )}
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -270,6 +276,7 @@ function BlueprintRow({
 }
 
 export function AscensionSummary({ blueprints, getUserData, onUpdate, goals, onSetGoal }: AscensionSummaryProps) {
+  const rowRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [topCount, setTopCount] = useState(() => {
     const raw = localStorage.getItem(TOP_COUNT_KEY) ?? '';
@@ -287,6 +294,10 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate, goals, onS
   function changeOwnedOnly(v: boolean) {
     setOwnedOnly(v);
     localStorage.setItem(OWNED_ONLY_KEY, v ? '1' : '0');
+  }
+
+  function jumpTo(type: string) {
+    rowRefs.current.get(type)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function toggleExpanded(type: string) {
@@ -406,6 +417,7 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate, goals, onS
         onTopCountChange={changeTopCount}
         ownedOnly={ownedOnly}
         onOwnedOnlyChange={changeOwnedOnly}
+        onJump={jumpTo}
       />
 
       {/* Per-category sections */}
@@ -424,7 +436,14 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate, goals, onS
               const goal = goals[row.type] ?? 0;
               const goalMet = goal > 0 && row.stats.earned >= goal;
               return (
-                <div key={row.type} className="bg-gray-800 border border-gray-700 rounded-lg">
+                <div
+                  key={row.type}
+                  ref={el => {
+                    if (el) rowRefs.current.set(row.type, el);
+                    else rowRefs.current.delete(row.type);
+                  }}
+                  className="bg-gray-800 border border-gray-700 rounded-lg scroll-mt-[var(--header-h)]"
+                >
                   {/* Sticks below the app header (57px) until the section scrolls past */}
                   <div
                     className={`sticky top-[var(--header-h)] z-10 flex items-center bg-gray-800 rounded-t-lg ${
