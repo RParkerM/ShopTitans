@@ -467,18 +467,17 @@ export function AscensionSummary({ blueprints, getUserData, onUpdate, goals, onS
                     </button>
                     <label
                       className="flex items-center gap-1 pl-1 pr-3 py-2 shrink-0"
-                      title={`Goal ascension stars for ${row.label} (0–${row.stats.totalMax})`}
+                      title={`Goal ascension stars for ${row.label} (currently ${row.stats.totalMax} possible)`}
                     >
                       <span className="hidden sm:inline text-[10px] text-gray-500">Goal</span>
                       <input
                         type="number"
                         min={0}
-                        max={row.stats.totalMax}
                         value={goal > 0 ? goal : ''}
                         placeholder="–"
                         onChange={e => {
                           const raw = parseInt(e.target.value);
-                          const v = Number.isNaN(raw) ? 0 : Math.max(0, Math.min(raw, row.stats.totalMax));
+                          const v = Number.isNaN(raw) ? 0 : Math.max(0, raw);
                           onSetGoal(row.type, v);
                         }}
                         className={`w-12 bg-gray-900 border rounded px-1 py-0.5 text-xs text-right tabular-nums text-gray-200 placeholder-gray-600 focus:outline-none focus:border-amber-500 ${
