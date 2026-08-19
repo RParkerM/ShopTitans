@@ -17,10 +17,12 @@ const TYPE_TO_FOLDER: Record<string, string> = {
   'Dual Wield': 'Dual Wields',
   Aurasong: 'Aurasongs',
   Catalyst: 'Catalysts',
+  Scythe: 'Scythes',
   Spell: 'Spells',
   // Armor
   Helmet: 'Helmets',
   'Magician Hat': 'Magician Hats',
+  Mask: 'Masks',
   'Rogue Hat': 'Rogue Hats',
   'Light Armor': 'Light Armor',
   'Heavy Armor': 'Heavy Armor',
@@ -55,11 +57,13 @@ const SUBCATEGORY_TO_FOLDER: Record<string, string> = {
   catalyst: 'Catalysts', bow: 'Bows', instrument: 'Instruments', axe: 'Axes',
   dual_wield: 'Dual Wields', sword: 'Swords', staff: 'Staves', gun: 'Guns',
   crossbow: 'Crossbows', dagger: 'Daggers', mace: 'Maces', spear: 'Spears', wand: 'Wands',
+  scythe: 'Scythes',
   // stones
   moonstone: 'Moonstones', runestone: 'Runestones',
   // armor
   gloves: 'Gloves', light_armor: 'Light Armor', gauntlets: 'Gauntlets', helmet: 'Helmets',
   clothes: 'Clothes', light_footwear: 'Light Footwear', magician_hat: 'Magician Hats',
+  mask: 'Masks',
   heavy_footwear: 'Heavy Footwear', rogue_hat: 'Rogue Hats', heavy_armor: 'Heavy Armor',
   // enchantments (elements share one folder; spirit has its own)
   light: 'Elements', earth: 'Elements', water: 'Elements', fire: 'Elements',

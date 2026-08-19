@@ -39,6 +39,7 @@ export const SUBCATEGORIES: Record<Exclude<MainCategory, 'All'>, SubCategory[]> 
     { label: 'Instruments', value: 'Instrument',  icon: `${ITEM}/icon_global_item_instrument_big.png` },
     { label: 'Dual Wield',  value: 'Dual Wield',  icon: `${ITEM}/icon_global_item_dualwield_big.png` },
     { label: 'Catalysts',   value: 'Catalyst',    icon: `${ITEM}/icon_global_item_catalyst_big.png` },
+    { label: 'Scythes',     value: 'Scythe',      icon: `${ITEM}/icon_global_item_scythe_big.png` },
   ],
   Armor: [
     { label: 'Heavy Armor',    value: 'Heavy Armor',    icon: `${ITEM}/icon_global_item_armorheavy_big.png` },
@@ -47,6 +48,7 @@ export const SUBCATEGORIES: Record<Exclude<MainCategory, 'All'>, SubCategory[]> 
     { label: 'Helmets',        value: 'Helmet',         icon: `${ITEM}/icon_global_item_helmet_big.png` },
     { label: 'Rogue Hats',     value: 'Rogue Hat',      icon: `${ITEM}/icon_global_item_roguehat_big.png` },
     { label: 'Magician Hats',  value: 'Magician Hat',   icon: `${ITEM}/icon_global_item_hat_big.png` },
+    { label: 'Masks',          value: 'Mask',           icon: `${ITEM}/icon_global_item_mask_big.png` },
     { label: 'Gauntlets',      value: 'Gauntlets',      icon: `${ITEM}/icon_global_item_gauntlets_big.png` },
     { label: 'Gloves',         value: 'Gloves',         icon: `${ITEM}/icon_global_item_bracers_big.png` },
     { label: 'Heavy Footwear', value: 'Heavy Footwear', icon: `${ITEM}/icon_global_item_boots_big.png` },
@@ -88,10 +90,10 @@ export const TYPE_TO_CATEGORY: Record<string, Exclude<MainCategory, 'All'>> = {
   Sword: 'Weapons', Axe: 'Weapons', Dagger: 'Weapons', Mace: 'Weapons',
   Spear: 'Weapons', Bow: 'Weapons', Wand: 'Weapons', Staff: 'Weapons',
   Gun: 'Weapons', Crossbow: 'Weapons', Instrument: 'Weapons',
-  'Dual Wield': 'Weapons', Catalyst: 'Weapons',
+  'Dual Wield': 'Weapons', Catalyst: 'Weapons', Scythe: 'Weapons',
   // Armor
   'Heavy Armor': 'Armor', 'Light Armor': 'Armor', Clothes: 'Armor',
-  Helmet: 'Armor', 'Rogue Hat': 'Armor', 'Magician Hat': 'Armor',
+  Helmet: 'Armor', 'Rogue Hat': 'Armor', 'Magician Hat': 'Armor', Mask: 'Armor',
   Gauntlets: 'Armor', Gloves: 'Armor', 'Heavy Footwear': 'Armor', 'Light Footwear': 'Armor',
   // Accessories
   'Herbal Medicine': 'Accessories', Potion: 'Accessories', Spell: 'Accessories',

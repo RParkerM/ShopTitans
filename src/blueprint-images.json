@@ -834,6 +834,10 @@
     ],
     "spear": [
       {
+        "name": "Poseidon's Might",
+        "image": "greekspear.png"
+      },
+      {
         "name": "It From the Crypt",
         "image": "tombspear.png"
       },
@@ -1360,6 +1364,14 @@
     ],
     "staff": [
       {
+        "name": "Tomb Staff of Doom",
+        "image": "tombstaff.png"
+      },
+      {
+        "name": "Blackthorn Scepter",
+        "image": "rosestaff.png"
+      },
+      {
         "name": "Fragment of Apocal",
         "image": "spacestaff.png"
       },
@@ -1382,6 +1394,10 @@
       {
         "name": "Arcane Vane",
         "image": "t15staff.png"
+      },
+      {
+        "name": "Quetzadusa Staff",
+        "image": "maladystaff2.png"
       },
       {
         "name": "Herald of Feykind",
@@ -1570,6 +1586,10 @@
     ],
     "gun": [
       {
+        "name": "Water Gun",
+        "image": "summergun.png"
+      },
+      {
         "name": "Photon Phaser",
         "image": "t16gun.png"
       },
@@ -1716,6 +1736,10 @@
     ],
     "crossbow": [
       {
+        "name": "Soulflame Thrower",
+        "image": "reapercrossbow.png"
+      },
+      {
         "name": "Supernova Launcher",
         "image": "t16crossbow.png"
       },
@@ -1825,6 +1849,10 @@
       }
     ],
     "instrument": [
+      {
+        "name": "Alien Bell-Beacon",
+        "image": "alieninstrument.png"
+      },
       {
         "name": "Nihil Lyre",
         "image": "t16instrument.png"
@@ -1994,6 +2022,10 @@
     ],
     "catalyst": [
       {
+        "name": "Aperture Catalyst",
+        "image": "eclipsecatalyst.png"
+      },
+      {
         "name": "Universe XVI",
         "image": "t16catalyst.png"
       },
@@ -2057,6 +2089,56 @@
         "name": "Natural Toxifier",
         "image": "t5catalyst.png"
       }
+    ],
+    "scythe": [
+      {
+        "name": "Esper Intemporal",
+        "image": "t16scythe.png"
+      },
+      {
+        "name": "Jade Faucheur",
+        "image": "t15scythe.png"
+      },
+      {
+        "name": "Art of Regicide",
+        "image": "t14scythe.png"
+      },
+      {
+        "name": "Void Accomplice",
+        "image": "t13scythe.png"
+      },
+      {
+        "name": "Slim Reaper",
+        "image": "t12scythe.png"
+      },
+      {
+        "name": "Scythingale",
+        "image": "t11scythe.png"
+      },
+      {
+        "name": "Frostlethal",
+        "image": "t10scythe.png"
+      },
+      {
+        "name": "Ripley's Scythe",
+        "image": "reaperscythe.png"
+      },
+      {
+        "name": "Faustian Bargain",
+        "image": "t9scythe.png"
+      },
+      {
+        "name": "Bone Contraption",
+        "image": "t8scythe.png"
+      },
+      {
+        "name": "Graceful Equity",
+        "image": "t7scythe.png"
+      },
+      {
+        "name": "Robust Extinctor",
+        "image": "t6scythe.png"
+      }
     ]
   },
   "armor": {
@@ -2112,6 +2194,10 @@
       {
         "name": "Cobalt Plate Armor",
         "image": "t14heavyarmor.png"
+      },
+      {
+        "name": "Xzyurnip Carapace",
+        "image": "alienheavyarmor.png"
       },
       {
         "name": "CM-73 Armor Frame",
@@ -2450,6 +2536,14 @@
     ],
     "clothes": [
       {
+        "name": "Reaper's Robes",
+        "image": "reaperrobe.png"
+      },
+      {
+        "name": "Lethal Petal Robe",
+        "image": "roserobe.png"
+      },
+      {
         "name": "Worldshaper Robe",
         "image": "t16robe.png"
       },
@@ -2644,6 +2738,10 @@
     ],
     "helmet": [
       {
+        "name": "Pearlescent Helmet",
+        "image": "coralhelm.png"
+      },
+      {
         "name": "Heaume of the Mightiest",
         "image": "lucky7helm.png"
       },
@@ -2714,6 +2812,10 @@
       {
         "name": "Balefire Gaze",
         "image": "t13helm.png"
+      },
+      {
+        "name": "Hades' Soulflame",
+        "image": "greekhelm.png"
       },
       {
         "name": "Thorn Baron Helm",
@@ -2850,11 +2952,15 @@
     ],
     "rogue_hat": [
       {
+        "name": "Hermes' Hat",
+        "image": "greekroguehat.png"
+      },
+      {
         "name": "Voyager Neovisor",
         "image": "t16roguehat.png"
       },
       {
-        "name": "Facechanger's Mask",
+        "name": "Facechanger",
         "image": "lunarroguehat.png"
       },
       {
@@ -2874,7 +2980,7 @@
         "image": "jurassicroguehat.png"
       },
       {
-        "name": "Chrysalid Mask",
+        "name": "Chrysalid Facade",
         "image": "t15roguehat.png"
       },
       {
@@ -2894,7 +3000,7 @@
         "image": "t14roguehat.png"
       },
       {
-        "name": "Hazmat Mask",
+        "name": "Hazmat Breather",
         "image": "cyberroguehat.png"
       },
       {
@@ -2914,7 +3020,7 @@
         "image": "t13roguehat.png"
       },
       {
-        "name": "Kitsune Spirit Mask",
+        "name": "Kitsune Spirit Guise",
         "image": "fallroguehat.png"
       },
       {
@@ -2970,11 +3076,11 @@
         "image": "oktoberhat.png"
       },
       {
-        "name": "Storm Dragon Mask",
+        "name": "Storm Dragon Face",
         "image": "castleroguehat.png"
       },
       {
-        "name": "Drakeskin Mask",
+        "name": "Drakeskin Face",
         "image": "dragonhat.png"
       },
       {
@@ -3176,7 +3282,7 @@
         "image": "schoolhat2020.png"
       },
       {
-        "name": "Raven Mask",
+        "name": "Raven Beak",
         "image": "plaguemask.png"
       },
       {
@@ -3206,6 +3312,10 @@
       {
         "name": "Tactician Hat",
         "image": "midnighthat.png"
+      },
+      {
+        "name": "Soulhost Hat",
+        "image": "reapermagehat.png"
       },
       {
         "name": "Owl Cowl",
@@ -3252,7 +3362,57 @@
         "image": "leathercone.png"
       }
     ],
+    "mask": [
+      {
+        "name": "Visage Unto Infinity",
+        "image": "t16mask.png"
+      },
+      {
+        "name": "Tricera Face",
+        "image": "t15mask.png"
+      },
+      {
+        "name": "Gaze of the Godless",
+        "image": "t14mask.png"
+      },
+      {
+        "name": "Kitsune's Mad Eyes",
+        "image": "t13mask.png"
+      },
+      {
+        "name": "Forgewraith",
+        "image": "t12mask.png"
+      },
+      {
+        "name": "Facade of Glib Lies",
+        "image": "t11mask.png"
+      },
+      {
+        "name": "Gleeful Oni Mask",
+        "image": "t10mask.png"
+      },
+      {
+        "name": "Sightless Seer",
+        "image": "t9mask.png"
+      },
+      {
+        "name": "Mask of Glass",
+        "image": "t8mask.png"
+      },
+      {
+        "name": "Stern Sentinel",
+        "image": "t7mask.png"
+      },
+      {
+        "name": "Autumnal Mask",
+        "image": "t6mask.png"
+      }
+    ],
     "gauntlets": [
+      {
+        "name": "Xzyurnip Foragers",
+        "image": "aliengauntlets.png"
+      },
       {
         "name": "Darkmatter Shells",
         "image": "t16gauntlets.png"
@@ -3556,6 +3716,10 @@
         "image": "dragongloves.png"
       },
       {
+        "name": "Lethal Petal Cuffs",
+        "image": "rosegloves.png"
+      },
+      {
         "name": "Hands of Sleight",
         "image": "magicgloves.png"
       },
@@ -3633,6 +3797,10 @@
       }
     ],
     "heavy_footwear": [
+      {
+        "name": "Xzyurnip Tentalons",
+        "image": "alienboots.png"
+      },
       {
         "name": "Darkmatter Gliders",
         "image": "t16boots.png"
@@ -3904,6 +4072,10 @@
         "image": "t12shoes.png"
       },
       {
+        "name": "Eclipsed Pair",
+        "image": "eclipseshoes.png"
+      },
+      {
         "name": "Opulent Footwraps",
         "image": "goldshoes.png"
       },
@@ -3914,6 +4086,10 @@
       {
         "name": "Everdusk Boots",
         "image": "jackalopeshoes.png"
+      },
+      {
+        "name": "Lethal Petal Boots",
+        "image": "roseshoes.png"
       },
       {
         "name": "Giant's Boots",
@@ -4160,6 +4336,10 @@
         "image": "lifeherb.png"
       },
       {
+        "name": "Shrumyurnip Bundle",
+        "image": "alienherb.png"
+      },
+      {
         "name": "Unwilting Rose",
         "image": "valentineherb.png"
       },
@@ -4334,6 +4514,10 @@
         "image": "gaiatonic.png"
       },
       {
+        "name": "Icey Slushie",
+        "image": "summerpotion.png"
+      },
+      {
         "name": "Oak Essence",
         "image": "carpenterpotion.png"
       },
@@ -4435,6 +4619,10 @@
       }
     ],
     "spell": [
+      {
+        "name": "Tome of Souls Lost",
+        "image": "reaperscroll.png"
+      },
       {
         "name": "Precursor's Ultimatum",
         "image": "spacescroll.png"
@@ -4859,6 +5047,10 @@
       }
     ],
     "ring": [
+      {
+        "name": "Briar Kiss",
+        "image": "rosering.png"
+      },
       {
         "name": "Slipstream Assistant",
         "image": "t16ring.png"
@@ -5288,6 +5480,10 @@
     ],
     "cloak": [
       {
+        "name": "Shroud of the Underking",
+        "image": "tombcloak.png"
+      },
+      {
         "name": "Mantle of Splendor",
         "image": "lucky7cloak.png"
       },
@@ -5566,6 +5762,10 @@
     ],
     "quiver": [
       {
+        "name": "Zeus' Thunderbolts",
+        "image": "greekquiver.png"
+      },
+      {
         "name": "Baryon Battlebolts",
         "image": "t16quiver.png"
       },
@@ -5627,6 +5827,10 @@
       }
     ],
     "idol": [
+      {
+        "name": "Pearlescent Idol",
+        "image": "coralidol.png"
+      },
       {
         "name": "Feline of Fortune",
         "image": "lucky7idol.png"
@@ -5780,6 +5984,10 @@
       {
         "name": "Veggie Kebabs",
         "image": "kebabs.png"
+      },
+      {
+        "name": "Humble Dolma",
+        "image": "greekmeal.png"
       },
       {
         "name": "Packed Takeout",
@@ -6194,6 +6402,10 @@
       {
         "name": "Behemoth Spirit",
         "image": "behemoth.png"
+      },
+      {
+        "name": "Spirit Spirit",
+        "image": "spiritspirit.png"
       },
       {
         "name": "Kirin Spirit",
