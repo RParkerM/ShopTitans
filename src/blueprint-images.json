@@ -2,6 +2,10 @@
   "weapons": {
     "sword": [
       {
+        "name": "Eclipsed Hookblade",
+        "image": "eclipsesword.png"
+      },
+      {
         "name": "Unearthed Blade",
         "image": "tombsword.png"
       },
@@ -414,6 +418,10 @@
     ],
     "dagger": [
       {
+        "name": "Solaryn Sunslicer",
+        "image": "solardagger.png"
+      },
+      {
         "name": "Cloudcarver",
         "image": "spacedagger.png"
       },
@@ -623,6 +631,10 @@
       }
     ],
     "mace": [
+      {
+        "name": "Draftmaker",
+        "image": "schoolmace.png"
+      },
       {
         "name": "Pearlescent Nautilus",
         "image": "coralmace.png"
@@ -1043,6 +1055,10 @@
       }
     ],
     "bow": [
+      {
+        "name": "Pearlescent Bow",
+        "image": "coralbow.png"
+      },
       {
         "name": "King Kaching",
         "image": "lucky7bow.png"
@@ -1586,6 +1602,10 @@
     ],
     "gun": [
       {
+        "name": "Solaryn Trifuser",
+        "image": "solargun.png"
+      },
+      {
         "name": "Water Gun",
         "image": "summergun.png"
       },
@@ -1849,6 +1869,10 @@
       }
     ],
     "instrument": [
+      {
+        "name": "Drum of Everwar",
+        "image": "tombinstrument.png"
+      },
       {
         "name": "Alien Bell-Beacon",
         "image": "alieninstrument.png"
@@ -2488,6 +2512,10 @@
       {
         "name": "Ninja Garb",
         "image": "ninjagarb.png"
+      },
+      {
+        "name": "Solaryn Worker Wear",
+        "image": "solarmediumarmor.png"
       },
       {
         "name": "Pumpkin Armor",
@@ -3364,6 +3392,10 @@
     ],
     "mask": [
       {
+        "name": "Fairlyn's Soulsight",
+        "image": "crystalmask.png"
+      },
+      {
         "name": "Visage Unto Infinity",
         "image": "t16mask.png"
       },
@@ -3797,6 +3829,10 @@
       }
     ],
     "heavy_footwear": [
+      {
+        "name": "Death Battleboots",
+        "image": "tombboots.png"
+      },
       {
         "name": "Xzyurnip Tentalons",
         "image": "alienboots.png"
@@ -4574,6 +4610,10 @@
         "image": "cincopotion.png"
       },
       {
+        "name": "Safety Glue",
+        "image": "schoolpotion.png"
+      },
+      {
         "name": "Phoenix Tonic",
         "image": "largehealthpotion.png"
       },
@@ -4718,6 +4758,10 @@
       {
         "name": "Celestial Choir",
         "image": "angelscroll.png"
+      },
+      {
+        "name": "Curious Abacus",
+        "image": "schoolscroll.png"
       },
       {
         "name": "Druidic Grimoire",
@@ -4924,6 +4968,10 @@
       {
         "name": "Abyssal Artifact",
         "image": "t12shield.png"
+      },
+      {
+        "name": "Solaryn Panel",
+        "image": "solarshield.png"
       },
       {
         "name": "Crystalice Targe",
@@ -5906,6 +5954,10 @@
     ],
     "meal": [
       {
+        "name": "Solaryn Hot Pot",
+        "image": "solarmeal.png"
+      },
+      {
         "name": "Vegan Glorb",
         "image": "spacemeal2.png"
       },
@@ -6376,6 +6428,10 @@
     ],
     "spirit": [
       {
+        "name": "Tomb-Bound Spirit",
+        "image": "tomb.png"
+      },
+      {
         "name": "Ancestor Spirit",
         "image": "platinumspirit.png"
       },
@@ -6450,6 +6506,10 @@
       {
         "name": "Tiger Spirit",
         "image": "tiger.png"
+      },
+      {
+        "name": "Mundra's Spirit",
+        "image": "dragon.png"
       },
       {
         "name": "Dinosaur Spirit",
@@ -6538,6 +6598,10 @@
       {
         "name": "Ram Spirit",
         "image": "turtle.png"
+      },
+      {
+        "name": "Fresh Spirit",
+        "image": "freshspirit.png"
       }
     ]
   }
